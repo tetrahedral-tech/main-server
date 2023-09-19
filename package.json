@@ -1,0 +1,45 @@
+{
+	"name": "client",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"lint": "prettier --plugin-search-dir . --check . && eslint .",
+		"format": "prettier --plugin-search-dir . --write ."
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/kit": "^1.20.4",
+		"eslint": "^8.28.0",
+		"eslint-config-airbnb-base": "^15.0.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-disable": "^1.0.2",
+		"eslint-plugin-svelte": "^2.30.0",
+		"prettier": "^2.8.0",
+		"prettier-eslint": "^15.0.1",
+		"prettier-plugin-svelte": "^3.0.3",
+		"svelte": "^4.0.5",
+		"vite": "^4.4.2"
+	},
+	"type": "module",
+	"dependencies": {
+		"@ethersproject/address": "^5.7.0",
+		"@ethersproject/contracts": "^5.7.0",
+		"@ethersproject/networks": "^5.7.1",
+		"@ethersproject/providers": "^5.7.2",
+		"@ethersproject/solidity": "^5.7.0",
+		"@uniswap/sdk": "^3.0.3",
+		"@uniswap/v3-periphery": "^1.4.3",
+		"@uniswap/v3-sdk": "^3.10.0",
+		"ethers": "^6.7.1",
+		"jsonwebtoken": "^9.0.1",
+		"mongoose": "^7.5.0",
+		"node-schedule": "^2.1.1",
+		"openid-client": "^5.4.3",
+		"redis": "^4.6.8",
+		"web3": "^4.1.1",
+		"ws": "^8.13.0"
+	}
+}

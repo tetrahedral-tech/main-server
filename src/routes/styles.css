@@ -1,0 +1,11 @@
+.success {
+	color: plum;
+}
+
+.error {
+	color: lightcoral;
+}
+
+code {
+	white-space: pre-line;
+}
