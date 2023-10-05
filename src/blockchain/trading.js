@@ -1,17 +1,14 @@
 import { PROVIDER_URL } from '$env/static/private';
-import { chainId, routerAddress, tokens } from '$lib/blockchain.server';
+import { chainId, routerAddress, tokens, fromReadableAmount } from '$lib/blockchain.server';
 
 import Web3, { TransactionRevertInstructionError } from 'web3';
+import { Contract, Wallet } from 'ethers';
 import { JsonRpcProvider } from '@ethersproject/providers';
-import { Contract, Wallet, parseUnits } from 'ethers';
 import { CurrencyAmount, Percent, TradeType } from '@uniswap/sdk-core';
 import { AlphaRouter, SwapType } from '@uniswap/smart-order-router';
 
 // eslint-disable-next-line max-len
 import { abi as erc20Abi } from '@uniswap/v3-periphery/artifacts/contracts/interfaces/IERC20Metadata.sol/IERC20Metadata.json';
-
-
-const fromReadableAmount = (amount, decimals) => Number(parseUnits(String(amount), decimals));
 
 const deBigNumberify = object => {
 	// eslint-disable-next-line no-restricted-syntax
@@ -99,8 +96,8 @@ const executeTransaction = async (privateKey, { baseAmount, baseToken = tokens.u
 	}
 };
 
-export default botData => Promise.allSettled(
-	botData.map(
+export default tradeData => Promise.allSettled(
+	tradeData.map(
 		({ signal: action, amount: baseAmount, privateKey }) =>
 			action !== 'no_action' ? executeTransaction(privateKey, {
 				modToken: tokens.weth,

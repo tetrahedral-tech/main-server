@@ -4,13 +4,15 @@ import {
 	JWT_SECRET
 } from '$env/static/private';
 import { Bot } from '$lib/models.server';
+import { toReadableAmount } from '$lib/blockchain.server';
 
 import { sign } from 'jsonwebtoken';
-import { connect } from 'mongoose';
+import { connect, Types as MongooseTypes } from 'mongoose';
 import { createClient } from 'redis';
 import schedule from 'node-schedule';
 
-import executeAllTransactions from './trading';
+import executeTransactions from './blockchain/trading';
+import addWorths, { defaultBaseToken } from './blockchain/worth';
 
 connect(DB_URI);
 const redis = createClient();
@@ -39,10 +41,37 @@ const job = schedule.scheduleJob('*/5 * * * *', async () => {
 		const signal = signals[field];
 		const strength = Number(strengths[field]);
 
-		return { privateKey: bot.privateKey, amount: bot.strengthToUSD * strength, signal };
+		return {
+			id: bot._id,
+			privateKey: bot.privateKey,
+			amount: bot.strengthToUSD * strength,
+			signal
+		};
 	});
 
-	await executeAllTransactions(tradeData);
+	await executeTransactions(tradeData);
+
+	// Update worths
+	const worths = await addWorths(tradeData);
+	Bot.bulkWrite(
+		worths
+			.filter(r => r.status === 'fulfilled')
+			.map(r => r.value)
+			.map(({ value, id }) => ({
+				updateOne: {
+					filter: { _id: new MongooseTypes.ObjectId(id) },
+					update: {
+						$push: {
+							worth: {
+								timestamp: Date.now(),
+								value: toReadableAmount(value, defaultBaseToken.decimals)
+							}
+						}
+					}
+				}
+			}))
+	);
+
 	await redis.disconnect();
 });
 

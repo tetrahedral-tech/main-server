@@ -44,7 +44,10 @@ const botSchema = Schema({
 	},
 	strengthToUSD: Number,
 	encryptedPrivateKey: String,
-	worth: [Number]
+	worth: [{
+		timestamp: Number,
+		value: Number
+	}]
 }, {
 	virtuals: {
 		privateKey: {

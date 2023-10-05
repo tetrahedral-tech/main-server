@@ -1,8 +1,8 @@
 import { Token, ChainId } from '@uniswap/sdk-core';
 
 export const routerAddress = '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45';
-export const factoryAddress = '0x1F98431c8aD98523631AE4a59f267346ea31F984';
-export const chainId = import.meta.env.PROD ? ChainId.MAINNET : ChainId.GOERLI;
+export const quoterAddress = '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6';
+export const chainId = import.meta.env.DEV ? ChainId.MAINNET : ChainId.GOERLI;
 
 const addresses = {
 	[ChainId.GOERLI]: {
@@ -14,7 +14,6 @@ const addresses = {
 		usdc: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
 	}
 };
-
 export const tokens = {
 	weth: new Token(
 		chainId,
@@ -31,3 +30,18 @@ export const tokens = {
 		'USD//C'
 	)
 };
+
+const countDecimals = x => Math.floor(x) === x ? 0 : x.toString().split('.')[1].length || 0;
+
+export const fromReadableAmount = (amount, decimals) => {
+	/* eslint-disable no-param-reassign */
+	amount = BigInt(amount);
+	decimals = BigInt(decimals);
+	/* eslint-enable no-param-reassign */
+
+	const extraDigits = 10n ** countDecimals(amount);
+	const adjustedAmount = amount * extraDigits;
+	return (adjustedAmount * (10n ** decimals)) / extraDigits;
+};
+
+export const toReadableAmount = (rawAmount, decimals) => Number(rawAmount) / (10 ** decimals);
