@@ -26,7 +26,7 @@ const job = schedule.scheduleJob('*/5 * * * *', async () => {
 				Authorization: token
 			}
 		});
-	} catch (err) { /* return; */ }
+	} catch (err) { return; }
 
 	await redis.connect();
 
