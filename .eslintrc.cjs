@@ -1,7 +1,9 @@
 const baseConfig = {
 	root: true,
+	globals: {
+		BigInt: true
+	},
 	env: {
-		browser: true,
 		es2017: true,
 		node: true
 	},
