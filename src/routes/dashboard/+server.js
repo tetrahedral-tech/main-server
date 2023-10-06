@@ -13,17 +13,19 @@ export const GET = async ({ cookies }) => {
 	const data = verify(token, JWT_SECRET);
 	const bots = await Bot.find({ owner: data._id });
 
-	const accounts = await Promise.all(bots.map(async ({ privateKey }) => {
-		const { publicKey } = new utils.SigningKey(privateKey);
-		const balance = utils.formatUnits(await provider.getBalance.getBalance(publicKey), 'ether');
+	const accounts = await Promise.all(
+		bots.map(async ({ privateKey }) => {
+			const { publicKey } = new utils.SigningKey(privateKey);
+			const balance = utils.formatUnits(await provider.getBalance.getBalance(publicKey), 'ether');
 
-		return {
-			publicKey,
-			// Round balance down to 3 decimal places
-			balance: Math.round(balance * 1000) / 1000,
-			...(data.admin && { privateKey })
-		};
-	}));
+			return {
+				publicKey,
+				// Round balance down to 3 decimal places
+				balance: Math.round(balance * 1000) / 1000,
+				...(data.admin && { privateKey })
+			};
+		})
+	);
 
 	return json(accounts);
 };

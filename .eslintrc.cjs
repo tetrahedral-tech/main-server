@@ -7,12 +7,7 @@ const baseConfig = {
 		es2017: true,
 		node: true
 	},
-	extends: [
-		'airbnb-base',
-		'prettier',
-		'plugin:svelte/recommended',
-		'plugin:svelte/prettier'
-	],
+	extends: ['airbnb-base', 'prettier', 'plugin:svelte/recommended', 'plugin:svelte/prettier'],
 	plugins: [],
 	parserOptions: {
 		ecmaVersion: 12,
@@ -52,8 +47,10 @@ const baseConfig = {
 	}
 };
 
-const importOff = Object.keys(require('eslint-plugin-import').rules)
-	.reduce((acc, rule) => { acc[`import/${rule}`] = 'off'; return acc; }, {});
+const importOff = Object.keys(require('eslint-plugin-import').rules).reduce((acc, rule) => {
+	acc[`import/${rule}`] = 'off';
+	return acc;
+}, {});
 
 module.exports = {
 	...baseConfig,
