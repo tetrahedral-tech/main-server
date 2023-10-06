@@ -9,3 +9,21 @@ jobs:
         run: yarn --dev
       - name: Run Formatter
         run: yarn format
+      - name: config github
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: add changes
+        run: |
+          git add .
+
+      - name: commit changes
+        run: |
+          git commit -m "Formatting" --all | exit 0
+
+      # NOTE : only push changes when the source branch is being pushed to master (target branch)
+      - name: push changes
+        if: github.ref == 'refs/heads/master'
+        run: |
+          git push
