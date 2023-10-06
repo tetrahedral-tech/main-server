@@ -15,23 +15,11 @@ const addresses = {
 	}
 };
 export const tokens = {
-	weth: new Token(
-		chainId,
-		addresses[chainId].weth,
-		18,
-		'WETH',
-		'Wrapped Ether'
-	),
-	usdc: new Token(
-		chainId,
-		addresses[chainId].usdc,
-		6,
-		'USDC',
-		'USD//C'
-	)
+	weth: new Token(chainId, addresses[chainId].weth, 18, 'WETH', 'Wrapped Ether'),
+	usdc: new Token(chainId, addresses[chainId].usdc, 6, 'USDC', 'USD//C')
 };
 
-const countDecimals = x => Math.floor(x) === x ? 0 : x.toString().split('.')[1].length || 0;
+const countDecimals = x => (Math.floor(x) === x ? 0 : x.toString().split('.')[1].length || 0);
 
 export const fromReadableAmount = (amount, decimals) => {
 	/* eslint-disable no-param-reassign */
@@ -41,7 +29,7 @@ export const fromReadableAmount = (amount, decimals) => {
 
 	const extraDigits = 10n ** countDecimals(amount);
 	const adjustedAmount = amount * extraDigits;
-	return (adjustedAmount * (10n ** decimals)) / extraDigits;
+	return (adjustedAmount * 10n ** decimals) / extraDigits;
 };
 
-export const toReadableAmount = (rawAmount, decimals) => Number(rawAmount) / (10 ** decimals);
+export const toReadableAmount = (rawAmount, decimals) => Number(rawAmount) / 10 ** decimals;

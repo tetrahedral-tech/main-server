@@ -1,8 +1,10 @@
 import { Schema, model, models, plugin } from 'mongoose';
 
 // Define a global plugin that makes all fields required (unless they already have a requiremenet specifically set)
-const intoRequired = schema => Object.values(schema.paths)
-	.forEach(path => path.isRequired === undefined ? path.required(true) : null);
+const intoRequired = schema =>
+	Object.values(schema.paths).forEach(path =>
+		path.isRequired === undefined ? path.required(true) : null
+	);
 plugin(intoRequired);
 
 const identitySchema = Schema({
@@ -33,31 +35,36 @@ const algorithmSchema = Schema({
 	}
 });
 
-const botSchema = Schema({
-	owner: {
-		type: Schema.Types.ObjectId,
-		ref: 'User'
+const botSchema = Schema(
+	{
+		owner: {
+			type: Schema.Types.ObjectId,
+			ref: 'User'
+		},
+		algorithm: {
+			type: Schema.Types.ObjectId,
+			ref: 'Algorithm'
+		},
+		strengthToUSD: Number,
+		encryptedPrivateKey: String,
+		worth: [
+			{
+				timestamp: Number,
+				value: Number
+			}
+		]
 	},
-	algorithm: {
-		type: Schema.Types.ObjectId,
-		ref: 'Algorithm'
-	},
-	strengthToUSD: Number,
-	encryptedPrivateKey: String,
-	worth: [{
-		timestamp: Number,
-		value: Number
-	}]
-}, {
-	virtuals: {
-		privateKey: {
-			get() {
-				// @TODO decrypt private key
-				return this.encryptedPrivateKey;
+	{
+		virtuals: {
+			privateKey: {
+				get() {
+					// @TODO decrypt private key
+					return this.encryptedPrivateKey;
+				}
 			}
 		}
 	}
-});
+);
 
 botSchema.pre('save', next => {
 	// @TODO encrypt private key

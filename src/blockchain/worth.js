@@ -11,7 +11,10 @@ const mapObject = (object, fn) =>
 	Object.fromEntries(Object.entries(object).map(kv => [kv[0], fn(...kv)]));
 
 const provider = new JsonRpcProvider(PROVIDER_URL);
-const defaultContracts = mapObject(tokens, (name, token) => new Contract(token.address, erc20Abi, provider));
+const defaultContracts = mapObject(
+	tokens,
+	(name, token) => new Contract(token.address, erc20Abi, provider)
+);
 const quoterContract = new Contract(quoterAddress, quoterAbi, provider);
 
 export const defaultBaseToken = tokens.usdc;
@@ -26,23 +29,25 @@ const getWorth = async (address, includedTokens = tokens, baseToken = defaultBas
 				: new Contract(token.address, erc20Abi, provider)
 		);
 
-	const worths = await Promise.all(contracts.map(
-		async contract => quoterContract.quoteExactInputSingle.staticCall(
-			await contract.getAddress(),
-			baseToken.address,
-			500,
-			await contract.balanceOf(address),
-			0
+	const worths = await Promise.all(
+		contracts.map(async contract =>
+			quoterContract.quoteExactInputSingle.staticCall(
+				await contract.getAddress(),
+				baseToken.address,
+				500,
+				await contract.balanceOf(address),
+				0
+			)
 		)
-	));
+	);
 
 	return Number(worths.reduce((a, b) => a + b));
 };
 
-export default tradeData => Promise.allSettled(
-	tradeData
-		.map(async ({ id, privateKey }) => ({
-			value: await getWorth(await (new Wallet(privateKey, provider)).getAddress()),
+export default tradeData =>
+	Promise.allSettled(
+		tradeData.map(async ({ id, privateKey }) => ({
+			value: await getWorth(await new Wallet(privateKey, provider).getAddress()),
 			id
 		}))
-);
+	);

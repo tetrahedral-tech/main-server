@@ -12,8 +12,8 @@ import { abi as erc20Abi } from '@uniswap/v3-periphery/artifacts/contracts/inter
 
 const deBigNumberify = object => {
 	// eslint-disable-next-line no-restricted-syntax
+	// eslint-disable-next-line no-param-reassign, no-undef
 	for (const [key, value] of Object.entries(object))
-		// eslint-disable-next-line no-param-reassign, no-undef
 		if (value?._isBigNumber) object[key] = BigInt(value._hex) || 0;
 	return object;
 };
@@ -39,10 +39,7 @@ const repopulateAndSend = async (wallet, transaction) => {
 const approveTransaction = async (wallet, token, amount) => {
 	const approvalContract = new Contract(token.address, erc20Abi, provider);
 
-	const transaction = await approvalContract.approve.populateTransaction(
-		routerAddress,
-		amount
-	);
+	const transaction = await approvalContract.approve.populateTransaction(routerAddress, amount);
 
 	return repopulateAndSend(wallet, transaction);
 };
@@ -60,7 +57,10 @@ const routeTransaction = async (wallet, route) => {
 	return repopulateAndSend(wallet, transaction);
 };
 
-const executeTransaction = async (privateKey, { baseAmount, baseToken = tokens.usdc, modToken, action }) => {
+const executeTransaction = async (
+	privateKey,
+	{ baseAmount, baseToken = tokens.usdc, modToken, action }
+) => {
 	const wallet = new Wallet(privateKey, provider);
 	console.log(`Running trades for ${await wallet.getAddress()}`);
 
@@ -76,16 +76,17 @@ const executeTransaction = async (privateKey, { baseAmount, baseToken = tokens.u
 		{
 			recipient: await wallet.getAddress(),
 			slippageTolerance: new Percent(20, 10000), // 0.2%
-			deadline: Math.floor(Date.now() / 1000) + (60 * 10),
+			deadline: Math.floor(Date.now() / 1000) + 60 * 10,
 			type: SwapType.SWAP_ROUTER_02
 		}
 	);
 
 	const { inputAmount: tradeInput } = route.trade;
-	await approveTransaction(wallet, tradeInput.currency, BigInt(fromReadableAmount(
-		tradeInput.toExact(),
-		tradeInput.currency.decimals
-	)));
+	await approveTransaction(
+		wallet,
+		tradeInput.currency,
+		BigInt(fromReadableAmount(tradeInput.toExact(), tradeInput.currency.decimals))
+	);
 
 	try {
 		return routeTransaction(wallet, route);
@@ -96,13 +97,17 @@ const executeTransaction = async (privateKey, { baseAmount, baseToken = tokens.u
 	}
 };
 
-export default tradeData => Promise.allSettled(
-	tradeData.map(
-		({ signal: action, amount: baseAmount, privateKey }) =>
-			action !== 'no_action' ? executeTransaction(privateKey, {
-				modToken: tokens.weth,
-				baseAmount,
-				action
-			}) : null
-	).filter(p => p)
-);
+export default tradeData =>
+	Promise.allSettled(
+		tradeData
+			.map(({ signal: action, amount: baseAmount, privateKey }) =>
+				action !== 'no_action'
+					? executeTransaction(privateKey, {
+							modToken: tokens.weth,
+							baseAmount,
+							action
+					  })
+					: null
+			)
+			.filter(p => p)
+	);

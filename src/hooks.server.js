@@ -1,8 +1,4 @@
-import {
-	ALGORITHM_SERVER_BASE_URL,
-	DB_URI,
-	JWT_SECRET
-} from '$env/static/private';
+import { ALGORITHM_SERVER_BASE_URL, DB_URI, JWT_SECRET } from '$env/static/private';
 import { Bot } from '$lib/models.server';
 import { toReadableAmount } from '$lib/blockchain.server';
 
@@ -28,7 +24,9 @@ const job = schedule.scheduleJob('*/5 * * * *', async () => {
 				Authorization: token
 			}
 		});
-	} catch (err) { return; }
+	} catch (err) {
+		return;
+	}
 
 	await redis.connect();
 
