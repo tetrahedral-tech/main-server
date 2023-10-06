@@ -38,7 +38,7 @@ const baseConfig = {
 		'no-console': 'off',
 		'no-plusplus': 'off',
 		'consistent-return': 'off',
-		'no-tabs': 'off',
+		'no-tabs': 'off'
 	}
 };
 
