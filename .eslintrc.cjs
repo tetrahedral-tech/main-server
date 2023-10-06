@@ -38,12 +38,7 @@ const baseConfig = {
 		'no-console': 'off',
 		'no-plusplus': 'off',
 		'consistent-return': 'off',
-		'arrow-parens': 'off',
-		'object-curly-spacing': ['error', 'always'],
 		'no-tabs': 'off',
-		indent: ['error', 'tab'],
-		'operator-linebreak': ['error', 'before'],
-		'comma-dangle': ['error', 'never']
 	}
 };
 
