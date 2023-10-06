@@ -1,13 +1,16 @@
-import { error, redirect } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import { handleSignin } from '$lib/identity.server.js';
-import { GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET, JWT_SECRET, CODE_VERIFIER_SECRET } from '$env/static/private';
-import { Issuer, generators } from 'openid-client';
+import {
+	GOOGLE_OAUTH_CLIENT_ID,
+	GOOGLE_OAUTH_CLIENT_SECRET,
+	CODE_VERIFIER_SECRET
+} from '$env/static/private';
+import { Issuer } from 'openid-client';
 import { createDecipheriv } from 'crypto';
 
 const callback = 'http://localhost:5173/identity/google/';
 
 export const GET = async ({ url, cookies }) => {
-	const code = await url.searchParams.get('code');
 	const issuer = await Issuer.discover('https://accounts.google.com');
 
 	const client = new issuer.Client({
@@ -17,12 +20,15 @@ export const GET = async ({ url, cookies }) => {
 		response_types: ['code']
 	});
 
-	let code_verifier;
+	let codeVerifier;
 	try {
-		const [iv, encrypted] = cookies.get('code_verifier').split(':').map(part => Buffer.from(part, 'hex'));
+		const [iv, encrypted] = cookies
+			.get('code_verifier')
+			.split(':')
+			.map(part => Buffer.from(part, 'hex'));
 		const decipher = createDecipheriv('aes-256-cbc', Buffer.from(CODE_VERIFIER_SECRET, 'hex'), iv);
-		code_verifier = decipher.update(encrypted);
-		code_verifier = Buffer.concat([code_verifier, decipher.final()]).toString();
+		codeVerifier = decipher.update(encrypted);
+		codeVerifier = Buffer.concat([codeVerifier, decipher.final()]).toString();
 	} catch (err) {
 		throw error(400, 'Bad Request');
 	}
@@ -30,8 +36,13 @@ export const GET = async ({ url, cookies }) => {
 	let response;
 	try {
 		const params = client.callbackParams(url.href);
-		const { access_token: accessToken } = await client.callback(callback, params, { code_verifier });
-		response = await client.requestResource('https://people.googleapis.com/v1/people/me?personFields=names,photos,genders,metadata', accessToken);
+		const { access_token: accessToken } = await client.callback(callback, params, {
+			code_verifier: codeVerifier
+		});
+		response = await client.requestResource(
+			'https://people.googleapis.com/v1/people/me?personFields=names,photos,genders,metadata',
+			accessToken
+		);
 	} catch (err) {
 		throw error(401, 'Error logging in with Google');
 	}

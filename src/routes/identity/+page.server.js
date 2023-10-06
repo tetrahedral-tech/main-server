@@ -6,25 +6,30 @@ import {
 	DISCORD_OAUTH_CLIENT_SECRET,
 	CODE_VERIFIER_SECRET
 } from '$env/static/private';
-import { googleRedirectURI } from '$lib/identity.server.js';
 import { Issuer, generators } from 'openid-client';
 import { randomBytes, createCipheriv } from 'crypto';
 
-const handleOAuth = ({ cookies, client, scope, resource, verifier_type = 'state' }) => {
+const handleOAuth = ({
+	cookies,
+	client,
+	scope,
+	resource,
+	verifier_type: verifierType = 'state'
+}) => {
 	let verifier;
-	if (verifier_type === 'code_verifier') {
+	if (verifierType === 'code_verifier') {
 		// Encrypt code verifier and store it
-		const code_verifier = generators.codeVerifier();
+		const codeVerifier = generators.codeVerifier();
 		const iv = randomBytes(16);
 		const cipher = createCipheriv('aes-256-cbc', Buffer.from(CODE_VERIFIER_SECRET, 'hex'), iv);
-		let encrypted = cipher.update(code_verifier);
+		let encrypted = cipher.update(codeVerifier);
 		encrypted = Buffer.concat([encrypted, cipher.final()]);
 		// @TODO make cookies expire
 		cookies.set('code_verifier', `${iv.toString('hex')}:${encrypted.toString('hex')}`, {
 			path: '/'
 		});
 
-		verifier = generators.codeChallenge(code_verifier);
+		verifier = generators.codeChallenge(codeVerifier);
 	} else {
 		verifier = randomBytes(8).toString('hex');
 		// @TODO make cookies expire
@@ -36,7 +41,7 @@ const handleOAuth = ({ cookies, client, scope, resource, verifier_type = 'state'
 	const authorizationUrl = client.authorizationUrl({
 		scope,
 		resource,
-		...(verifier_type === 'code_verifier' ? { code_verifier: verifier } : { state: verifier }),
+		...(verifierType === 'code_verifier' ? { code_verifier: verifier } : { state: verifier })
 	});
 
 	throw redirect(302, authorizationUrl);
@@ -56,7 +61,9 @@ export const actions = {
 		handleOAuth({
 			cookies,
 			client,
-			scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/user.gender.read openid',
+			scope:
+				// eslint-disable-next-line max-len
+				'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/user.gender.read openid',
 			resource: 'https://accounts.google.com/o/oauth2/v2/auth',
 			verifier_type: 'code_challenge'
 		});
@@ -66,9 +73,7 @@ export const actions = {
 			authorization_endpoint: 'https://discord.com/api/oauth2/authorize',
 			token_endpoint: 'https://discord.com/api/oauth2/token',
 			userinfo_endpoint: 'https://discord.com/api/users/@me',
-			token_endpoint_auth_methods_supported: [
-				'client_secret_post'
-			]
+			token_endpoint_auth_methods_supported: ['client_secret_post']
 		});
 
 		const client = new issuer.Client({
