@@ -25,4 +25,11 @@ body {
 		@apply bg-gray-950;
 		@apply text-white;
 	}
+	button {
+		@apply border border-gray-500 rounded-md;
+		@apply p-4;
+		@apply bg-gray-950;
+		@apply relative z-10; 
+		/* dirty ass fix */
+	}
 }
