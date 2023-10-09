@@ -11,8 +11,8 @@
 			<h1 class="text-xl">login!</h1>
 		</div>
 		<div class="flex justify-center items-center flex-col h-full gap-2 flex-grow">
-			<!-- <GoogleButton/> -->
-			<!-- <DiscordButton/> -->
+			<GoogleButton/>
+			<DiscordButton/>
 		</div>
 	</div>
 </main>
