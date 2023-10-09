@@ -12,6 +12,7 @@
 		<input type="text" name="algorithm" placeholder="Algorithm" /><br />
 		<button formaction="/bots?/create">Create Bot</button>
 		<button formaction="/bots?/update">Update Bot</button>
+		<button formaction="/bots?/delete">Delete Bot</button>
 	</form>
 
 	{#each data.accounts as { address, privateKey, balance, id }}
