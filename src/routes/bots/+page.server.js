@@ -6,7 +6,26 @@ import { fail } from '@sveltejs/kit';
 import { verify } from 'jsonwebtoken';
 import { Wallet } from 'ethers';
 
+const computeChosenAlgorithm = (allowed, chosen) =>
+	allowed.map(a => a.name).includes(chosen)
+		? allowed.find(a => a.name === chosen)
+		: allowed.find(a => a.name === 'rsi');
+
 export const actions = {
+	delete: async ({ cookies, request }) => {
+		const formData = await request.formData();
+
+		const token = cookies.get('token');
+		const id = formData.get('id');
+
+		if (!token) return fail(401, 'Unauthorized');
+		const owner = verify(token, JWT_SECRET);
+
+		if (!id) return fail(400, 'Bad Request');
+
+		const { deletedCount } = await Bot.deleteOne({ _id: id, owner: owner._id });
+		if (deletedCount < 1) return fail(400, 'Unauthorized');
+	},
 	update: async ({ cookies, request }) => {
 		const formData = await request.formData();
 
@@ -21,21 +40,21 @@ export const actions = {
 		if (!(chosenAlgorithm || strengthToUSD) || !id) return fail(400, 'Bad Request');
 		if (!(await Bot.exists({ _id: id, owner: owner._id }))) return fail(401, 'Unauthorized');
 
-		const userAlgorithms = await getAllowedAlgorithms(owner._id);
-		let usingAlgorithm = { _id: null };
+		const allowedAlgorithms = await getAllowedAlgorithms(owner._id);
+		const algorithm = computeChosenAlgorithm(allowedAlgorithms, chosenAlgorithm);
 
-		if (chosenAlgorithm)
-			usingAlgorithm = userAlgorithms.map(a => a.name).includes(chosenAlgorithm)
-				? userAlgorithms.find(a => a.name === chosenAlgorithm)
-				: userAlgorithms.find(a => a.name === 'rsi');
-
-		return Bot.updateOne(
-			{ _id: id },
-			{
-				...(strengthToUSD && { strengthToUSD: Number(strengthToUSD) || 20 }),
-				...(chosenAlgorithm && { algorithm: usingAlgorithm._id })
-			}
-		);
+		return (
+			await Bot.findOneAndUpdate(
+				{ _id: id },
+				{
+					...(strengthToUSD && { strengthToUSD: Number(strengthToUSD) || 20 }),
+					...(chosenAlgorithm && { algorithm: algorithm._id })
+				},
+				{
+					returnDocument: 'after'
+				}
+			)
+		).toObject({ flattenObjectIds: true });
 	},
 	create: async ({ cookies, request }) => {
 		const formData = await request.formData();
@@ -47,14 +66,12 @@ export const actions = {
 		if (!token) return fail(401, 'Unauthorized');
 		const owner = verify(token, JWT_SECRET);
 
-		const userAlgorithms = await getAllowedAlgorithms(owner._id);
-		const usingAlgorithm = userAlgorithms.map(a => a.name).includes(chosenAlgorithm)
-			? userAlgorithms.find(a => a.name === chosenAlgorithm)
-			: userAlgorithms.find(a => a.name === 'rsi');
+		const allowedAlgorithms = await getAllowedAlgorithms(owner._id);
+		const algorithm = computeChosenAlgorithm(allowedAlgorithms, chosenAlgorithm);
 
 		const newBot = new Bot({
 			owner: owner._id,
-			algorithm: usingAlgorithm._id,
+			algorithm: algorithm._id,
 			strengthToUSD: Number(strengthToUSD) || 20,
 			// @TODO handle encryption
 			encryptedPrivateKey: Wallet.createRandom({
