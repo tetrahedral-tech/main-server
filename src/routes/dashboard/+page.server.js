@@ -25,5 +25,5 @@ export const load = async ({ cookies }) => {
 		})
 	);
 
-	return { accounts, token };
+	return { accounts, data, token };
 };

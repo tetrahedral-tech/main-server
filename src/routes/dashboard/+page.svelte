@@ -23,6 +23,8 @@
 		<span class="balance">Net Worth: {balance} USD</span><br />
 		<Graph token={data.token} path={`worth/${id}`} />
 	{/each}
+
+	<code>{data.data}</code>
 </main>
 
 <style>
