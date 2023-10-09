@@ -6,10 +6,12 @@
 </script>
 
 <main>
-	<form action="/bots/create" method="post" use:enhance>
+	<form method="post" use:enhance>
+		<input type="text" name="id" placeholder="ID" />
 		<input type="number" name="strengthToUSD" placeholder="1.0 Strength -> USD" />
 		<input type="text" name="algorithm" placeholder="Algorithm" /><br />
-		<button>Create Bot</button>
+		<button formaction="/bots?/create">Create Bot</button>
+		<button formaction="/bots?/update">Update Bot</button>
 	</form>
 
 	{#each data.accounts as { address, privateKey, balance, id }}
@@ -20,7 +22,6 @@
 		<span class="balance">Net Worth: {balance} USD</span><br />
 		<Graph token={data.token} path={`worth/${id}`} />
 	{/each}
-	<code>{JSON.stringify(data)}</code>
 </main>
 
 <style>
