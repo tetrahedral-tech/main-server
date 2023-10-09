@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .success {
 	color: plum;
 }
@@ -8,4 +14,15 @@
 
 code {
 	white-space: pre-line;
+}
+
+body {
+	font-family: "JetBrains Mono", monospace;
+	overflow:hidden;
+}
+@layer base {
+	body {
+		@apply bg-gray-950;
+		@apply text-white;
+	}
 }
