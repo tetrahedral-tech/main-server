@@ -11,11 +11,12 @@ import { AlphaRouter, SwapType } from '@uniswap/smart-order-router';
 import { abi as erc20Abi } from '@uniswap/v3-periphery/artifacts/contracts/interfaces/IERC20Metadata.sol/IERC20Metadata.json';
 
 const deBigNumberify = object => {
+	const newObject = Object.assign(object, {});
+
 	// eslint-disable-next-line no-restricted-syntax
-	// eslint-disable-next-line no-param-reassign, no-undef
 	for (const [key, value] of Object.entries(object))
-		if (value?._isBigNumber) object[key] = BigInt(value._hex) || 0;
-	return object;
+		if (value?._isBigNumber) newObject[key] = BigInt(value._hex) || 0;
+	return newObject;
 };
 
 const web3 = new Web3(PROVIDER_URL);

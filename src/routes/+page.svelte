@@ -21,17 +21,3 @@
 		{/if}
 	{/if}
 </main>
-
-<style>
-	.success {
-		color: plum;
-	}
-
-	.error {
-		color: lightcoral;
-	}
-
-	code {
-		white-space: pre-line;
-	}
-</style>

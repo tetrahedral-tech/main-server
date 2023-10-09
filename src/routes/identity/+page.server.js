@@ -9,15 +9,9 @@ import {
 import { Issuer, generators } from 'openid-client';
 import { randomBytes, createCipheriv } from 'crypto';
 
-const handleOAuth = ({
-	cookies,
-	client,
-	scope,
-	resource,
-	verifier_type: verifierType = 'state'
-}) => {
+const handleOAuth = ({ cookies, client, scope, resource, verifierType = 'state' }) => {
 	let verifier;
-	if (verifierType === 'code_verifier') {
+	if (verifierType === 'code_challenge') {
 		// Encrypt code verifier and store it
 		const codeVerifier = generators.codeVerifier();
 		const iv = randomBytes(16);
@@ -41,7 +35,9 @@ const handleOAuth = ({
 	const authorizationUrl = client.authorizationUrl({
 		scope,
 		resource,
-		...(verifierType === 'code_verifier' ? { code_verifier: verifier } : { state: verifier })
+		...(verifierType === 'code_challenge'
+			? { code_challenge: verifier, code_challenge_method: 'S256' }
+			: { state: verifier })
 	});
 
 	throw redirect(302, authorizationUrl);
@@ -65,7 +61,7 @@ export const actions = {
 				// eslint-disable-next-line max-len
 				'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/user.gender.read openid',
 			resource: 'https://accounts.google.com/o/oauth2/v2/auth',
-			verifier_type: 'code_challenge'
+			verifierType: 'code_challenge'
 		});
 	},
 	discord: async ({ cookies }) => {
