@@ -30,16 +30,20 @@ const getWorth = async (address, includedTokens = tokens, baseToken = defaultBas
 		);
 
 	const worths = await Promise.all(
-		contracts.map(async contract =>
-			quoterContract.quoteExactInputSingle.staticCall(
-				await contract.getAddress(),
-				baseToken.address,
-				500,
-				await contract.balanceOf(address),
-				0
-			)
+		contracts.map(
+			async contract =>
+				contract.getAddress() ||
+				quoterContract.quoteExactInputSingle.staticCall(
+					await contract.getAddress(),
+					baseToken.address,
+					500,
+					await contract.balanceOf(address),
+					0
+				)
 		)
 	);
+
+	worths.push(await provider.getBalance(address));
 
 	return Number(worths.reduce((a, b) => a + b));
 };

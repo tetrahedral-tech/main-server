@@ -1,4 +1,5 @@
-import { ALGORITHM_SERVER_BASE_URL, DB_URI, JWT_SECRET } from '$env/static/private';
+import { DB_URI, JWT_SECRET } from '$env/static/private';
+import { PUBLIC_ALGORITHM_SERVER_BASE_URL } from '$env/static/public';
 import { Bot } from '$lib/models.server';
 import { toReadableAmount } from '$lib/blockchain.server';
 
@@ -14,18 +15,18 @@ connect(DB_URI);
 const redis = createClient();
 
 // Algorithm Check Job
-const job = schedule.scheduleJob('*/5 * * * *', async () => {
+schedule.scheduleJob('*/5 * * * *', async () => {
 	console.log('Running algorithm check');
 
 	try {
 		const token = sign({ event: 'auth' }, JWT_SECRET, { algorithm: 'HS256' });
-		await fetch(`${ALGORITHM_SERVER_BASE_URL}/internal_checker`, {
+		await fetch(`${PUBLIC_ALGORITHM_SERVER_BASE_URL}/internal_checker`, {
 			headers: {
 				Authorization: token
 			}
 		});
 	} catch (err) {
-		return;
+		return console.log('Couldnt connect to algorithm server');
 	}
 
 	await redis.connect();
@@ -72,7 +73,5 @@ const job = schedule.scheduleJob('*/5 * * * *', async () => {
 
 	await redis.disconnect();
 });
-
-job.invoke();
 
 redis.on('error', err => console.log('Redis Client Error', err));

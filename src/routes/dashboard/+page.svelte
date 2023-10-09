@@ -1,23 +1,26 @@
 <script>
-	const getAccounts = async () => {
-		const response = await fetch('/dashboard');
-		return response.json();
-	};
+	import { enhance } from '$app/forms';
+	import Graph from './Graph.svelte';
+
+	export let data;
 </script>
 
 <main>
-	{#await getAccounts()}
-		<h3>Loading...</h3>
-	{:then accounts}
-		{#each accounts as account}
-			<code>{account.publicKey}</code><br />
-			{#if account.privateKey}
-				<code class="private"><span>{account.privateKey}</span></code><br />
-			{/if}
-			<span class="balance">{account.balance} ETH</span><br />
-		{/each}
-		<code>{JSON.stringify(accounts)}</code>
-	{/await}
+	<form action="/bots/create" method="post" use:enhance>
+		<input type="number" name="strengthToUSD" placeholder="1.0 Strength -> USD" />
+		<input type="text" name="algorithm" placeholder="Algorithm" /><br />
+		<button>Create Bot</button>
+	</form>
+
+	{#each data.accounts as { address, privateKey, balance, id }}
+		<code>{address}</code><br />
+		{#if privateKey}
+			<code class="private"><span>{privateKey}</span></code><br />
+		{/if}
+		<span class="balance">Net Worth: {balance} USD</span><br />
+		<Graph token={data.token} path={`worth/${id}`} />
+	{/each}
+	<code>{JSON.stringify(data)}</code>
 </main>
 
 <style>
@@ -32,7 +35,9 @@
 		color: #3e3e3e;
 		background-color: #3e3e3e;
 		border-radius: 2px;
-		transition: color 0.2s, background-color 0.2s;
+		transition:
+			color 0.2s,
+			background-color 0.2s;
 	}
 
 	.private:hover {

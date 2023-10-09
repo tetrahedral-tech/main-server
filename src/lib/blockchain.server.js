@@ -2,7 +2,7 @@ import { Token, ChainId } from '@uniswap/sdk-core';
 
 export const routerAddress = '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45';
 export const quoterAddress = '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6';
-export const chainId = import.meta.env.DEV ? ChainId.MAINNET : ChainId.GOERLI;
+export const chainId = import.meta.env.PROD ? ChainId.MAINNET : ChainId.GOERLI;
 
 const addresses = {
 	[ChainId.GOERLI]: {
