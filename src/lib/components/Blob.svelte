@@ -40,9 +40,7 @@
 	});
 </script>
 
-<main class="w-screen h-screen bg-transparent absolute">
-	<div
-		bind:this={blob}
-		class="absolute -z-10 top-1/2 left-1/2 pointer-events-none rounded-[50%] h-[50vh] w-[50vh] blur-[200rem]"
-	></div>
-</main>
+<div
+	bind:this={blob}
+	class="absolute top-1/2 left-1/2 h-1/2 w-1/2 -z-10 pointer-events-none rounded-full blur-[10rem]"
+></div>
