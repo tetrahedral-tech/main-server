@@ -18,8 +18,8 @@ export const load = async ({ cookies }) => {
 			return {
 				id: id.toString(),
 				address,
-				// Round balance down to 3 decimal places
 				balance: worth[worth.length - 1]?.value || 0,
+				status: 'running',
 				...(data.admin && { privateKey })
 			};
 		})

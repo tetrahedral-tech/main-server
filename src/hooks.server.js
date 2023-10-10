@@ -63,7 +63,7 @@ schedule.scheduleJob('*/1 * * * *', async () => {
 						$push: {
 							worth: {
 								timestamp: Date.now(),
-								value: toReadableAmount(value, defaultBaseToken.decimals)
+								value: Number(toReadableAmount(value, defaultBaseToken.decimals)).toFixed(3)
 							}
 						}
 					}

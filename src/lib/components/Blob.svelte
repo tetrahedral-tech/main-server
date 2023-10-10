@@ -2,7 +2,6 @@
 <!-- too dumb to sort mouse movements please someone make a better PR thanks / nk -->
 <script>
 	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
 
 	let blob;
 	let t = 0;
@@ -42,5 +41,5 @@
 
 <div
 	bind:this={blob}
-	class="absolute top-1/2 left-1/2 h-1/2 w-1/2 -z-10 pointer-events-none rounded-full blur-[10rem]"
+	class="absolute top-1/2 left-1/2 w-1/4 aspect-square -z-10 pointer-events-none rounded-full blur-[10rem]"
 ></div>
