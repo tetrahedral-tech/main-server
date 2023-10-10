@@ -4,20 +4,17 @@
 	import { onMount } from 'svelte';
 
 	let blob;
-	let t = 0;
 
 	const mouseHandler = event => {
 		const { clientX, clientY } = event;
 		const { innerWidth, innerHeight } = window;
 		const centerX = innerWidth / 2;
 		const centerY = innerHeight / 2;
-		const modifier = innerHeight / 1;
 
-		t+=200
 		blob.animate(
 			{
-				top: `${centerY + modifier * (clientY / innerHeight - 0.5) * 2}px`,
-				left: `${centerX + modifier * (clientX / innerWidth - 0.5) * 2}px`
+				top: `${clientY}px`,
+				left: `${clientX}px`
 			},
 			{ duration: 5000, fill: 'forwards' }
 		);
