@@ -82,19 +82,18 @@
 		</div>
 		{#each accounts as { address, balance, status, id, privateKey }}
 			<button
-				on:click={() => (selectedAccount = [address, balance, status, id])}
+				on:click={() => (selectedAccount = { address, balance, status, id })}
 				class={`${
 					address === selectedAccount ? 'border-yellow-500/80' : 'hover:border-gray-500/80' // this doesn't work properly oops
-				} border w-full p-3 overflow-hidden whitespace-nowrap border-l-${
+				} border-l-${
 					statusMap[status]
-				}-500 border-l-4 bg-gray-950/70 transition-all`}
+				}-500 border-l-4 bg-gray-950/70 transition-all border w-full p-3 overflow-hidden whitespace-nowrap [text-align:initial]`}
 			>
 				<h1 class="text-2xl truncate">{address}</h1>
+				<span class="balance opacity-50">Net Worth: {balance} USD</span>
 				{#if privateKey}
 					<p class="private truncate">{privateKey}</p>
-					<br />
 				{/if}
-				<span class="balance m-0">Net Worth: {balance.toFixed(3)} USD</span>
 			</button>
 		{/each}
 	</div>
@@ -103,9 +102,6 @@
 <style>
 	.balance {
 		color: white;
-		opacity: 0.5;
-		font-size: 16px;
-		font-style: italic;
 	}
 
 	input::placeholder {
@@ -116,7 +112,6 @@
 	.private {
 		color: #00000000;
 		user-select: none;
-		border-radius: 2px;
 		transition:
 			color 0.2s,
 			background-color 0.2s;
@@ -125,6 +120,5 @@
 	.private:hover {
 		user-select: initial;
 		color: #4e4e4e;
-		background-color: initial;
 	}
 </style>
