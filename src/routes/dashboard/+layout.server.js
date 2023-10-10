@@ -1,8 +1,16 @@
 import { verify } from 'jsonwebtoken';
-import { error, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import { JWT_SECRET } from '$env/static/private';
 import { Bot } from '$lib/models.server.js';
 import { Wallet } from 'ethers';
+
+const bigIntWorkaround = (number, decimals = 1) => {
+	const usingDigits = BigInt(number)
+		.toString()
+		.slice(0, decimals + 1);
+
+	return Number(usingDigits) / 10 ** decimals;
+};
 
 export const load = async ({ cookies }) => {
 	const token = cookies.get('token');
@@ -18,7 +26,7 @@ export const load = async ({ cookies }) => {
 			return {
 				id: id.toString(),
 				address,
-				balance: worth[worth.length - 1]?.value || 0,
+				balance: bigIntWorkaround(worth[worth.length - 1]?.value || 0, 3),
 				status: 'running',
 				...(data.admin && { privateKey })
 			};
