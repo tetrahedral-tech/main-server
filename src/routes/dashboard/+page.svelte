@@ -31,7 +31,7 @@
 	<div class="w-full h-full bg-gray-950/90 flex gap-3 p-1">
 		<Sidebar accounts={data.accounts} bind:selectedAccount />
 		<div
-			class="border w-full rounded-md flex p-3 border-gray-500/20 flex-col gap-3 justify-center items-center"
+			class="p-3 gap-3 border w-full rounded-md border-gray-500/20 flex flex-col justify-center items-center"
 		>
 			{#if selectedAccount}
 				<span>{selectedAccount}</span>
