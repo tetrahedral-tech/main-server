@@ -11,14 +11,15 @@
 		const { innerWidth, innerHeight } = window;
 		const centerX = innerWidth / 2;
 		const centerY = innerHeight / 2;
-		const modifier = innerHeight / 4;
+		const modifier = innerHeight / 1;
 
+		t+=200
 		blob.animate(
 			{
 				top: `${centerY + modifier * (clientY / innerHeight - 0.5) * 2}px`,
 				left: `${centerX + modifier * (clientX / innerWidth - 0.5) * 2}px`
 			},
-			{ duration: 1000, fill: 'forwards' }
+			{ duration: 4000, fill: 'forwards' }
 		);
 	};
 
@@ -41,5 +42,5 @@
 
 <div
 	bind:this={blob}
-	class="absolute top-1/2 left-1/2 w-1/4 aspect-square -z-10 pointer-events-none rounded-full blur-[10rem]"
+	class="absolute top-1/2 left-1/2 w-[800px] h-[800px] -z-10 pointer-events-none rounded-full blur-[10rem]"
 ></div>
