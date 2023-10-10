@@ -26,6 +26,13 @@ body {
 		@apply bg-gray-950 text-white;
 	}
 
+	input:focus,
+	select:focus,
+	textarea:focus,
+	button:focus {
+		@apply outline-none;
+	}
+
 	button {
 		@apply p-4 bg-gray-950 border border-gray-500/40 rounded-md;
 	}
