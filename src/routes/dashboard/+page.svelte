@@ -47,21 +47,3 @@
 		</div>
 	</div>
 </main>
-
-<style>
-	.private {
-		user-select: none;
-		color: #3e3e3e;
-		background-color: #3e3e3e;
-		border-radius: 2px;
-		transition:
-			color 0.2s,
-			background-color 0.2s;
-	}
-
-	.private:hover {
-		user-select: initial;
-		color: initial;
-		background-color: initial;
-	}
-</style>
