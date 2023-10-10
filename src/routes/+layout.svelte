@@ -1,7 +1,7 @@
 <script>
 	import './styles.css';
-	// import Blob from '../lib/blob.svelte';
+	import Blob from '$lib/components/Blob.svelte';
 </script>
 
-<!-- <Blob></Blob> -->
+<Blob />
 <slot />

@@ -1,10 +1,11 @@
 <script>
 	import { enhance } from '$app/forms';
-	import Blob from '$lib/components/Blob.svelte';
 	import Graph from '$lib/components/Graph.svelte';
-
 	import Sidebar from './Sidebar.svelte';
+
 	export let data;
+
+	let selectedAccount;
 </script>
 
 <main class="p-4 h-screen">
@@ -27,17 +28,18 @@
 	{/each}
 
 	<code>{data.data}</code> -->
-	<Blob />
-	<div class="border w-full h-full bg-gray-950/90 border-gray-500 rounded-md flex p-3 gap-3">
-		<Sidebar {data} />
+	<div class="w-full h-full bg-gray-950/90 flex gap-3 p-1">
+		<Sidebar accounts={data.accounts} bind:selectedAccount />
 		<div
-			class="border w-full h-full bg-gray-950/20 border-gray-500/20 rounded-md flex p-3 focus-within:border-gray-500/80 flex-col gap-3 justify-center items-center"
+			class="border w-full rounded-md flex p-3 border-gray-500/20 flex-col gap-3 justify-center items-center"
 		>
-			<h1 class="text-4xl opacity-50">graph placeholder</h1>
+			{#if selectedAccount}
+				<span>{selectedAccount}</span>
+			{/if}
 			<img
-				class="opacity-25"
+				class="opacity-50"
 				src="https://media.discordapp.net/attachments/1117102068851806309/1160867501140365342/scugclap.gif?ex=6536391c&is=6523c41c&hm=3e5ecbcb66eb983a8635205bf76df2873b960d91a0f88d4a6798df53997f1125&"
-				alt="fizz says hi"
+				alt="Graph"
 			/>
 		</div>
 	</div>
