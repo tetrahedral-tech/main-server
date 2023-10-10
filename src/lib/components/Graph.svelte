@@ -8,7 +8,8 @@
 	onMount(() => {
 		fetch(`${PUBLIC_ALGORITHM_SERVER_BASE_URL}/${path}`, { headers: { Authorization: token } })
 			.then(response => response.blob())
-			.then(data => (graphElement.src = window.URL.createObjectURL(data)));
+			.then(data => (graphElement.src = window.URL.createObjectURL(data)))
+			.catch(err => (graphElement.alt = "Failed to load graph."));
 	});
 </script>
 

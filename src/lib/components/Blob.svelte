@@ -19,7 +19,7 @@
 				top: `${centerY + modifier * (clientY / innerHeight - 0.5) * 2}px`,
 				left: `${centerX + modifier * (clientX / innerWidth - 0.5) * 2}px`
 			},
-			{ duration: 4000, fill: 'forwards' }
+			{ duration: 5000, fill: 'forwards' }
 		);
 	};
 

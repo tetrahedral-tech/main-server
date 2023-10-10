@@ -5,7 +5,7 @@
 
 <main class="w-screen h-screen flex justify-center items-center">
 	<div
-		class="flex flex-col w-2/5 h-4/5 bg-gray-950/80 border-gray-700 border overflow-hidden border-solid rounded-md"
+		class="flex flex-col w-1/4 h-4/5 bg-gray-950/80 border-gray-700 border overflow-hidden border-solid rounded-md"
 	>
 		<div class="p-6 bg-gray-900">
 			<h1 class="text-xl">login!</h1>

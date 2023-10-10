@@ -1,12 +1,12 @@
 import { verify } from 'jsonwebtoken';
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { JWT_SECRET } from '$env/static/private';
 import { Bot } from '$lib/models.server.js';
 import { Wallet } from 'ethers';
 
 export const load = async ({ cookies }) => {
 	const token = cookies.get('token');
-	if (!token) throw error(401, 'Unauthorized');
+	if (!token) throw redirect(303, '/identity');
 
 	const data = verify(token, JWT_SECRET);
 	const bots = await Bot.find({ owner: data._id });
