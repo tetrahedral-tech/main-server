@@ -33,7 +33,20 @@ body {
 		@apply outline-none;
 	}
 
+	button,
+	input {
+		@apply border border-gray-500/40 rounded-md;
+	}
+
 	button {
-		@apply p-4 bg-gray-950 border border-gray-500/40 rounded-md;
+		@apply bg-gray-950/70 p-4;
+	}
+
+	input {
+		@apply bg-gray-950/40 p-3;
+	}
+
+	.subtext {
+		@apply opacity-50;
 	}
 }

@@ -28,7 +28,7 @@
 					{selectedAccount ? selectedAccount.address : 'dashboard'}
 				</h1>
 
-				<span class="opacity-50">
+				<span class="subtext">
 					{selectedAccount
 						? `Net Worth: ${selectedAccount.balance} USD`
 						: 'please select an account'}
@@ -36,17 +36,15 @@
 			</div>
 			<div class="flex gap-3 h-full">
 				<div
-					class="p-4 border w-full rounded-md bg-gray-950/60 border-gray-500/20 flex flex-col transition-all justify-center items-center"
+					class="p-4 border w-3/4 rounded-md bg-gray-950/60 border-gray-500/20 transition-all justify-center items-center"
 				>
 					{#if selectedAccount}
-						<Graph token={data.token} path={`worth/${selectedAccount.id}`} />
+						<Graph class="w-full" token={data.token} path={`worth/${selectedAccount.id}`} />
 					{:else}
-						<h1 class="opacity-50">please select an account!</h1>
+						<h1 class="subtext">please select an account!</h1>
 					{/if}
 				</div>
-				<div
-					class="p-4 border w-[400px] rounded-md bg-gray-950/60 border-gray-500/20 flex flex-col transition-all"
-				>
+				<div class="p-4 border w-1/4 rounded-md bg-gray-950/60 border-gray-500/20 transition-all">
 					<h1 class="text-xl">bot controls</h1>
 				</div>
 			</div>
