@@ -1,7 +1,6 @@
 <script>
 	import GoogleButton from './google/GoogleButton.svelte';
 	import DiscordButton from './discord/DiscordButton.svelte';
-	import Blob from '$lib/components/Blob.svelte';
 </script>
 
 <main class="w-screen h-screen flex justify-center items-center">

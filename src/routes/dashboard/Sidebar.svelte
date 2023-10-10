@@ -44,6 +44,7 @@
 		font-size: 16px;
 		font-style: italic;
 	}
+
 	input::placeholder {
 		color: #4e4e4e;
 		font-style: italic;
