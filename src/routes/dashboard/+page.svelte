@@ -22,25 +22,31 @@
 		<Sidebar accounts={data.accounts} bind:selectedAccount />
 		<div class="flex flex-col flex-grow gap-3">
 			<div
-				class="p-4 border w-full rounded-md bg-gray-950/60 border-gray-500/20 flex flex-col h-min transition-all">
-
+				class="p-4 border w-full rounded-md bg-gray-950/60 border-gray-500/20 flex flex-col h-min transition-all"
+			>
 				<h1 class="text-2xl">
-					{selectedAccount ? selectedAccount[0] : "dashboard"}
+					{selectedAccount ? selectedAccount.address : 'dashboard'}
 				</h1>
 
 				<span class="opacity-50">
-					{selectedAccount ? `Net Worth: ${selectedAccount[1]} USD` : "please select an account"}
+					{selectedAccount
+						? `Net Worth: ${selectedAccount.balance} USD`
+						: 'please select an account'}
 				</span>
 			</div>
 			<div class="flex gap-3 h-full">
-				<div class="p-4 border w-full rounded-md bg-gray-950/60 border-gray-500/20 flex flex-col transition-all justify-center items-center">
+				<div
+					class="p-4 border w-full rounded-md bg-gray-950/60 border-gray-500/20 flex flex-col transition-all justify-center items-center"
+				>
 					{#if selectedAccount}
-						<Graph token={data.token} path={`worth/rsi`}/>
+						<Graph token={data.token} path={`worth/${selectedAccount.id}`} />
 					{:else}
 						<h1 class="opacity-50">please select an account!</h1>
 					{/if}
 				</div>
-				<div class="p-4 border w-[400px] rounded-md bg-gray-950/60 border-gray-500/20 flex flex-col transition-all">
+				<div
+					class="p-4 border w-[400px] rounded-md bg-gray-950/60 border-gray-500/20 flex flex-col transition-all"
+				>
 					<h1 class="text-xl">bot controls</h1>
 				</div>
 			</div>
