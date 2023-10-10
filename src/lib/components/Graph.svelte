@@ -9,8 +9,8 @@
 		fetch(`${PUBLIC_ALGORITHM_SERVER_BASE_URL}/${path}`, { headers: { Authorization: token } })
 			.then(response => response.blob())
 			.then(data => (graphElement.src = window.URL.createObjectURL(data)))
-			.catch(err => (graphElement.alt = "Failed to load graph."));
+			.catch(err => (graphElement.alt = 'Failed to load graph.'));
 	});
 </script>
 
-<img alt="Graph" bind:this={graphElement} />
+<img {...$$restProps} alt="Graph" bind:this={graphElement} />
