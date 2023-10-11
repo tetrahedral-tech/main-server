@@ -20,6 +20,10 @@
 		@apply outline-none;
 	}
 
+	a {
+		@apply text-blue-500;
+	}
+
 	button,
 	input {
 		@apply bg-gray-950/40 border border-gray-500/40 rounded-md;
