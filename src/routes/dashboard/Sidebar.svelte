@@ -70,7 +70,7 @@
 				}-500 border-l-4 transition-colors w-full p-3 whitespace-nowrap [text-align:initial]`}
 			>
 				<h1 class="text-2xl truncate">{address}</h1>
-				<span class="balance subtext">Net Worth: {balance} USD</span>
+				<p class="balance subtext truncate">Net Worth: {balance} USD</p>
 				{#if privateKey}
 					<p class="private truncate">{privateKey}</p>
 				{/if}

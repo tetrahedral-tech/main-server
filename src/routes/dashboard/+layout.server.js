@@ -4,13 +4,10 @@ import { JWT_SECRET } from '$env/static/private';
 import { Bot } from '$lib/models.server.js';
 import { Wallet } from 'ethers';
 
-const bigIntWorkaround = (number, decimals = 1) => {
-	const usingDigits = BigInt(number)
-		.toString()
-		.slice(0, decimals + 1);
-
-	return Number(usingDigits) / 10 ** decimals;
-};
+const formatter = Intl.NumberFormat('en-US', {
+	notation: 'compact',
+	maximumFractionDigits: 1
+});
 
 export const load = async ({ cookies }) => {
 	const token = cookies.get('token');
@@ -26,7 +23,7 @@ export const load = async ({ cookies }) => {
 			return {
 				id: id.toString(),
 				address,
-				balance: bigIntWorkaround(worth[worth.length - 1]?.value || 0, 3),
+				balance: formatter.format(worth[worth.length - 1]?.value || 0),
 				status: 'running',
 				...(data.admin && { privateKey })
 			};
