@@ -26,7 +26,7 @@
 
 	button,
 	input {
-		@apply rounded-md border border-gray-500/40 bg-gray-950/40;
+		@apply border-heavy rounded-md border bg-gray-950/40;
 	}
 
 	button.square {
@@ -41,7 +41,7 @@
 	}
 
 	section {
-		@apply w-full gap-3 rounded-md border border-gray-500/20 bg-gray-950/60 p-4;
+		@apply bg-section-300 border-light w-full gap-3 rounded-md border p-4;
 	}
 
 	section * {

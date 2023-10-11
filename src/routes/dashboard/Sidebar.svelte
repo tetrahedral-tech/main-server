@@ -22,7 +22,7 @@
 	<section
 		class={`pl-5 pr-5
 		${showMenu === true ? 'max-h-96 border p-5' : 'max-h-0 border-none p-0'}
-		overflow-hidden bg-gray-950/40 transition-all duration-1000`}
+		bg-section-200 overflow-hidden transition-all duration-1000`}
 		style="transition-timing-function: cubic-bezier(0.83, 0.0, 0.17, 1.0)"
 	>
 		<h1 class="text-2xl">Add a bot</h1>
@@ -49,7 +49,7 @@
 	</section>
 
 	<div class="flex flex-grow flex-col gap-3">
-		<section class="relative flex h-full flex-col bg-gray-950/40">
+		<section class="bg-section-200 relative flex h-full flex-col">
 			<div class="flex">
 				<input type="text" class="w-full" placeholder="search" bind:value={searchValue} />
 				<button on:click={() => (showMenu = !showMenu)} class="square"> + </button>
@@ -59,8 +59,8 @@
 				<button
 					on:click={() => (selectedAccount = { address, balance, status, id })}
 					class="{address === selectedAccount?.address
-						? 'border-gray-400/80'
-						: 'hover:border-gray-500/80'} {statusMap[status]}
+						? 'border-selected'
+						: 'hover:border-suggested'} {statusMap[status]}
 					w-full whitespace-nowrap border-l-4 transition-colors [text-align:initial]"
 				>
 					<h1 class="truncate text-2xl">{address}</h1>
