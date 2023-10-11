@@ -63,10 +63,10 @@
 					border-l-4 transition-colors w-full whitespace-nowrap [text-align:initial]"
 				>
 					<h1 class="text-2xl truncate">{address}</h1>
-					<span class="balance subtext">
+					<p class="balance subtext">
 						<span class="hidden lg:inline">Net Worth:</span>
 						{balance} USD
-					</span>
+					</p>
 					{#if privateKey}
 						<p class="private truncate">{privateKey}</p>
 					{/if}
@@ -74,7 +74,7 @@
 			{/each}
 		</section>
 
-		<BotControls />
+		<BotControls account={selectedAccount}/>
 	</div>
 </div>
 
@@ -95,5 +95,10 @@
 	.private:hover {
 		user-select: initial;
 		color: #4e4e4e;
+	}
+	.balance {
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: "..USD";
 	}
 </style>
