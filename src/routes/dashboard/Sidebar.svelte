@@ -32,7 +32,7 @@
 			<input type="text" name="algorithm" placeholder="Algorithm" />
 			<div class="flex w-full gap-2">
 				<button
-					class="flex-grow border-green-700 bg-gray-950/70 transition-all hover:bg-green-500 hover:text-black"
+					class="flex-grow border-green-700 transition-all hover:bg-green-500 hover:text-black"
 					formaction="/bots?/create"
 				>
 					Create Bot
@@ -40,7 +40,7 @@
 
 				<button
 					on:click|preventDefault={() => (showMenu = false)}
-					class="flex-grow border-rose-800 bg-gray-950/70 transition-all hover:bg-rose-500 hover:text-black"
+					class="flex-grow border-rose-800 transition-all hover:bg-rose-500 hover:text-black"
 				>
 					Cancel
 				</button>
@@ -58,9 +58,7 @@
 			{#each accounts.filter( ({ address }) => address.includes(searchValue) ) as { address, balance, status, id, privateKey }}
 				<button
 					on:click={() => (selectedAccount = { address, balance, status, id })}
-					class="{address === selectedAccount?.address
-						? 'border-selected'
-						: 'hover:border-suggested'} {statusMap[status]}
+					class="{address === selectedAccount?.address ? 'border-selected' : ''} {statusMap[status]}
 					w-full whitespace-nowrap border-l-4 transition-colors [text-align:initial]"
 				>
 					<h1 class="truncate text-2xl">{address}</h1>

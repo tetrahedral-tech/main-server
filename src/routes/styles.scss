@@ -29,11 +29,16 @@
 		@apply border-heavy rounded-md border bg-gray-950/40;
 	}
 
-	button.square {
-		@apply aspect-square text-2xl leading-[0] transition-colors duration-300 hover:bg-accent hover:text-black;
-	}
 	button {
 		@apply p-4;
+
+		.square {
+			@apply aspect-square text-2xl leading-[0] transition-colors duration-300 hover:bg-accent hover:text-black;
+		}
+
+		:hover {
+			@apply border-suggested;
+		}
 	}
 
 	input {
