@@ -1,12 +1,17 @@
 import { verify } from 'jsonwebtoken';
-import { error } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import { JWT_SECRET } from '$env/static/private';
 import { Bot } from '$lib/models.server.js';
 import { Wallet } from 'ethers';
 
+const formatter = Intl.NumberFormat('en-US', {
+	notation: 'compact',
+	maximumFractionDigits: 1
+});
+
 export const load = async ({ cookies }) => {
 	const token = cookies.get('token');
-	if (!token) throw error(401, 'Unauthorized');
+	if (!token) throw redirect(303, '/identity');
 
 	const data = verify(token, JWT_SECRET);
 	const bots = await Bot.find({ owner: data._id });
@@ -18,8 +23,8 @@ export const load = async ({ cookies }) => {
 			return {
 				id: id.toString(),
 				address,
-				// Round balance down to 3 decimal places
-				balance: worth[worth.length - 1]?.value || 0,
+				balance: formatter.format(worth[worth.length - 1]?.value || 0),
+				status: 'running',
 				...(data.admin && { privateKey })
 			};
 		})
