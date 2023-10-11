@@ -5,20 +5,20 @@
 
 <section
 	class="
-	{account ? 'opacity-100 pointer-events-auto' : 'opacity-20 pointer-events-none'}
-	transition-[opacity] duration-300 bg-gray-950/40 justify-center items-center flex
+	{account ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-20'}
+	bg-section-200 flex items-center justify-center transition-[opacity] duration-300
 "
 >
 	<button class="square hover:bg-white" title="Temporary Pause Bot"
 		><Clock class="h-6 w-6" /></button
 	>
-	<button class="square hover:bg-green-500 border-green-500/20" title="Resume Bot"
+	<button class="square border-green-500/20 hover:bg-green-500" title="Resume Bot"
 		><Play class="h-6 w-6" /></button
 	>
-	<button class="square hover:bg-yellow-500 border-yellow-500/20" title="Pause Bot"
+	<button class="square border-yellow-500/20 hover:bg-yellow-500" title="Pause Bot"
 		><Pause class="h-6 w-6" /></button
 	>
-	<button class="square hover:bg-rose-500 border-rose-500/20" title="Delete Bot"
+	<button class="square border-rose-500/20 hover:bg-rose-500" title="Delete Bot"
 		><Minus class="h-6 w-6" /></button
 	>
 	<button class="square hover:bg-accent border-accent/20">
