@@ -14,14 +14,16 @@
 </script>
 
 <div
-	class={`w-1/5 flex flex-col ${showMenu === true ? 'gap-3' : 'gap-0'}`}
-	style="transition:all 1000ms cubic-bezier(0.83, 0, 0.17, 1);"
+	class={`w-1/5 flex flex-col ${
+		showMenu === true ? 'gap-3' : 'gap-0'
+	} transition-all duration-1000`}
+	style="transition-timing-function: cubic-bezier(0.83, 0.0, 0.17, 1.0)"
 >
 	<section
-		class={`w-full pl-5 pr-5
-		${showMenu === true ? 'p-5 max-h-96 border' : 'p-0 max-h-0'}
-		rounded-md border-gray-500/30 bg-gray-950/40 bottom-0 left-0 backdrop-blur-xl overflow-hidden`}
-		style="transition:all 1000ms cubic-bezier(0.83, 0, 0.17, 1);"
+		class={`pl-5 pr-5
+		${showMenu === true ? 'p-5 max-h-96 border' : 'p-0 max-h-0 border-none'}
+		bg-gray-950/40 overflow-hidden transition-all duration-1000`}
+		style="transition-timing-function: cubic-bezier(0.83, 0.0, 0.17, 1.0)"
 	>
 		<h1 class="text-2xl">Add a bot</h1>
 		<form method="post" class="flex flex-col gap-2" use:enhance>
@@ -48,10 +50,8 @@
 		</form>
 	</section>
 
-	<section
-		class="border border-gray-500/30 bg-gray-950/40 rounded-md p-3 flex flex-col gap-2 relative"
-	>
-		<div class="flex gap-2">
+	<section class="bg-gray-950/40 flex flex-col relative">
+		<div class="flex">
 			<input type="text" class="w-full" placeholder="search" />
 			<button
 				on:click={() => (showMenu = !showMenu)}

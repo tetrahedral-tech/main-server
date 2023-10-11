@@ -18,12 +18,10 @@
 	</form>
 
 	<code>{data.data}</code> -->
-	<div class="w-full h-full bg-gray-950/40 flex gap-3 rounded-md p-3 border border-gray-500/60">
+	<section class="w-full h-full flex border-gray-500/60">
 		<Sidebar accounts={data.accounts} bind:selectedAccount />
 		<div class="flex flex-col flex-grow gap-3">
-			<div
-				class="p-4 border w-full rounded-md bg-gray-950/60 border-gray-500/20 flex flex-col h-min transition-all"
-			>
+			<section>
 				<h1 class="text-2xl">
 					{selectedAccount ? selectedAccount.address : 'dashboard'}
 				</h1>
@@ -33,21 +31,19 @@
 						? `Net Worth: ${selectedAccount.balance} USD`
 						: 'please select an account'}
 				</span>
-			</div>
+			</section>
 			<div class="flex gap-3 h-full">
-				<div
-					class="p-4 border w-3/4 rounded-md bg-gray-950/60 border-gray-500/20 transition-all justify-center items-center"
-				>
+				<section class="w-3/4">
 					{#if selectedAccount}
 						<Graph class="w-full" token={data.token} path={`worth/${selectedAccount.id}`} />
 					{:else}
 						<h1 class="subtext">please select an account!</h1>
 					{/if}
-				</div>
-				<div class="p-4 border w-1/4 rounded-md bg-gray-950/60 border-gray-500/20 transition-all">
+				</section>
+				<section class="w-1/4">
 					<h1 class="text-xl">bot controls</h1>
-				</div>
+				</section>
 			</div>
 		</div>
-	</div>
+	</section>
 </main>
