@@ -7,7 +7,7 @@
 	let selectedAccount;
 </script>
 
-<main class="h-screen p-4">
+<main>
 	<section class="border-heavy flex h-full">
 		<Sidebar accounts={data.accounts} bind:selectedAccount />
 		<div class="flex flex-grow flex-col gap-3">

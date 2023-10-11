@@ -5,12 +5,16 @@
 @tailwind utilities;
 
 @layer base {
-	code {
-		@apply whitespace-pre-line;
-	}
-
 	body {
 		@apply overflow-hidden bg-gray-950 text-white;
+	}
+
+	main {
+		@apply h-screen w-screen gap-2 p-4;
+	}
+
+	code {
+		@apply whitespace-pre-line;
 	}
 
 	input:focus,
@@ -32,13 +36,20 @@
 	button {
 		@apply p-4;
 
-		.square {
+		&.square {
 			@apply aspect-square text-2xl leading-[0] transition-colors duration-300 hover:bg-accent hover:text-black;
+			&:hover {
+				@apply bg-accent text-black;
+			}
 		}
 
-		:hover {
+		&:hover {
 			@apply border-suggested;
 		}
+	}
+
+	.icon {
+		@apply h-6 w-6;
 	}
 
 	input {
@@ -47,10 +58,10 @@
 
 	section {
 		@apply bg-section-300 border-light w-full gap-3 rounded-md border p-4;
-	}
 
-	section * {
-		@apply gap-2;
+		* {
+			@apply gap-2;
+		}
 	}
 
 	.subtext {
