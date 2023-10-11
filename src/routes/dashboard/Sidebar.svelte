@@ -16,13 +16,13 @@
 </script>
 
 <div
-	class="w-1/5 flex flex-col {showMenu === true ? 'gap-3' : 'gap-0'} transition-all duration-1000"
+	class="flex w-1/5 flex-col {showMenu === true ? 'gap-3' : 'gap-0'} transition-all duration-1000"
 	style="transition-timing-function: cubic-bezier(0.83, 0.0, 0.17, 1.0)"
 >
 	<section
 		class={`pl-5 pr-5
-		${showMenu === true ? 'p-5 max-h-96 border' : 'p-0 max-h-0 border-none'}
-		bg-gray-950/40 overflow-hidden transition-all duration-1000`}
+		${showMenu === true ? 'max-h-96 border p-5' : 'max-h-0 border-none p-0'}
+		overflow-hidden bg-gray-950/40 transition-all duration-1000`}
 		style="transition-timing-function: cubic-bezier(0.83, 0.0, 0.17, 1.0)"
 	>
 		<h1 class="text-2xl">Add a bot</h1>
@@ -32,7 +32,7 @@
 			<input type="text" name="algorithm" placeholder="Algorithm" />
 			<div class="flex w-full gap-2">
 				<button
-					class="flex-grow border-green-700 bg-gray-950/70 hover:bg-green-500 hover:text-black transition-all"
+					class="flex-grow border-green-700 bg-gray-950/70 transition-all hover:bg-green-500 hover:text-black"
 					formaction="/bots?/create"
 				>
 					Create Bot
@@ -40,7 +40,7 @@
 
 				<button
 					on:click|preventDefault={() => (showMenu = false)}
-					class="flex-grow border-rose-800 bg-gray-950/70 hover:bg-rose-500 hover:text-black transition-all"
+					class="flex-grow border-rose-800 bg-gray-950/70 transition-all hover:bg-rose-500 hover:text-black"
 				>
 					Cancel
 				</button>
@@ -48,21 +48,22 @@
 		</form>
 	</section>
 
-	<div class="flex flex-col flex-grow gap-3">
-		<section class="h-full bg-gray-950/40 flex flex-col relative">
+	<div class="flex flex-grow flex-col gap-3">
+		<section class="relative flex h-full flex-col bg-gray-950/40">
 			<div class="flex">
 				<input type="text" class="w-full" placeholder="search" bind:value={searchValue} />
 				<button on:click={() => (showMenu = !showMenu)} class="square"> + </button>
 			</div>
+			<!-- eslint-disable-next-line max-len -->
 			{#each accounts.filter( ({ address }) => address.includes(searchValue) ) as { address, balance, status, id, privateKey }}
 				<button
 					on:click={() => (selectedAccount = { address, balance, status, id })}
 					class="{address === selectedAccount?.address
 						? 'border-gray-400/80'
 						: 'hover:border-gray-500/80'} {statusMap[status]}
-					border-l-4 transition-colors w-full whitespace-nowrap [text-align:initial]"
+					w-full whitespace-nowrap border-l-4 transition-colors [text-align:initial]"
 				>
-					<h1 class="text-2xl truncate">{address}</h1>
+					<h1 class="truncate text-2xl">{address}</h1>
 					<p class="balance subtext">
 						<span class="hidden lg:inline">Net Worth:</span>
 						{balance} USD
@@ -74,7 +75,7 @@
 			{/each}
 		</section>
 
-		<BotControls account={selectedAccount}/>
+		<BotControls account={selectedAccount} />
 	</div>
 </div>
 
@@ -99,6 +100,6 @@
 	.balance {
 		overflow: hidden;
 		white-space: nowrap;
-		text-overflow: "..USD";
+		text-overflow: '..USD';
 	}
 </style>

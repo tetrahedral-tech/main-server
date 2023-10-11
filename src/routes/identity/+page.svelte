@@ -1,14 +1,13 @@
 <script>
 	import Button from './Button.svelte';
-	import { User } from 'svelte-heros-v2';
 
 	export let data;
 </script>
 
-<main class="w-screen h-screen flex justify-center items-center flex-col gap-2">
-	<section class="flex flex-col w-2/3 md:w-1/3 {data.admin ? 'h-3/5' : 'h-4/5'}">
+<main class="flex h-screen w-screen flex-col items-center justify-center gap-2">
+	<section class="flex w-2/3 flex-col md:w-1/3 {data.admin ? 'h-3/5' : 'h-4/5'}">
 		<h1 class="text-2xl">login</h1>
-		<div class="flex justify-center items-center flex-col h-full gap-2 flex-grow">
+		<div class="flex h-full flex-grow flex-col items-center justify-center gap-2">
 			<Button provider="google" />
 			<Button provider="discord" />
 		</div>

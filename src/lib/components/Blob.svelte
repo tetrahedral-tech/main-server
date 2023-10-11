@@ -7,9 +7,6 @@
 
 	const mouseHandler = event => {
 		const { clientX, clientY } = event;
-		const { innerWidth, innerHeight } = window;
-		const centerX = innerWidth / 2;
-		const centerY = innerHeight / 2;
 
 		blob.animate(
 			{
@@ -39,5 +36,5 @@
 
 <div
 	bind:this={blob}
-	class="absolute top-1/2 left-1/2 w-[800px] h-[800px] -z-10 pointer-events-none rounded-full blur-[10rem]"
+	class="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[800px] w-[800px] rounded-full blur-[10rem]"
 ></div>
