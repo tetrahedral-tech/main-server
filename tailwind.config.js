@@ -5,6 +5,9 @@ export default {
 		extend: {
 			fontFamily: {
 				sans: ['"Jetbrains Mono"', 'monospace']
+			},
+			colors: {
+				'accent':'' // @TODO put an accent color later
 			}
 		}
 	},
