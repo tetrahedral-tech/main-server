@@ -3754,6 +3754,11 @@ supports-preserve-symlinks-flag@^1.0.0:
     postcss "^8.4.29"
     postcss-scss "^4.0.8"
 
+svelte-heros-v2@^0.10.12:
+  version "0.10.12"
+  resolved "https://registry.yarnpkg.com/svelte-heros-v2/-/svelte-heros-v2-0.10.12.tgz#5e8e209cd4af89984c4cb2a8698609bd21147f77"
+  integrity sha512-0wspy0z9UFS9f/iPKQQ1JDHlNY6e7h+LVW+wJ0qJnuWDpvsJllmoCX2g0frYbMPDWZJEwh2pkO25Dp3lDGCxGQ==
+
 svelte-hmr@^0.15.3:
   version "0.15.3"
   resolved "https://registry.yarnpkg.com/svelte-hmr/-/svelte-hmr-0.15.3.tgz#df54ccde9be3f091bf5f18fc4ef7b8eb6405fbe6"
