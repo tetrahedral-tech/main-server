@@ -1,27 +1,25 @@
 <script>
 	import { Pause, Play, Clock, Minus, AdjustmentsHorizontal } from 'svelte-heros-v2';
-	export let account;
+	export let selectedAccount;
 </script>
 
 <section
 	class="
-	{account ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-20'}
+	{selectedAccount ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-20'}
 	bg-section-200 flex items-center justify-center transition-[opacity] duration-300
 "
 >
-	<button class="square hover:bg-white" title="Temporary Pause Bot"
-		><Clock class="h-6 w-6" /></button
-	>
+	<button class="square hover:bg-white" title="Temporary Pause Bot"><Clock class="icon" /></button>
 	<button class="square border-green-500/20 hover:bg-green-500" title="Resume Bot"
-		><Play class="h-6 w-6" /></button
+		><Play class="icon" /></button
 	>
 	<button class="square border-yellow-500/20 hover:bg-yellow-500" title="Pause Bot"
-		><Pause class="h-6 w-6" /></button
+		><Pause class="icon" /></button
 	>
 	<button class="square border-rose-500/20 hover:bg-rose-500" title="Delete Bot"
-		><Minus class="h-6 w-6" /></button
+		><Minus class="icon" /></button
 	>
 	<button class="square hover:bg-accent border-accent/20">
-		<AdjustmentsHorizontal class="h-6 w-6" /></button
+		<AdjustmentsHorizontal class="icon" /></button
 	>
 </section>
