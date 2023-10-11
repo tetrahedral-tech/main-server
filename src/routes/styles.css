@@ -4,26 +4,13 @@
 @tailwind components;
 @tailwind utilities;
 
-.success {
-	color: plum;
-}
-
-.error {
-	color: lightcoral;
-}
-
-code {
-	white-space: pre-line;
-}
-
-body {
-	font-family: 'JetBrains Mono', monospace;
-	overflow: hidden;
-}
-
 @layer base {
+	code {
+		@apply whitespace-pre-line;
+	}
+
 	body {
-		@apply bg-gray-950 text-white;
+		@apply bg-gray-950 text-white overflow-hidden;
 	}
 
 	input:focus,
