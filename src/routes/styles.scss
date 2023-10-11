@@ -30,7 +30,7 @@
 
 	button,
 	input {
-		@apply border-heavy rounded-md border bg-gray-950/40;
+		@apply rounded-md border border-heavy bg-gray-950/40;
 	}
 
 	button {
@@ -57,7 +57,7 @@
 	}
 
 	section {
-		@apply bg-section-300 border-light w-full gap-3 rounded-md border p-4;
+		@apply w-full gap-3 rounded-md border border-light bg-section-300 p-4;
 
 		* {
 			@apply gap-2;
