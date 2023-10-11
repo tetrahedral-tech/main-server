@@ -7,16 +7,14 @@
 	let showMenu = false;
 
 	const statusMap = {
-		running: 'green',
-		paused: 'red',
-		tempPaused: 'yellow'
+		running: 'border-l-green-500',
+		paused: 'border-l-red-500',
+		tempPaused: 'border-l-yellow-500'
 	};
 </script>
 
 <div
-	class={`w-1/5 flex flex-col ${
-		showMenu === true ? 'gap-3' : 'gap-0'
-	} transition-all duration-1000`}
+	class="w-1/5 flex flex-col {showMenu === true ? 'gap-3' : 'gap-0'} transition-all duration-1000"
 	style="transition-timing-function: cubic-bezier(0.83, 0.0, 0.17, 1.0)"
 >
 	<section
@@ -27,7 +25,7 @@
 	>
 		<h1 class="text-2xl">Add a bot</h1>
 		<form method="post" class="flex flex-col gap-2" use:enhance>
-			<input type="text" name="id" placeholder="ID" />
+			<input class="hidden" type="text" name="id" placeholder="ID" />
 			<input type="number" name="strengthToUSD" placeholder="1.0 Strength -> USD" />
 			<input type="text" name="algorithm" placeholder="Algorithm" />
 			<div class="flex w-full gap-2">
@@ -39,9 +37,7 @@
 				</button>
 
 				<button
-					on:click|preventDefault={() => {
-						showMenu = false;
-					}}
+					on:click|preventDefault={() => (showMenu = false)}
 					class="flex-grow border-red-800 bg-gray-950/70 hover:bg-red-500 hover:text-black transition-all"
 				>
 					Cancel
@@ -63,14 +59,16 @@
 		{#each accounts as { address, balance, status, id, privateKey }}
 			<button
 				on:click={() => (selectedAccount = { address, balance, status, id })}
-				class={`${
-					address === selectedAccount ? 'border-yellow-500/80' : 'hover:border-gray-500/80' // this doesn't work properly oops
-				} border-l-${
-					statusMap[status] // neither does this
-				}-500 border-l-4 transition-colors w-full p-3 whitespace-nowrap [text-align:initial]`}
+				class="{address === selectedAccount?.address
+					? 'border-gray-400/80'
+					: 'hover:border-gray-500/80'} {statusMap[status]}
+				border-l-4 transition-colors w-full p-3 whitespace-nowrap [text-align:initial]"
 			>
 				<h1 class="text-2xl truncate">{address}</h1>
-				<p class="balance subtext truncate">Net Worth: {balance} USD</p>
+				<span class="balance subtext">
+					<span class="hidden lg:inline">Net Worth:</span>
+					{balance} USD
+				</span>
 				{#if privateKey}
 					<p class="private truncate">{privateKey}</p>
 				{/if}
@@ -80,10 +78,6 @@
 </div>
 
 <style>
-	.balance {
-		color: white;
-	}
-
 	input::placeholder {
 		color: #4e4e4e;
 		font-style: italic;

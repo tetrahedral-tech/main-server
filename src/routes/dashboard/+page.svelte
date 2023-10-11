@@ -33,11 +33,11 @@
 				</span>
 			</section>
 			<div class="flex gap-3 h-full">
-				<section class="w-3/4">
+				<section class="w-3/4 flex">
 					{#if selectedAccount}
-						<Graph class="w-full" token={data.token} path={`worth/${selectedAccount.id}`} />
+						<Graph class="object-contain" token={data.token} path={`worth/${selectedAccount.id}`} />
 					{:else}
-						<h1 class="subtext">please select an account!</h1>
+						<h1 class="subtext">please select an account</h1>
 					{/if}
 				</section>
 				<section class="w-1/4">
