@@ -16,9 +16,7 @@
 </script>
 
 <div
-	class="gap-3 w-1/5 flex flex-col {showMenu === true
-		? 'gap-3'
-		: 'gap-0'} transition-all duration-1000"
+	class="w-1/5 flex flex-col {showMenu === true ? 'gap-3' : 'gap-0'} transition-all duration-1000"
 	style="transition-timing-function: cubic-bezier(0.83, 0.0, 0.17, 1.0)"
 >
 	<section
@@ -50,32 +48,34 @@
 		</form>
 	</section>
 
-	<section class="h-full bg-gray-950/40 flex flex-col relative">
-		<div class="flex">
-			<input type="text" class="w-full" placeholder="search" bind:value={searchValue} />
-			<button on:click={() => (showMenu = !showMenu)} class="square"> + </button>
-		</div>
-		{#each accounts.filter( ({ address }) => address.includes(searchValue) ) as { address, balance, status, id, privateKey }}
-			<button
-				on:click={() => (selectedAccount = { address, balance, status, id })}
-				class="{address === selectedAccount?.address
-					? 'border-gray-400/80'
-					: 'hover:border-gray-500/80'} {statusMap[status]}
-				border-l-4 transition-colors w-full whitespace-nowrap [text-align:initial]"
-			>
-				<h1 class="text-2xl truncate">{address}</h1>
-				<span class="balance subtext">
-					<span class="hidden lg:inline">Net Worth:</span>
-					{balance} USD
-				</span>
-				{#if privateKey}
-					<p class="private truncate">{privateKey}</p>
-				{/if}
-			</button>
-		{/each}
-	</section>
+	<div class="flex flex-col flex-grow">
+		<section class="h-full bg-gray-950/40 flex flex-col relative">
+			<div class="flex">
+				<input type="text" class="w-full" placeholder="search" bind:value={searchValue} />
+				<button on:click={() => (showMenu = !showMenu)} class="square"> + </button>
+			</div>
+			{#each accounts.filter( ({ address }) => address.includes(searchValue) ) as { address, balance, status, id, privateKey }}
+				<button
+					on:click={() => (selectedAccount = { address, balance, status, id })}
+					class="{address === selectedAccount?.address
+						? 'border-gray-400/80'
+						: 'hover:border-gray-500/80'} {statusMap[status]}
+					border-l-4 transition-colors w-full whitespace-nowrap [text-align:initial]"
+				>
+					<h1 class="text-2xl truncate">{address}</h1>
+					<span class="balance subtext">
+						<span class="hidden lg:inline">Net Worth:</span>
+						{balance} USD
+					</span>
+					{#if privateKey}
+						<p class="private truncate">{privateKey}</p>
+					{/if}
+				</button>
+			{/each}
+		</section>
 
-	<BotControls />
+		<BotControls />
+	</div>
 </div>
 
 <style>
