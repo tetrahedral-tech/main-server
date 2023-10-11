@@ -73,7 +73,7 @@
 			{/each}
 		</section>
 
-		<BotControls account={selectedAccount} />
+		<BotControls {selectedAccount} />
 	</div>
 </div>
 
