@@ -5,6 +5,7 @@
 	export let selectedAccount;
 
 	let showMenu = false;
+	let searchValue = '';
 
 	const statusMap = {
 		running: 'border-l-green-500',
@@ -48,7 +49,7 @@
 
 	<section class="bg-gray-950/40 flex flex-col relative">
 		<div class="flex">
-			<input type="text" class="w-full" placeholder="search" />
+			<input type="text" class="w-full" placeholder="search" bind:value={searchValue} />
 			<button
 				on:click={() => (showMenu = !showMenu)}
 				class="h-full leading-[0] aspect-square text-2xl hover:bg-green-500 hover:text-black transition-colors"
@@ -56,7 +57,7 @@
 				+
 			</button>
 		</div>
-		{#each accounts as { address, balance, status, id, privateKey }}
+		{#each accounts.filter( ({ address }) => address.includes(searchValue) ) as { address, balance, status, id, privateKey }}
 			<button
 				on:click={() => (selectedAccount = { address, balance, status, id })}
 				class="{address === selectedAccount?.address

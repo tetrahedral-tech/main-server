@@ -8,16 +8,6 @@
 </script>
 
 <main class="p-4 h-screen">
-	<!-- reference: <form method="post" use:enhance>
-		<input type="text" name="id" placeholder="ID" />
-		<input type="number" name="strengthToUSD" placeholder="1.0 Strength -> USD" />
-		<input type="text" name="algorithm" placeholder="Algorithm" /><br />
-		<button formaction="/bots?/create">Create Bot</button>
-		<button formaction="/bots?/update">Update Bot</button>
-		<button formaction="/bots?/delete">Delete Bot</button>
-	</form>
-
-	<code>{data.data}</code> -->
 	<section class="w-full h-full flex border-gray-500/60">
 		<Sidebar accounts={data.accounts} bind:selectedAccount />
 		<div class="flex flex-col flex-grow gap-3">
