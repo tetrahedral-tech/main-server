@@ -10,7 +10,7 @@
 	}
 
 	body {
-		@apply bg-gray-950 text-white overflow-hidden;
+		@apply overflow-hidden bg-gray-950 text-white;
 	}
 
 	input:focus,
@@ -26,11 +26,11 @@
 
 	button,
 	input {
-		@apply bg-gray-950/40 border border-gray-500/40 rounded-md;
+		@apply rounded-md border border-gray-500/40 bg-gray-950/40;
 	}
 
 	button.square {
-		@apply leading-[0] aspect-square text-2xl transition-colors duration-300 hover:text-black hover:bg-accent;
+		@apply aspect-square text-2xl leading-[0] transition-colors duration-300 hover:bg-accent hover:text-black;
 	}
 	button {
 		@apply p-4;
@@ -41,7 +41,7 @@
 	}
 
 	section {
-		@apply w-full gap-3 p-4 border rounded-md bg-gray-950/60 border-gray-500/20;
+		@apply w-full gap-3 rounded-md border border-gray-500/20 bg-gray-950/60 p-4;
 	}
 
 	section * {

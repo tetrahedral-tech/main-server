@@ -5,7 +5,8 @@ const baseConfig = {
 	},
 	env: {
 		es2017: true,
-		node: true
+		node: true,
+		browser: true
 	},
 	extends: ['airbnb-base', 'prettier', 'plugin:svelte/recommended', 'plugin:svelte/prettier'],
 	plugins: [],
@@ -38,7 +39,8 @@ const baseConfig = {
 		'no-console': 'off',
 		'no-plusplus': 'off',
 		'consistent-return': 'off',
-		'no-tabs': 'off'
+		'no-tabs': 'off',
+		'no-return-assign': ['error', 'except-parens']
 	}
 };
 
