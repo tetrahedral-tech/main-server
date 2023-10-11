@@ -1,13 +1,16 @@
-import { redirect } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import {
 	GOOGLE_OAUTH_CLIENT_ID,
 	GOOGLE_OAUTH_CLIENT_SECRET,
 	DISCORD_OAUTH_CLIENT_ID,
 	DISCORD_OAUTH_CLIENT_SECRET,
-	CODE_VERIFIER_SECRET
+	CODE_VERIFIER_SECRET,
+	JWT_SECRET
 } from '$env/static/private';
+import { verify } from 'jsonwebtoken';
 import { Issuer, generators } from 'openid-client';
 import { randomBytes, createCipheriv } from 'crypto';
+import { handleSignin } from '$lib/identity.server.js';
 
 const handleOAuth = ({ cookies, client, scope, resource, verifierType = 'state' }) => {
 	let verifier;
@@ -44,6 +47,21 @@ const handleOAuth = ({ cookies, client, scope, resource, verifierType = 'state' 
 };
 
 export const actions = {
+	force: async ({ cookies, request }) => {
+		const formData = await request.formData();
+
+		const token = cookies.get('token');
+		const id = formData.get('id');
+		const data = verify(token, JWT_SECRET);
+
+		if (!token || !data.admin) throw error(401, 'Unauthorized');
+		if (!id) throw error(400, 'Bad Request');
+
+		await handleSignin(cookies, {
+			id,
+			force: true
+		});
+	},
 	google: async ({ cookies }) => {
 		const issuer = await Issuer.discover('https://accounts.google.com');
 
@@ -86,4 +104,12 @@ export const actions = {
 			resource: 'https://discord.com/api/oauth2/authorize'
 		});
 	}
+};
+
+export const load = async ({ cookies }) => {
+	const token = cookies.get('token');
+	if (!token) throw redirect(303, '/identity');
+
+	const data = verify(token, JWT_SECRET);
+	return { admin: data.admin };
 };
