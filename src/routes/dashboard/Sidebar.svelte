@@ -48,7 +48,7 @@
 		</form>
 	</section>
 
-	<div class="flex flex-col flex-grow">
+	<div class="flex flex-col flex-grow gap-3">
 		<section class="h-full bg-gray-950/40 flex flex-col relative">
 			<div class="flex">
 				<input type="text" class="w-full" placeholder="search" bind:value={searchValue} />

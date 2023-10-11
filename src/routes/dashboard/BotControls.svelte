@@ -5,6 +5,7 @@
 
 <section class={`
 	${account ? "opacity-100 pointer-events-auto" : "opacity-20 pointer-events-none" }
+	bg-gray-950/40 justify-center items-center flex
 `}>
 	<button class="square hover:bg-white" title="Temporary Pause Bot"><Clock class="h-6 w-6" /></button>
 	<button class="square hover:bg-green-500 border-green-500/20" title="Resume Bot"><Play class="h-6 w-6" /></button>
