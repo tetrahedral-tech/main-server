@@ -108,7 +108,7 @@ export const actions = {
 
 export const load = async ({ cookies }) => {
 	const token = cookies.get('token');
-	if (!token) throw redirect(303, '/identity');
+	if (!token) return; // instead of throwing a redirect (which puts it into a loop); itll show the screen instead !
 
 	const data = verify(token, JWT_SECRET);
 	return { admin: data.admin };
