@@ -29,21 +29,25 @@ const getWorth = async (address, includedTokens = tokens, baseToken = defaultBas
 				: new Contract(token.address, erc20Abi, provider)
 		);
 
-	const worths = await Promise.all(
-		contracts.map(
-			async contract =>
-				contract.getAddress() ||
-				quoterContract.quoteExactInputSingle.staticCall(
-					await contract.getAddress(),
-					baseToken.address,
-					500,
-					await contract.balanceOf(address),
-					0
-				)
-		)
-	);
+	const ethBalance = (await provider.getBalance(address)).toBigInt();
 
-	worths.push(await provider.getBalance(address));
+	const worths = await Promise.all(
+		contracts.map(async contract => {
+			const contractAddress = await contract.getAddress();
+			const balance = await contract.balanceOf(address);
+			const isWethContract = contractAddress === tokens.weth.address;
+
+			if (balance === 0n && !(isWethContract && ethBalance > 0n)) return 0n;
+
+			return quoterContract.quoteExactInputSingle.staticCall(
+				contractAddress,
+				baseToken.address,
+				500,
+				balance + (isWethContract ? ethBalance : 0n),
+				0
+			);
+		})
+	);
 
 	return Number(worths.reduce((a, b) => a + b));
 };

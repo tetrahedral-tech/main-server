@@ -1,0 +1,103 @@
+<script>
+	import BotControls from './BotControls.svelte';
+	import { enhance } from '$app/forms';
+
+	export let accounts;
+	export let selectedAccount;
+
+	let showMenu = false;
+	let searchValue = '';
+
+	const statusMap = {
+		running: 'border-l-green-500',
+		paused: 'border-l-rose-500',
+		tempPaused: 'border-l-yellow-500'
+	};
+</script>
+
+<div
+	class="flex w-1/5 flex-col {showMenu === true ? 'gap-3' : 'gap-0'} transition-all duration-1000"
+	style="transition-timing-function: cubic-bezier(0.83, 0.0, 0.17, 1.0)"
+>
+	<section
+		class={`pl-5 pr-5
+		${showMenu === true ? 'max-h-96 border p-5' : 'max-h-0 border-none p-0'}
+		bg-section-200 overflow-hidden transition-all duration-1000`}
+		style="transition-timing-function: cubic-bezier(0.83, 0.0, 0.17, 1.0)"
+	>
+		<h1 class="text-2xl">Add a bot</h1>
+		<form method="post" class="flex flex-col gap-2" use:enhance>
+			<input class="hidden" type="text" name="id" placeholder="ID" />
+			<input type="number" name="strengthToUSD" placeholder="1.0 Strength -> USD" />
+			<input type="text" name="algorithm" placeholder="Algorithm" />
+			<div class="flex w-full gap-2">
+				<button
+					class="flex-grow border-green-700 transition-all hover:bg-green-500 hover:text-black"
+					formaction="/bots?/create"
+				>
+					Create Bot
+				</button>
+
+				<button
+					on:click|preventDefault={() => (showMenu = false)}
+					class="flex-grow border-rose-800 transition-all hover:bg-rose-500 hover:text-black"
+				>
+					Cancel
+				</button>
+			</div>
+		</form>
+	</section>
+
+	<div class="flex flex-grow flex-col gap-3">
+		<section class="bg-section-200 relative flex h-full flex-col">
+			<div class="flex">
+				<input type="text" class="w-full" placeholder="search" bind:value={searchValue} />
+				<button on:click={() => (showMenu = !showMenu)} class="square"> + </button>
+			</div>
+			<!-- eslint-disable-next-line max-len -->
+			{#each accounts.filter( ({ address }) => address.includes(searchValue) ) as { address, balance, status, id, privateKey }}
+				<button
+					on:click={() => (selectedAccount = { address, balance, status, id })}
+					class="{address === selectedAccount?.address ? 'border-selected' : ''} {statusMap[status]}
+					w-full whitespace-nowrap border-l-4 transition-colors [text-align:initial]"
+				>
+					<h1 class="truncate text-2xl">{address}</h1>
+					<p class="balance subtext">
+						<span class="hidden lg:inline">Net Worth:</span>
+						{balance} USD
+					</p>
+					{#if privateKey}
+						<p class="private truncate">{privateKey}</p>
+					{/if}
+				</button>
+			{/each}
+		</section>
+
+		<BotControls {selectedAccount} />
+	</div>
+</div>
+
+<style>
+	input::placeholder {
+		color: #4e4e4e;
+		font-style: italic;
+	}
+
+	.private {
+		color: #00000000;
+		user-select: none;
+		transition:
+			color 0.2s,
+			background-color 0.2s;
+	}
+
+	.private:hover {
+		user-select: initial;
+		color: #4e4e4e;
+	}
+	.balance {
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: '..USD';
+	}
+</style>

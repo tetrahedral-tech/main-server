@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	body {
+		@apply overflow-hidden bg-gray-950 text-white;
+	}
+
+	main {
+		@apply h-screen w-screen gap-2 p-4;
+	}
+
+	code {
+		@apply whitespace-pre-line;
+	}
+
+	input:focus,
+	select:focus,
+	textarea:focus,
+	button:focus {
+		@apply outline-none;
+	}
+
+	a {
+		@apply text-blue-500;
+	}
+
+	button,
+	input {
+		@apply border-heavy rounded-md border bg-gray-950/40;
+	}
+
+	button {
+		@apply p-4;
+
+		&.square {
+			@apply aspect-square text-2xl leading-[0] transition-colors duration-300 hover:bg-accent hover:text-black;
+			&:hover {
+				@apply bg-accent text-black;
+			}
+		}
+
+		&:hover {
+			@apply border-suggested;
+		}
+	}
+
+	.icon {
+		@apply h-6 w-6;
+	}
+
+	input {
+		@apply p-3;
+	}
+
+	section {
+		@apply bg-section-300 border-light w-full gap-3 rounded-md border p-4;
+
+		* {
+			@apply gap-2;
+		}
+	}
+
+	.subtext {
+		@apply opacity-50;
+	}
+}
