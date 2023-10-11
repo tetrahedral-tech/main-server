@@ -1,18 +1,13 @@
 <script>
-	import GoogleButton from './google/GoogleButton.svelte';
-	import DiscordButton from './discord/DiscordButton.svelte';
+	import Button from './Button.svelte';
 </script>
 
 <main class="w-screen h-screen flex justify-center items-center">
-	<div
-		class="flex flex-col w-1/4 h-4/5 bg-gray-950/80 border-gray-700 border overflow-hidden border-solid rounded-md"
-	>
-		<div class="p-6 bg-gray-900">
-			<h1 class="text-xl">login!</h1>
-		</div>
+	<section class="flex flex-col w-2/3 md:w-1/3 h-4/5">
+		<h1 class="text-2xl">login!</h1>
 		<div class="flex justify-center items-center flex-col h-full gap-2 flex-grow">
-			<GoogleButton />
-			<DiscordButton />
+			<Button provider="google" />
+			<Button provider="discord" />
 		</div>
-	</div>
+	</section>
 </main>
