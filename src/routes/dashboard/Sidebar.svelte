@@ -10,7 +10,7 @@
 
 	const statusMap = {
 		running: 'border-l-green-500',
-		paused: 'border-l-red-500',
+		paused: 'border-l-rose-500',
 		tempPaused: 'border-l-yellow-500'
 	};
 </script>
@@ -40,7 +40,7 @@
 
 				<button
 					on:click|preventDefault={() => (showMenu = false)}
-					class="flex-grow border-red-800 bg-gray-950/70 hover:bg-red-500 hover:text-black transition-all"
+					class="flex-grow border-rose-800 bg-gray-950/70 hover:bg-rose-500 hover:text-black transition-all"
 				>
 					Cancel
 				</button>
