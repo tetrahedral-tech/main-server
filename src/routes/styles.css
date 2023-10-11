@@ -30,7 +30,7 @@
 	}
 
 	button.square {
-		@apply leading-[0] aspect-square text-2xl transition-colors duration-300 hover:text-black;
+		@apply leading-[0] aspect-square text-2xl transition-colors duration-300 hover:text-black hover:bg-accent;
 	}
 	button {
 		@apply p-4;

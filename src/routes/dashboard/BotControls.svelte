@@ -21,7 +21,7 @@
 	<button class="square hover:bg-rose-500 border-rose-500/20" title="Delete Bot"
 		><Minus class="h-6 w-6" /></button
 	>
-	<button class="square hover:bg-purple-500 border-purple-500/20">
+	<button class="square hover:bg-accent border-accent/20">
 		<AdjustmentsHorizontal class="h-6 w-6" /></button
 	>
 </section>

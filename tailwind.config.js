@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import colors from 'tailwindcss/colors';
+
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
@@ -7,7 +9,7 @@ export default {
 				sans: ['"Jetbrains Mono"', 'monospace']
 			},
 			colors: {
-				'accent':'' // @TODO put an accent color later
+				accent: colors.purple[500]
 			}
 		}
 	},
