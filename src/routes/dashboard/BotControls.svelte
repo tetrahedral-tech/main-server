@@ -7,7 +7,7 @@
 </script>
 
 <section
-	class="{selectedAccount ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-40'}
+	class="{$selectedAccount ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-40'}
 	bg-section-200 flex flex-wrap items-center justify-center transition-[opacity] duration-300"
 >
 	<button class="square hover:!bg-white" title="Temporary Pause Bot"><Clock class="icon" /></button>
@@ -21,7 +21,7 @@
 		<Minus class="icon" />
 	</button>
 	<button class=" border-accent/20 square"><AdjustmentsHorizontal class="icon" /></button>
-	{#if user.admin}
+	{#if $user.admin}
 		<button class=" border-accent/20 square"><CommandLine class="icon" /></button>
 	{/if}
 </section>
