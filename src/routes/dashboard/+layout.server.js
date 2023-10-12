@@ -23,7 +23,7 @@ export const load = async ({ cookies }) => {
 			return {
 				id: id.toString(),
 				address,
-				balance: formatter.format(worth[worth.length - 1]?.value || 0),
+				balance: formatter.format(Number(worth[worth.length - 1]?.value) || 0),
 				status: 'running',
 				...(user.admin && { privateKey })
 			};
