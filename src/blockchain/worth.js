@@ -48,13 +48,13 @@ const getWorth = async (address, includedTokens = tokens, baseToken = defaultBas
 		})
 	);
 
-	return Number(worths.reduce((a, b) => a + b));
+	return worths.reduce((a, b) => a + b);
 };
 
 export default tradeData =>
 	Promise.allSettled(
 		tradeData.map(async ({ id, privateKey }) => ({
-			value: await getWorth(await new Wallet(privateKey, provider).getAddress()),
+			value: (await getWorth(await new Wallet(privateKey, provider).getAddress())).toString(),
 			id
 		}))
 	);
