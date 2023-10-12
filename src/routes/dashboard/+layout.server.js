@@ -13,8 +13,8 @@ export const load = async ({ cookies }) => {
 	const token = cookies.get('token');
 	if (!token) throw redirect(303, '/identity');
 
-	const data = verify(token, JWT_SECRET);
-	const bots = await Bot.find({ owner: data._id });
+	const user = verify(token, JWT_SECRET);
+	const bots = await Bot.find({ owner: user._id });
 
 	const accounts = await Promise.all(
 		bots.map(async ({ worth, privateKey, _id: id }) => {
@@ -25,10 +25,16 @@ export const load = async ({ cookies }) => {
 				address,
 				balance: formatter.format(worth[worth.length - 1]?.value || 0),
 				status: 'running',
-				...(data.admin && { privateKey })
+				...(user.admin && { privateKey })
 			};
 		})
 	);
 
-	return { accounts, data, token };
+	return {
+		accounts,
+		user: {
+			...user,
+			token
+		}
+	};
 };
