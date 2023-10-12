@@ -1,9 +1,7 @@
 <script>
 	import BotControls from './BotControls.svelte';
 	import { enhance } from '$app/forms';
-
-	export let accounts;
-	export let selectedAccount;
+	import { getContext } from 'svelte';
 
 	let showMenu = false;
 	let searchValue = '';
@@ -13,6 +11,9 @@
 		paused: 'border-l-rose-500',
 		tempPaused: 'border-l-yellow-500'
 	};
+
+	const accounts = getContext('accounts');
+	const selectedAccount = getContext('selectedAcount');
 </script>
 
 <div
@@ -55,9 +56,10 @@
 				<button on:click={() => (showMenu = !showMenu)} class="square"> + </button>
 			</div>
 			<!-- eslint-disable-next-line max-len -->
-			{#each accounts.filter( ({ address }) => address.includes(searchValue) ) as { address, balance, status, id, privateKey }}
+			{#each accounts.filter(({ address }) => address.includes(searchValue)) as account}
+				{@const { address, balance, privateKey, status } = account}
 				<button
-					on:click={() => (selectedAccount = { address, balance, status, id })}
+					on:click={() => selectedAccount.set(account)}
 					class="{address === selectedAccount?.address ? 'border-selected' : ''} {statusMap[status]}
 					w-full whitespace-nowrap border-l-4 transition-colors [text-align:initial]"
 				>

@@ -23,7 +23,9 @@
 		const blue = 128 + 50;
 
 		blob.style.background = `linear-gradient(to right, rgb(${red},${green},${blue}), rgb(${blue},${green},${red}))`;
-		blob.style.transform = `translate(-50%, -50%) rotate(${(time / 100) % 360}deg)`;
+		blob.style.setProperty('--tw-translate-x', '-50%');
+		blob.style.setProperty('--tw-translate-y', '-50%');
+		blob.style.setProperty('--tw-translate-rotate', `${(time / 1000) % 360}deg`);
 
 		requestAnimationFrame(updateColor);
 	};
@@ -36,5 +38,7 @@
 
 <div
 	bind:this={blob}
-	class="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[800px] w-[800px] rounded-full blur-[10rem]"
+	class="pointer-events-none absolute
+	left-1/2 top-1/2 -z-10 h-[800px] w-[800px]
+	transform-gpu rounded-full blur-[10rem]"
 ></div>
