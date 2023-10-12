@@ -33,11 +33,17 @@ export const actions = {
 		const id = formData.get('id');
 		const chosenAlgorithm = formData.get('algorithm');
 		const strengthToUSD = formData.get('strengthToUSD');
+		const state = formData.get('state');
+		const time = formData.get('time');
+
+		const validStates = ['running', 'paused', 'tempPaused'];
 
 		if (!token) return fail(401, 'Unauthorized');
 		const owner = verify(token, JWT_SECRET);
 
-		if (!(chosenAlgorithm || strengthToUSD) || !id) return fail(400, 'Bad Request');
+		if (!(chosenAlgorithm || strengthToUSD || state) || !id) return fail(400, 'Bad Request');
+		if (state === 'tempPause' && !Number(time)) return fail(400, 'Bad Request');
+		if (state && !validStates.includes(state)) return fail(400, 'Bad Request');
 		if (!(await Bot.exists({ _id: id, owner: owner._id }))) return fail(401, 'Unauthorized');
 
 		const allowedAlgorithms = await getAllowedAlgorithms(owner._id);
@@ -48,7 +54,13 @@ export const actions = {
 				{ _id: id },
 				{
 					...(strengthToUSD && { strengthToUSD: Number(strengthToUSD) || 20 }),
-					...(chosenAlgorithm && { algorithm: algorithm._id })
+					...(chosenAlgorithm && { algorithm: algorithm._id }),
+					...(state && {
+						state: {
+							type: state,
+							time
+						}
+					})
 				},
 				{
 					returnDocument: 'after'
@@ -77,7 +89,10 @@ export const actions = {
 			encryptedPrivateKey: Wallet.createRandom({
 				extraEntropy: WALLET_EXTRA_ENTROPY_SECRET
 			}).privateKey,
-			worth: []
+			worth: [],
+			state: {
+				type: 'running'
+			}
 		});
 
 		return (await newBot.save()).toObject({ flattenObjectIds: true });
