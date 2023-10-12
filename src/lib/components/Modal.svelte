@@ -5,23 +5,22 @@
 	$: {
 		if (dialog && dialog.open !== open)
 			if (open) dialog.showModal();
-			else dialog.close();
+			// make sure the delay matches with the delay in the dialog styling
+			else setTimeout(() => dialog.close(), 500);
 	}
+
+	const dialogClick = event => event.target === dialog && (open = false);
 </script>
 
 <dialog
-	class="{open ? 'pointer-events-auto' : ''} pointer-events-none
-	fixed left-0 top-0 m-0 grid h-full w-full
-	items-center justify-center bg-transparent"
+	class="{open ? 'pointer-events-auto opacity-100' : 'opacity-0'}
+	pointer-events-none bg-transparent text-white
+	transition-opacity duration-[500ms]"
 	bind:this={dialog}
+	on:click={dialogClick}
+	role="presentation"
 >
-	<section
-		class="{open ? 'opacity-100' : 'opacity-0'}
-		overflow-scroll text-white transition-opacity lg:w-2/5"
-	>
+	<section class="overflow-scroll">
 		<slot />
 	</section>
-	<form class="-z-1 col-start-1 col-end-1 grid self-stretch justify-self-stretch" method="dialog">
-		<button class="cursor-pointer">close</button>
-	</form>
 </dialog>
