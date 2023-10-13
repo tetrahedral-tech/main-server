@@ -1,7 +1,6 @@
 import {
 	providerUrl,
 	selectedChain,
-	routerAddress,
 	tokens,
 	fromReadableAmount,
 	addresses
@@ -55,7 +54,7 @@ const routeTransaction = async (wallet, route) => {
 	const transaction = {
 		data: route.methodParameters.calldata,
 		value: route.methodParameters.value,
-		to: routerAddress,
+		to: addresses.router,
 		from: await wallet.getAddress(),
 		// @TODO fix the gas price
 		gasLimit: 200000
