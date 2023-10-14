@@ -3,10 +3,10 @@ import { PUBLIC_ALGORITHM_SERVER_BASE_URL } from '$env/static/public';
 import { Bot } from '$lib/models.server';
 import { toReadableAmount } from '$lib/blockchain.server';
 
-import { sign } from 'jsonwebtoken';
 import { connect, Types as MongooseTypes } from 'mongoose';
 import { createClient } from 'redis';
 import schedule from 'node-schedule';
+import jwt from 'jsonwebtoken';
 
 import executeTransactions from './blockchain/trading';
 import addWorths, { defaultBaseToken } from './blockchain/worth';
@@ -19,7 +19,7 @@ schedule.scheduleJob('*/5 * * * *', async () => {
 	console.log('Running algorithm check');
 
 	try {
-		const token = sign({ event: 'auth' }, JWT_SECRET, { algorithm: 'HS256' });
+		const token = jwt.sign({ event: 'auth' }, JWT_SECRET, { algorithm: 'HS256' });
 		await fetch(`${PUBLIC_ALGORITHM_SERVER_BASE_URL}/internal_checker`, {
 			headers: {
 				Authorization: token

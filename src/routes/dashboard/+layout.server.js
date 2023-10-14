@@ -1,4 +1,4 @@
-import { verify } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { redirect } from '@sveltejs/kit';
 import { JWT_SECRET } from '$env/static/private';
 import { Bot } from '$lib/models.server.js';
@@ -13,7 +13,7 @@ export const load = async ({ cookies }) => {
 	const token = cookies.get('token');
 	if (!token) throw redirect(303, '/identity');
 
-	const user = verify(token, JWT_SECRET);
+	const user = jwt.verify(token, JWT_SECRET);
 	const bots = await Bot.find({ owner: user._id });
 
 	const accounts = await Promise.all(
