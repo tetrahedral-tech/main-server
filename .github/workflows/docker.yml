@@ -24,15 +24,7 @@ jobs:
       -
         name: 'Create env file'
         run: |
-<<<<<<< HEAD
-<<<<<<< HEAD
           echo "${{ toJSON(secrets) }}" > .env
-=======
-          echo "${{ secrets.ENV_FILE }}" > .env
->>>>>>> b38ab62a8696d5f2c605af9516cc12e4313b5949
-=======
-          echo "${{ secrets.ENV_FILE }}" > .env
->>>>>>> b38ab62a8696d5f2c605af9516cc12e4313b5949
       -
         name: Build and push
         uses: docker/build-push-action@v5
