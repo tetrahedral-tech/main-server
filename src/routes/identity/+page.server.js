@@ -7,7 +7,7 @@ import {
 	CODE_VERIFIER_SECRET,
 	JWT_SECRET
 } from '$env/static/private';
-import { verify } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { Issuer, generators } from 'openid-client';
 import { randomBytes, createCipheriv } from 'crypto';
 import { handleSignin } from '$lib/identity.server.js';
@@ -52,7 +52,7 @@ export const actions = {
 
 		const token = cookies.get('token');
 		const id = formData.get('id');
-		const data = verify(token, JWT_SECRET);
+		const data = jwt.verify(token, JWT_SECRET);
 
 		if (!token || !data.admin) throw error(401, 'Unauthorized');
 		if (!id) throw error(400, 'Bad Request');
@@ -110,6 +110,6 @@ export const load = async ({ cookies }) => {
 	const token = cookies.get('token');
 	if (!token) return; // instead of throwing a redirect (which puts it into a loop); itll show the screen instead !
 
-	const data = verify(token, JWT_SECRET);
+	const data = jwt.verify(token, JWT_SECRET);
 	return { admin: data.admin };
 };
