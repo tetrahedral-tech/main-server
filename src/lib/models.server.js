@@ -1,4 +1,5 @@
-import { Schema, model, models, plugin } from 'mongoose';
+import mongoose from 'mongoose';
+const { Schema, model, models, plugin } = mongoose;
 
 // Define a global plugin that makes all fields required (unless they already have a requiremenet specifically set)
 const intoRequired = schema =>

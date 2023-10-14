@@ -1,5 +1,10 @@
-import { PROVIDER_URL } from '$env/static/private';
-import { chainId, routerAddress, tokens, fromReadableAmount } from '$lib/blockchain.server';
+import {
+	providerUrl,
+	selectedChain,
+	tokens,
+	fromReadableAmount,
+	addresses
+} from '$lib/blockchain.server';
 
 import Web3, { TransactionRevertInstructionError } from 'web3';
 import { Contract, Wallet } from 'ethers';
@@ -19,11 +24,11 @@ const deBigNumberify = object => {
 	return newObject;
 };
 
-const web3 = new Web3(PROVIDER_URL);
-const provider = new JsonRpcProvider(PROVIDER_URL);
+const web3 = new Web3(providerUrl);
+const provider = new JsonRpcProvider(providerUrl);
 
 const router = new AlphaRouter({
-	chainId,
+	chainId: selectedChain,
 	provider
 });
 
@@ -40,7 +45,7 @@ const repopulateAndSend = async (wallet, transaction) => {
 const approveTransaction = async (wallet, token, amount) => {
 	const approvalContract = new Contract(token.address, erc20Abi, provider);
 
-	const transaction = await approvalContract.approve.populateTransaction(routerAddress, amount);
+	const transaction = await approvalContract.approve.populateTransaction(addresses.router, amount);
 
 	return repopulateAndSend(wallet, transaction);
 };
@@ -49,7 +54,7 @@ const routeTransaction = async (wallet, route) => {
 	const transaction = {
 		data: route.methodParameters.calldata,
 		value: route.methodParameters.value,
-		to: routerAddress,
+		to: addresses.router,
 		from: await wallet.getAddress(),
 		// @TODO fix the gas price
 		gasLimit: 200000
