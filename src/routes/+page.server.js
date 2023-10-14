@@ -6,7 +6,7 @@ export async function load({ cookies }) {
 	if (!token) return { success: false, error: 'No token set' };
 
 	try {
-		return { success: true, account: verify(token, JWT_SECRET), token };
+		return { success: true, account: jwt.verify(token, JWT_SECRET), token };
 	} catch (err) {
 		return { success: false, error: 'Invalid Token', detailed: err };
 	}
