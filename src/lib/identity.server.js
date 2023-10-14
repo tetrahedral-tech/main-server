@@ -1,5 +1,5 @@
 import { error, redirect } from '@sveltejs/kit';
-import { sign } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '$env/static/private';
 import { Identity, User } from '$lib/models.server.js';
 
@@ -22,9 +22,8 @@ export const handleSignin = async (cookies, data) => {
 			await user.save();
 		}
 
-	console.log('bleh 3');
 	user = await user.populate('identity');
-	const token = sign(user.toJSON(), JWT_SECRET, { algorithm: 'HS256' });
+	const token = jwt.sign(user.toJSON(), JWT_SECRET, { algorithm: 'HS256' });
 	cookies.set('token', token, {
 		path: '/'
 	});

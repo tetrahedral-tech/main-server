@@ -3,15 +3,17 @@
 
 	export let token;
 	export let path;
-	let graphElement;
+	let graph;
 
-	$: {
-		console.log(token, path);
+	const loadGraph = () => {
 		fetch(`${PUBLIC_ALGORITHM_SERVER_BASE_URL}/${path}`, { headers: { Authorization: token } })
 			.then(response => response.blob())
-			.then(data => (graphElement.src = window.URL.createObjectURL(data)))
-			.catch(() => (graphElement.alt = 'Failed to load graph.'));
-	}
+			.then(data => (graph.src = window.URL.createObjectURL(data)))
+			.catch(() => (graph.alt = 'Failed to load graph.'));
+	};
 </script>
 
-<img {...$$restProps} alt="Graph" bind:this={graphElement} />
+{#key (token, path)}
+	{loadGraph() || ''}
+	<img {...$$restProps} alt="Graph" bind:this={graph} />
+{/key}
