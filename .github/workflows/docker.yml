@@ -16,6 +16,13 @@ jobs:
       IMAGE_NAME: ${{ github.repository }}
     steps:
       -
+        name: Check out the repo
+        uses: actions/checkout@v4
+      -
+        name: Create env file
+        run: |
+          echo "${{ toJSON(secrets) }}" | jq -r 'to_entries | map("\(.key)=\"\(.value)\"") | @sh' | tr ' ' '\n' | tr -d \' > .env
+      -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       -
@@ -32,17 +39,10 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       -
-        name: 'Create env file'
-        run: |
-          echo "${{ toJSON(secrets) }}" | jq -r 'to_entries | map("\(.key)=\"\(.value)\"") | @sh' | tr ' ' '\n' | tr -d \' > .env
-      -
-        name: 'Make sure .env file is there'
-        run: |
-          find .
-      -
         name: Build and push
         uses: docker/build-push-action@v5
         with:
+          context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
