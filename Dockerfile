@@ -1,7 +1,8 @@
 FROM node:lts
 WORKDIR /app
-COPY . .
+COPY yarn.lock .
 RUN yarn
+COPY . .
 RUN yarn build
 
 RUN ls | grep -xvE "build|node_modules|package.json" | xargs rm -rf
