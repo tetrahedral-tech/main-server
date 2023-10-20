@@ -8,12 +8,3 @@ node_modules
 !.env.example
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-
-# .eslintignore
-# .eslintrc.cjs
-# .npmrc
-# .prettierignore
-# .prettierrc
-# yarn.lock
-
-# i do not think we need this shit - nk
