@@ -1,10 +1,13 @@
 FROM node:lts-alpine
 WORKDIR /app
-COPY . .
+COPY package.json .
+COPY yarn.lock .
 RUN yarn
-RUN yarn build
 
-RUN ls | grep -xvE "build|node_modules|package.json" | xargs rm -rf
+COPY . .
+RUN yarn build
+RUN ls -a | grep -xvwE "\.\.?|build|node_modules|package.json|.env" | xargs rm -rf
+
 EXPOSE 80
 ENV ORIGIN http://localhost
 ENV PORT 80
