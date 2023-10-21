@@ -112,7 +112,7 @@ export default tradeData =>
 							baseAmount,
 							action
 					  })
-					: null
+					: console.log('No Action')
 			)
 			.filter(p => p)
 	);
