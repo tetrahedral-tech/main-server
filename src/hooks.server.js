@@ -1,5 +1,5 @@
 import { DB_URI, JWT_SECRET } from '$env/static/private';
-import { REDIS_URI, ALGORITHM_SERVER_URI } from '$env/static/public';
+import { REDIS_URI, ALGORITHM_SERVER_URI } from '$env/static/private';
 import { Bot } from '$lib/models.server';
 import { toReadableAmount } from '$lib/blockchain.server';
 
