@@ -1,5 +1,5 @@
 import { DB_URI, JWT_SECRET } from '$env/static/private';
-import { PUBLIC_REDIS_URI, PUBLIC_ALGORITHM_SERVER_URI } from '$env/static/public';
+import { REDIS_URI, ALGORITHM_SERVER_URI } from '$env/static/public';
 import { Bot } from '$lib/models.server';
 import { toReadableAmount } from '$lib/blockchain.server';
 
@@ -12,7 +12,7 @@ import executeTransactions from './blockchain/trading';
 import addWorths, { defaultBaseToken } from './blockchain/worth';
 
 const connection = connect(DB_URI);
-const redis = createClient({ url: PUBLIC_REDIS_URI });
+const redis = createClient({ url: REDIS_URI });
 
 // Algorithm Check Job
 const job = schedule.scheduleJob('*/5 * * * *', async () => {
@@ -20,7 +20,7 @@ const job = schedule.scheduleJob('*/5 * * * *', async () => {
 
 	try {
 		const token = jwt.sign({ event: 'auth' }, JWT_SECRET, { algorithm: 'HS256' });
-		await fetch(`${PUBLIC_ALGORITHM_SERVER_URI}/internal_checker`, {
+		await fetch(`${ALGORITHM_SERVER_URI}/internal_checker`, {
 			headers: {
 				Authorization: token
 			}
