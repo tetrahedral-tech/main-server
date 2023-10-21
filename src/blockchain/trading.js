@@ -56,7 +56,6 @@ const routeTransaction = async (wallet, route) => {
 		value: route.methodParameters.value,
 		to: addresses.router,
 		from: await wallet.getAddress(),
-		// @TODO fix the gas price
 		gasLimit: 200000
 	};
 
