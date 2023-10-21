@@ -11,11 +11,11 @@ import jwt from 'jsonwebtoken';
 import executeTransactions from './blockchain/trading';
 import addWorths, { defaultBaseToken } from './blockchain/worth';
 
-connect(DB_URI);
+const connection = connect(DB_URI);
 const redis = createClient();
 
 // Algorithm Check Job
-schedule.scheduleJob('*/5 * * * *', async () => {
+const job = schedule.scheduleJob('*/5 * * * *', async () => {
 	console.log('Running algorithm check');
 
 	try {
@@ -86,4 +86,13 @@ schedule.scheduleJob('*/5 * * * *', async () => {
 	await redis.disconnect();
 });
 
+const shutdown = async signal => {
+	job.cancel();
+	await (await connection).disconnect();
+	redis.isOpen && (await redis.disconnect());
+	throw Error(`Shutting down${signal ? `due to ${signal}` : ''}...`);
+};
+
 redis.on('error', err => console.log('Redis Client Error', err));
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
