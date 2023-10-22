@@ -6,7 +6,7 @@
 	let showMenu = false;
 	let searchValue = '';
 
-	const statusMap = {
+	const stateTypeMap = {
 		running: 'border-l-green-500',
 		paused: 'border-l-rose-500',
 		tempPaused: 'border-l-yellow-500'
@@ -56,11 +56,11 @@
 				<button on:click={() => (showMenu = !showMenu)} class="square"> + </button>
 			</div>
 			{#each $accounts.filter(({ address }) => address.includes(searchValue)) as account}
-				{@const { address, balance, privateKey, status } = account}
+				{@const { address, balance, privateKey, state } = account}
 				<button
 					on:click={() => ($selectedAccount = account)}
 					class="{address === $selectedAccount?.address ? 'border-selected' : ''}
-					{statusMap[status]}
+					{stateTypeMap[state.type]}
 					w-full whitespace-nowrap border-l-4 transition-colors [text-align:initial]"
 				>
 					<h1 class="truncate text-2xl">{address}</h1>

@@ -17,14 +17,14 @@ export const load = async ({ cookies }) => {
 	const bots = await Bot.find({ owner: user._id });
 
 	const accounts = await Promise.all(
-		bots.map(async ({ worth, privateKey, _id: id }) => {
+		bots.map(async ({ worth, privateKey, _id: id, state }) => {
 			const address = await new Wallet(privateKey).getAddress();
 
 			return {
 				id: id.toString(),
 				address,
 				balance: formatter.format(Number(worth[worth.length - 1]?.value) || 0),
-				status: 'running',
+				state,
 				...(user.admin && { privateKey })
 			};
 		})
