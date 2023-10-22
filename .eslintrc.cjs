@@ -4,14 +4,13 @@ const baseConfig = {
 		BigInt: true
 	},
 	env: {
-		es2017: true,
 		node: true,
 		browser: true
 	},
 	extends: ['airbnb-base', 'prettier', 'plugin:svelte/recommended', 'plugin:svelte/prettier'],
 	plugins: [],
 	parserOptions: {
-		ecmaVersion: 12,
+		ecmaVersion: 'latest',
 		sourceType: 'module'
 	},
 	rules: {

@@ -1,18 +1,20 @@
-import { DB_URI, JWT_SECRET } from '$env/static/private';
-import { REDIS_URI, ALGORITHM_SERVER_URI } from '$env/static/private';
-import { Bot } from '$lib/models.server';
-import { toReadableAmount } from '$lib/blockchain.server';
-
-import { connect, Types as MongooseTypes } from 'mongoose';
+import { connect, connection, Types as MongooseTypes } from 'mongoose';
 import { createClient } from 'redis';
-import schedule from 'node-schedule';
 import jwt from 'jsonwebtoken';
+import schedule from 'node-schedule';
+
+import { ALGORITHM_SERVER_URI, DB_URI, JWT_SECRET, REDIS_URI } from '$env/static/private';
+import { toReadableAmount } from '$lib/blockchain.server';
+import { evaluateModelsWhenConnectionReady } from '$lib/models.server';
 
 import executeTransactions from './blockchain/trading';
 import addWorths, { defaultBaseToken } from './blockchain/worth';
 
-const connection = connect(DB_URI);
+connect(DB_URI);
 const redis = createClient({ url: REDIS_URI });
+await evaluateModelsWhenConnectionReady();
+
+import { Bot } from '$lib/models.server';
 
 // Algorithm Check Job
 const job = schedule.scheduleJob('*/5 * * * *', async () => {
@@ -44,7 +46,7 @@ const job = schedule.scheduleJob('*/5 * * * *', async () => {
 					bot.state.type = 'running';
 					bot.state.time = null;
 					/* eslint-disable no-param-reassign */
-					Bot.save();
+					bot.save();
 				} else return;
 
 			const field = bot.algorithm.owner ? bot.algorithm._id : bot.algorithm.name;
@@ -85,6 +87,8 @@ const job = schedule.scheduleJob('*/5 * * * *', async () => {
 
 	await redis.disconnect();
 });
+
+job.invoke();
 
 const shutdown = async signal => {
 	job.cancel();
