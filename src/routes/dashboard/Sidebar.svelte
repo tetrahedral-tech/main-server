@@ -64,7 +64,7 @@
 				<button
 					on:click={() => ($selectedAccount = account)}
 					class="{address === $selectedAccount?.address ? 'border-selected' : ''}
-					{statusTypeMap[status.type]}
+					{statusTypeMap[status.name]}
 					w-full whitespace-nowrap border-l-4 transition-colors [text-align:initial]"
 				>
 					<h1 class="truncate text-2xl">{address}</h1>
