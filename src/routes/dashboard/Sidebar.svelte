@@ -7,9 +7,9 @@
 	let searchValue = '';
 
 	const statusTypeMap = {
-		running: 'border-l-green-500',
-		paused: 'border-l-rose-500',
-		tempPaused: 'border-l-yellow-500'
+		running: 'border-l-green',
+		paused: 'border-l-red',
+		tempPaused: 'border-l-yellow'
 	};
 
 	const accounts = getContext('accounts');
@@ -37,7 +37,7 @@
 			{/if}
 			<div class="flex w-full gap-2">
 				<button
-					class="flex-grow border-green-700 transition-all hover:bg-green-500 hover:text-black"
+					class="border-green/40 hover:bg-green flex-grow transition-all hover:text-black"
 					formaction="/bots?/create"
 				>
 					Create Bot
@@ -45,7 +45,7 @@
 
 				<button
 					on:click|preventDefault={() => (showMenu = false)}
-					class="flex-grow border-rose-800 transition-all hover:bg-rose-500 hover:text-black"
+					class="border-red/40 hover:bg-red flex-grow transition-all hover:text-black"
 				>
 					Cancel
 				</button>
