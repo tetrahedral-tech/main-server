@@ -13,13 +13,13 @@
 	<button class="square !border-white/20 hover:!bg-white" title="Temporary Pause Bot"
 		><Clock class="icon" /></button
 	>
-	<button class="square !border-green-500/20 hover:!bg-green-500" title="Resume Bot"
+	<button class="square !border-green/20 hover:!bg-green" title="Resume Bot"
 		><Play class="icon" />
 	</button>
-	<button class="square !border-yellow-500/20 hover:!bg-yellow-500" title="Pause Bot"
+	<button class="square !border-yellow/20 hover:!bg-yellow" title="Pause Bot"
 		><Pause class="icon" />
 	</button>
-	<button class="square !border-rose-500/20 hover:!bg-rose-500" title="Delete Bot">
+	<button class="square !border-red/20 hover:!bg-red" title="Delete Bot">
 		<Minus class="icon" />
 	</button>
 	<button class="square"><AdjustmentsHorizontal class="icon" /></button>
