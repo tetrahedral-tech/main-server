@@ -53,7 +53,7 @@ const schemas = {
 					value: Number
 				}
 			],
-			state: {
+			status: {
 				type: String, // paused, tempPaused, stopped, running
 				time: Number // used for tempPaused
 			}

@@ -17,7 +17,7 @@ await evaluateModelsWhenConnectionReady();
 import { Bot } from '$lib/models.server';
 
 // Algorithm Check Job
-const job = schedule.scheduleJob('*/5 * * * *', async () => {
+const job = schedule.scheduleJob('*/50 * * * *', async () => {
 	console.log('Running algorithm check');
 
 	try {
@@ -39,15 +39,20 @@ const job = schedule.scheduleJob('*/5 * * * *', async () => {
 
 	const tradeData = bots
 		.map(bot => {
-			if (bot.state.type === 'paused') return;
-			if (bot.state.type === 'tempPaused')
-				if (bot.state.time > Date.now()) {
-					/* eslint-disable no-param-reassign */
-					bot.state.type = 'running';
-					bot.state.time = null;
-					/* eslint-disable no-param-reassign */
-					bot.save();
-				} else return;
+			console.log(bot);
+			if (bot.status.type === 'paused') return;
+			if (bot.status.type === 'tempPaused')
+				if (bot.status.time > Date.now())
+					Bot.updateOne(
+						{ _id: bot._id },
+						{
+							status: {
+								type: 'running',
+								time: 0
+							}
+						}
+					);
+				else return;
 
 			const field = bot.algorithm.owner ? bot.algorithm._id : bot.algorithm.name;
 			const signal = signals[field];
@@ -88,7 +93,7 @@ const job = schedule.scheduleJob('*/5 * * * *', async () => {
 	await redis.disconnect();
 });
 
-job.invoke();
+// job.invoke();
 
 const shutdown = async signal => {
 	job.cancel();
