@@ -95,10 +95,7 @@ export const actions = {
 					extraEntropy: WALLET_EXTRA_ENTROPY_SECRET
 				}).privateKey,
 			worth: [],
-			status: {
-				type: 'running',
-				time: 0
-			}
+			status: {}
 		});
 
 		return (await newBot.save()).toObject({ flattenObjectIds: true });

@@ -24,7 +24,7 @@ export const load = async ({ cookies }) => {
 				id: id.toString(),
 				address,
 				balance: formatter.format(Number(worth[worth.length - 1]?.value) || 0),
-				status,
+				status: status.toObject({ flattenObjectIds: true }),
 				...(user.admin && { privateKey })
 			};
 		})
