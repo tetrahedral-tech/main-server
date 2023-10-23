@@ -40,8 +40,8 @@ const job = schedule.scheduleJob('*/50 * * * *', async () => {
 	const tradeData = bots
 		.map(bot => {
 			console.log(bot);
-			if (bot.status.type === 'paused') return;
-			if (bot.status.type === 'tempPaused')
+			if (bot.status.name === 'paused') return;
+			if (bot.status.name === 'tempPaused')
 				if (bot.status.time > Date.now())
 					Bot.updateOne(
 						{ _id: bot._id },
