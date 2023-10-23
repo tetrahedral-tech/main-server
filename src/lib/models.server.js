@@ -54,8 +54,14 @@ const schemas = {
 				}
 			],
 			status: {
-				type: String, // paused, tempPaused, stopped, running
-				time: Number // used for tempPaused
+				name: {
+					type: String,
+					default: 'running' // paused, tempPaused, stopped, running
+				},
+				time: {
+					type: Number,
+					default: 0 // used for tempPaused
+				}
 			}
 		},
 		{
