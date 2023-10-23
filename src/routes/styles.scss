@@ -37,7 +37,7 @@
 		@apply p-4;
 
 		&.square {
-			@apply aspect-square text-2xl leading-[0] transition-colors duration-300 hover:bg-accent hover:text-black;
+			@apply aspect-square border-accent/20 text-2xl leading-[0] transition-colors duration-300 hover:bg-accent hover:text-black;
 			&:hover {
 				@apply bg-accent text-black;
 			}
