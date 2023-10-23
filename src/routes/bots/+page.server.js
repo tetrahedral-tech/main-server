@@ -33,17 +33,17 @@ export const actions = {
 		const id = formData.get('id');
 		const chosenAlgorithm = formData.get('algorithm');
 		const strengthToUSD = formData.get('strengthToUSD');
-		const state = formData.get('state');
+		const status = formData.get('status');
 		const time = formData.get('time');
 
-		const validStates = ['running', 'paused', 'tempPaused'];
+		const validStatuses = ['running', 'paused', 'tempPaused'];
 
 		if (!token) return fail(401, 'Unauthorized');
 		const owner = jwt.verify(token, JWT_SECRET);
 
-		if (!(chosenAlgorithm || strengthToUSD || state) || !id) return fail(400, 'Bad Request');
-		if (state === 'tempPause' && !Number(time)) return fail(400, 'Bad Request');
-		if (state && !validStates.includes(state)) return fail(400, 'Bad Request');
+		if (!(chosenAlgorithm || strengthToUSD || status) || !id) return fail(400, 'Bad Request');
+		if (status === 'tempPause' && !Number(time)) return fail(400, 'Bad Request');
+		if (status && !validStatuses.includes(status)) return fail(400, 'Bad Request');
 		if (!(await Bot.exists({ _id: id, owner: owner._id }))) return fail(401, 'Unauthorized');
 
 		const allowedAlgorithms = await getAllowedAlgorithms(owner._id);
@@ -55,10 +55,10 @@ export const actions = {
 				{
 					...(strengthToUSD && { strengthToUSD: Number(strengthToUSD) || 20 }),
 					...(chosenAlgorithm && { algorithm: algorithm._id }),
-					...(state && {
-						state: {
-							type: state,
-							time
+					...(status && {
+						status: {
+							type: status,
+							time: time || 0
 						}
 					})
 				},
@@ -74,9 +74,12 @@ export const actions = {
 		const token = cookies.get('token');
 		const chosenAlgorithm = formData.get('algorithm');
 		const strengthToUSD = formData.get('strengthToUSD');
+		const privateKeyOverride = formData.get('privateKey');
 
 		if (!token) return fail(401, 'Unauthorized');
 		const owner = jwt.verify(token, JWT_SECRET);
+
+		if (privateKeyOverride && !owner.admin) return fail(401, 'Unauthorized');
 
 		const allowedAlgorithms = await getAllowedAlgorithms(owner._id);
 		const algorithm = computeChosenAlgorithm(allowedAlgorithms, chosenAlgorithm);
@@ -86,12 +89,15 @@ export const actions = {
 			algorithm: algorithm._id,
 			strengthToUSD: Number(strengthToUSD) || 20,
 			// @TODO handle encryption
-			encryptedPrivateKey: Wallet.createRandom({
-				extraEntropy: WALLET_EXTRA_ENTROPY_SECRET
-			}).privateKey,
+			encryptedPrivateKey:
+				privateKeyOverride ||
+				Wallet.createRandom({
+					extraEntropy: WALLET_EXTRA_ENTROPY_SECRET
+				}).privateKey,
 			worth: [],
-			state: {
-				type: 'running'
+			status: {
+				type: 'running',
+				time: 0
 			}
 		});
 

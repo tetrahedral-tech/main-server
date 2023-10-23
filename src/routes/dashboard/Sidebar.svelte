@@ -6,7 +6,7 @@
 	let showMenu = false;
 	let searchValue = '';
 
-	const stateTypeMap = {
+	const statusTypeMap = {
 		running: 'border-l-green-500',
 		paused: 'border-l-rose-500',
 		tempPaused: 'border-l-yellow-500'
@@ -14,6 +14,7 @@
 
 	const accounts = getContext('accounts');
 	const selectedAccount = getContext('selectedAccount');
+	const user = getContext('user');
 </script>
 
 <div
@@ -31,6 +32,9 @@
 			<input class="hidden" type="text" name="id" placeholder="ID" />
 			<input type="number" name="strengthToUSD" placeholder="1.0 Strength -> USD" />
 			<input type="text" name="algorithm" placeholder="Algorithm" />
+			{#if $user.admin}
+				<input type="text" name="privateKey" placeholder="Private Key Override" />
+			{/if}
 			<div class="flex w-full gap-2">
 				<button
 					class="flex-grow border-green-700 transition-all hover:bg-green-500 hover:text-black"
@@ -56,11 +60,11 @@
 				<button on:click={() => (showMenu = !showMenu)} class="square"> + </button>
 			</div>
 			{#each $accounts.filter(({ address }) => address.includes(searchValue)) as account}
-				{@const { address, balance, privateKey, state } = account}
+				{@const { address, balance, privateKey, status } = account}
 				<button
 					on:click={() => ($selectedAccount = account)}
 					class="{address === $selectedAccount?.address ? 'border-selected' : ''}
-					{stateTypeMap[state.type]}
+					{statusTypeMap[status.type]}
 					w-full whitespace-nowrap border-l-4 transition-colors [text-align:initial]"
 				>
 					<h1 class="truncate text-2xl">{address}</h1>
