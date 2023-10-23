@@ -23,7 +23,6 @@
 	button:focus {
 		@apply outline-none;
 	}
-
 	a {
 		@apply text-accent underline decoration-transparent transition-[text-decoration-color] hover:decoration-accent;
 	}

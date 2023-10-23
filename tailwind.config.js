@@ -10,6 +10,9 @@ export default {
 			},
 			colors: {
 				accent: colors.purple[500],
+				red: colors.rose[500],
+				green: colors.green[500],
+				yellow: colors.yellow[500],
 				section: {
 					100: `${colors.gray[500]}3c`, // container gray
 					200: `${colors.gray[950]}66`, // sidebar gray
