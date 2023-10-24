@@ -17,7 +17,10 @@ export const load = async ({ cookies }) => {
 	const bots = await Bot.find({ owner: user._id });
 
 	const accounts = await Promise.all(
-		bots.map(async ({ worth, privateKey, _id: id, status }) => {
+		bots.map(async bot => {
+			const { worth, _id: id, status } = bot;
+			const privateKey = bot.privateKey();
+
 			const address = await new Wallet(privateKey).getAddress();
 
 			return {
