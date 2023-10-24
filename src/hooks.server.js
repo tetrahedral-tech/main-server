@@ -1,7 +1,7 @@
-import { connect, connection, Types as MongooseTypes } from 'mongoose';
-import { createClient } from 'redis';
+import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import schedule from 'node-schedule';
+import { createClient } from 'redis';
 
 import { ALGORITHM_SERVER_URI, DB_URI, JWT_SECRET, REDIS_URI } from '$env/static/private';
 import { toReadableAmount } from '$lib/blockchain.server';
@@ -10,7 +10,7 @@ import { evaluateModelsWhenConnectionReady } from '$lib/models.server';
 import executeTransactions from './blockchain/trading';
 import addWorths, { defaultBaseToken } from './blockchain/worth';
 
-connect(DB_URI);
+mongoose.connect(DB_URI);
 const redis = createClient({ url: REDIS_URI });
 await evaluateModelsWhenConnectionReady();
 
@@ -39,7 +39,6 @@ const job = schedule.scheduleJob('*/50 * * * *', async () => {
 
 	const tradeData = bots
 		.map(bot => {
-			console.log(bot);
 			if (bot.status.name === 'paused') return;
 			if (bot.status.name === 'tempPaused')
 				if (bot.status.time > Date.now())
@@ -60,7 +59,7 @@ const job = schedule.scheduleJob('*/50 * * * *', async () => {
 
 			return {
 				id: bot._id,
-				privateKey: bot.privateKey,
+				privateKey: bot.privateKey(),
 				amount: bot.strengthToUSD * strength,
 				signal
 			};
@@ -77,7 +76,7 @@ const job = schedule.scheduleJob('*/50 * * * *', async () => {
 			.map(r => r.value)
 			.map(({ value, id }) => ({
 				updateOne: {
-					filter: { _id: new MongooseTypes.ObjectId(id) },
+					filter: { _id: new mongoose.Types.ObjectId(id) },
 					update: {
 						$push: {
 							worth: {
@@ -97,7 +96,7 @@ const job = schedule.scheduleJob('*/50 * * * *', async () => {
 
 const shutdown = async signal => {
 	job.cancel();
-	await (await connection).disconnect();
+	await (await mongoose.connection).disconnect();
 	redis.isOpen && (await redis.disconnect());
 	throw Error(`Shutting down${signal ? `due to ${signal}` : ''}...`);
 };

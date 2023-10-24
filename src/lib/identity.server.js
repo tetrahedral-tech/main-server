@@ -1,5 +1,6 @@
-import { error, redirect } from '@sveltejs/kit';
 import jwt from 'jsonwebtoken';
+import { error, redirect } from '@sveltejs/kit';
+
 import { JWT_SECRET } from '$env/static/private';
 import { Identity, User } from '$lib/models.server.js';
 
@@ -9,7 +10,6 @@ export const handleSignin = async (cookies, data) => {
 	if (!user)
 		if (data.force) throw error(400, 'Bad Request');
 		else {
-			console.log('bleh 2');
 			const identity = new Identity(data);
 
 			await identity.save();

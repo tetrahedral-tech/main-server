@@ -52,10 +52,12 @@ export const actions = {
 
 		const token = cookies.get('token');
 		const id = formData.get('id');
-		const data = jwt.verify(token, JWT_SECRET);
 
-		if (!token || !data.admin) throw error(401, 'Unauthorized');
+		if (!token) throw error(401, 'Unauthorized');
 		if (!id) throw error(400, 'Bad Request');
+
+		const data = jwt.verify(token, JWT_SECRET);
+		if (!data.admin) throw error(401, 'Unauthorized');
 
 		await handleSignin(cookies, {
 			id,
