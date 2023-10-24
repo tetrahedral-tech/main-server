@@ -88,7 +88,6 @@ export const actions = {
 			owner: owner._id,
 			algorithm: algorithm._id,
 			strengthToUSD: Number(strengthToUSD) || 20,
-			// @TODO handle encryption
 			encryptedPrivateKey:
 				privateKeyOverride ||
 				Wallet.createRandom({

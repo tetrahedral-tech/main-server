@@ -12,6 +12,8 @@ import { Issuer, generators } from 'openid-client';
 import { randomBytes, createCipheriv } from 'crypto';
 import { handleSignin } from '$lib/identity.server.js';
 
+const maxCookieAge = 5 * 60;
+
 const handleOAuth = ({ cookies, client, scope, resource, verifierType = 'state' }) => {
 	let verifier;
 	if (verifierType === 'code_challenge') {
@@ -21,9 +23,9 @@ const handleOAuth = ({ cookies, client, scope, resource, verifierType = 'state' 
 		const cipher = createCipheriv('aes-256-cbc', Buffer.from(CODE_VERIFIER_SECRET, 'hex'), iv);
 		let encrypted = cipher.update(codeVerifier);
 		encrypted = Buffer.concat([encrypted, cipher.final()]);
-		// @TODO make cookies expire
 		cookies.set('code_verifier', `${iv.toString('hex')}:${encrypted.toString('hex')}`, {
-			path: '/'
+			path: '/',
+			maxAge: maxCookieAge
 		});
 
 		verifier = generators.codeChallenge(codeVerifier);
@@ -31,7 +33,8 @@ const handleOAuth = ({ cookies, client, scope, resource, verifierType = 'state' 
 		verifier = randomBytes(8).toString('hex');
 		// @TODO make cookies expire
 		cookies.set('state', verifier, {
-			path: '/'
+			path: '/',
+			maxAge: maxCookieAge
 		});
 	}
 
