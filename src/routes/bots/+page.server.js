@@ -1,5 +1,5 @@
 import { Bot } from '$lib/models.server.js';
-import { JWT_SECRET, WALLET_EXTRA_ENTROPY_SECRET } from '$env/static/private';
+import { JWT_SECRET, WALLET_SECRET } from '$env/static/private';
 import { getAllowedAlgorithms } from '$lib/data.server.js';
 
 import { fail } from '@sveltejs/kit';
@@ -92,7 +92,7 @@ export const actions = {
 			encryptedPrivateKey:
 				privateKeyOverride ||
 				Wallet.createRandom({
-					extraEntropy: WALLET_EXTRA_ENTROPY_SECRET
+					extraEntropy: WALLET_SECRET
 				}).privateKey,
 			worth: [],
 			status: {}

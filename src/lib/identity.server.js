@@ -1,5 +1,6 @@
-import { error, redirect } from '@sveltejs/kit';
 import jwt from 'jsonwebtoken';
+import { error, redirect } from '@sveltejs/kit';
+
 import { JWT_SECRET } from '$env/static/private';
 import { Identity, User } from '$lib/models.server.js';
 
