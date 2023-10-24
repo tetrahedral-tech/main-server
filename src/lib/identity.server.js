@@ -23,6 +23,7 @@ export const handleSignin = async (cookies, data) => {
 		}
 
 	user = await user.populate('identity');
+
 	const token = jwt.sign(user.toJSON(), JWT_SECRET, { algorithm: 'HS256' });
 	cookies.set('token', token, {
 		path: '/'
