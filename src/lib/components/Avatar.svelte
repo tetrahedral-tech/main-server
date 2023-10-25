@@ -11,6 +11,7 @@
 
 			if (!avatar) {
 				avatar = await fetch($user.identity.photo);
+				if (!avatar.ok) return (avatarElement.src = '/notfound.png');
 				cache.put('/avatar', avatar);
 			}
 

@@ -2,6 +2,7 @@
 	import Graph from '$lib/components/Graph.svelte';
 	import { getContext } from 'svelte';
 	import Sidebar from './Sidebar.svelte';
+	import Avatar from '$lib/components/Avatar.svelte';
 
 	const selectedAccount = getContext('selectedAccount');
 	const user = getContext('user');
@@ -23,6 +24,7 @@
 					</span>
 				</section>
 				<section class="flex h-full justify-center">
+					<Avatar></Avatar>
 					<Graph class="object-contain" token={$user.token} path="worth/{id}" />
 				</section>
 			{:else}
