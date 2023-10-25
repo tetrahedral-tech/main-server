@@ -4,12 +4,13 @@
 
 	import Sidebar from './Sidebar.svelte';
 	import BotControls from './botControls/BotControls.svelte';
+	import Avatar from '$lib/components/Avatar.svelte';
 
 	const selectedAccount = getContext('selectedAccount');
 	const user = getContext('user');
 </script>
 
-<main class="p-6 flex justify-center items-center">
+<main class="flex items-center justify-center p-6">
 	<section class="border-heavy flex h-full w-5/6">
 		<Sidebar />
 		<div class="flex flex-grow flex-col gap-3">
@@ -25,6 +26,7 @@
 					</span>
 				</section>
 				<section class="flex h-full justify-center">
+					<Avatar />
 					<Graph class="object-contain" token={$user.token} path="worth/{id}" />
 				</section>
 			{:else}
