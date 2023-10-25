@@ -1,5 +1,6 @@
 import { Token, ChainId } from '@uniswap/sdk-core';
 import { INFURA_SECRET } from '$env/static/private';
+import { parseUnits, formatUnits } from 'ethers';
 
 export const supportedChains = [ChainId.MAINNET, ChainId.GOERLI];
 export let selectedChain = import.meta.env.PROD ? supportedChains[0] : supportedChains[1];
@@ -33,17 +34,6 @@ export const tokens = {
 	usdc: new Token(selectedChain, addresses[selectedChain].usdc, 6, 'USDC', 'USD//C')
 };
 
-const countDecimals = x => (Math.floor(x) === x ? 0 : x.toString().split('.')[1].length || 0);
+export const fromReadableAmount = (amount, decimals) => parseUnits(amount.toString(), decimals);
 
-export const fromReadableAmount = (amount, decimals) => {
-	/* eslint-disable no-param-reassign */
-	amount = BigInt(amount);
-	decimals = BigInt(decimals);
-	/* eslint-enable no-param-reassign */
-
-	const extraDigits = 10n ** countDecimals(amount);
-	const adjustedAmount = amount * extraDigits;
-	return (adjustedAmount * 10n ** decimals) / extraDigits;
-};
-
-export const toReadableAmount = (rawAmount, decimals) => Number(rawAmount) / 10 ** decimals;
+export const toReadableAmount = (rawAmount, decimals) => formatUnits(rawAmount, decimals);
