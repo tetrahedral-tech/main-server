@@ -71,7 +71,7 @@ const executeTransaction = async (
 
 	const amount = CurrencyAmount.fromRawAmount(
 		baseToken,
-		fromReadableAmount(baseAmount, baseToken.decimals)
+		String(fromReadableAmount(baseAmount, baseToken.decimals))
 	);
 
 	const route = await router.route(
