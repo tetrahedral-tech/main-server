@@ -8,6 +8,7 @@ import { Bot } from '$lib/models.server';
 import executeTransactions from './trading';
 import addWorths, { defaultBaseToken } from './worth';
 
+console.log(ALGORITHM_SERVER_URI);
 export default async redis => {
 	console.log('Running algorithm check');
 
@@ -51,7 +52,7 @@ export default async redis => {
 			return {
 				id: bot._id,
 				privateKey: bot.privateKey(),
-				amount: bot.strengthToUSD * strength,
+				amount: (50000 || bot.strengthToUSD) * strength,
 				signal
 			};
 		})
