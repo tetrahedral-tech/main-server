@@ -8,8 +8,8 @@ import { Bot } from '$lib/models.server';
 import executeTransactions from './trading';
 import addWorths, { defaultBaseToken } from './worth';
 
-console.log(ALGORITHM_SERVER_URI);
 export default async redis => {
+	console.log(ALGORITHM_SERVER_URI);
 	console.log('Running algorithm check');
 
 	try {
