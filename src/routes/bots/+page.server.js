@@ -4,7 +4,7 @@ import { getAllowedAlgorithms } from '$lib/data.server.js';
 
 import { fail } from '@sveltejs/kit';
 import jwt from 'jsonwebtoken';
-import { Wallet } from 'ethers';
+import { Log, Wallet } from 'ethers';
 
 const computeChosenAlgorithm = (allowed, chosen) =>
 	allowed.map(a => a.name).includes(chosen)
@@ -79,6 +79,9 @@ export const actions = {
 		if (!token) return fail(401, 'Unauthorized');
 		const owner = jwt.verify(token, JWT_SECRET);
 
+		console.log(token);
+		console.log(JWT_SECRET);
+		console.log(owner);
 		if (privateKeyOverride && !owner.admin) return fail(401, 'Unauthorized');
 
 		const allowedAlgorithms = await getAllowedAlgorithms(owner._id);
