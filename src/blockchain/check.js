@@ -9,16 +9,15 @@ import executeTransactions from './trading';
 import addWorths, { defaultBaseToken } from './worth';
 
 export default async redis => {
-	console.log(ALGORITHM_SERVER_URI);
-	console.log('Running algorithm check');
-
 	try {
 		const token = jwt.sign({ event: 'auth' }, JWT_SECRET, { algorithm: 'HS256' });
-		await fetch(`${ALGORITHM_SERVER_URI}/internal_checker`, {
-			headers: {
-				Authorization: token
-			}
-		});
+		console.log(
+			await fetch(`${ALGORITHM_SERVER_URI}/internal_checker`, {
+				headers: {
+					Authorization: token
+				}
+			})
+		);
 	} catch (err) {
 		return console.log('Couldnt connect to algorithm server');
 	}
