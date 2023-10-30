@@ -85,7 +85,6 @@ const schemas = {
 
 // Using function keyword due to scoping issues
 schemas.Bot.pre('save', function encrypt(next) {
-	console.log(this);
 	if (!this.isModified('encryptedPrivateKey')) return next();
 
 	const iv = randomBytes(16);
