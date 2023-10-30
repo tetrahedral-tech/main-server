@@ -4,7 +4,7 @@ import { getAllowedAlgorithms } from '$lib/data.server.js';
 
 import { fail } from '@sveltejs/kit';
 import jwt from 'jsonwebtoken';
-import { Log, Wallet } from 'ethers';
+import { Wallet } from 'ethers';
 
 const computeChosenAlgorithm = (allowed, chosen) =>
 	allowed.map(a => a.name).includes(chosen)
@@ -46,8 +46,11 @@ export const actions = {
 		if (status && !validStatuses.includes(status)) return fail(400, 'Bad Request');
 		if (!(await Bot.exists({ _id: id, owner: owner._id }))) return fail(401, 'Unauthorized');
 
+		console.log(await Bot.find({}));
 		const allowedAlgorithms = await getAllowedAlgorithms(owner._id);
+		console.log(allowedAlgorithms);
 		const algorithm = computeChosenAlgorithm(allowedAlgorithms, chosenAlgorithm);
+		console.log(algorithm);
 
 		return (
 			await Bot.findOneAndUpdate(
@@ -79,9 +82,6 @@ export const actions = {
 		if (!token) return fail(401, 'Unauthorized');
 		const owner = jwt.verify(token, JWT_SECRET);
 
-		console.log(token);
-		console.log(JWT_SECRET);
-		console.log(owner);
 		if (privateKeyOverride && !owner.admin) return fail(401, 'Unauthorized');
 
 		const allowedAlgorithms = await getAllowedAlgorithms(owner._id);
