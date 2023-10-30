@@ -1,5 +1,5 @@
 <script>
-	import BotControls from './BotControls.svelte';
+	import BotControls from './botControls/BotControls.svelte';
 	import { enhance } from '$app/forms';
 	import { getContext } from 'svelte';
 
