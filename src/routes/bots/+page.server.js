@@ -46,11 +46,8 @@ export const actions = {
 		if (status && !validStatuses.includes(status)) return fail(400, 'Bad Request');
 		if (!(await Bot.exists({ _id: id, owner: owner._id }))) return fail(401, 'Unauthorized');
 
-		console.log(await Bot.find({}));
 		const allowedAlgorithms = await getAllowedAlgorithms(owner._id);
-		console.log(allowedAlgorithms);
 		const algorithm = computeChosenAlgorithm(allowedAlgorithms, chosenAlgorithm);
-		console.log(algorithm);
 
 		return (
 			await Bot.findOneAndUpdate(
