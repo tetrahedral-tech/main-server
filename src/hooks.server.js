@@ -11,7 +11,7 @@ mongoose.connect(DB_URI);
 const redis = createClient({ url: REDIS_URI });
 await evaluateModelsWhenConnectionReady();
 
-const job = schedule.scheduleJob('*/5 * * * *', () =>
+export const job = schedule.scheduleJob('*/5 * * * *', () =>
 	executeAlgorithmCheck(redis)
 		.catch()
 		.finally(() => redis.isOpen && redis.disconnect())
