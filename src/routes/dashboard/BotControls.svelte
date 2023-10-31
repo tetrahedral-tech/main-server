@@ -22,6 +22,6 @@
 	</button>
 	<button class=" border-accent/20 square"><AdjustmentsHorizontal class="icon" /></button>
 	{#if $user.admin}
-		<button class=" border-accent/20 square"><CommandLine class="icon" /></button>
+		<button class=" border-accent/20 ml-auto square"><CommandLine class="icon" /></button>
 	{/if}
 </section>
