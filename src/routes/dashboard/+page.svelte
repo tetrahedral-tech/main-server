@@ -1,14 +1,16 @@
 <script>
 	import Graph from '$lib/components/Graph.svelte';
 	import { getContext } from 'svelte';
-	import Sidebar from './Sidebar.svelte';
 
+	import Sidebar from './Sidebar.svelte';
+	import BotControls from './BotControls.svelte';
+	
 	const selectedAccount = getContext('selectedAccount');
 	const user = getContext('user');
 </script>
 
-<main>
-	<section class="border-heavy flex h-full">
+<main class="p-6 flex justify-center items-center">
+	<section class="border-heavy flex h-full w-5/6">
 		<Sidebar />
 		<div class="flex flex-grow flex-col gap-3">
 			{#if $selectedAccount}
@@ -34,6 +36,7 @@
 					<h1 class="subtext">please select an account</h1>
 				</section>
 			{/if}
+			<BotControls />
 		</div>
 	</section>
 </main>

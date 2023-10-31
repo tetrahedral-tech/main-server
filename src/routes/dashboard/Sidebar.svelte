@@ -18,7 +18,7 @@
 </script>
 
 <div
-	class="flex w-1/5 flex-col {showMenu === true ? 'gap-3' : 'gap-0'} transition-all duration-1000"
+	class="flex w-1/5 flex-col {showMenu === true ? 'gap-3' : 'gap-0'} transition-all duration-1000 w-96"
 	style="transition-timing-function: cubic-bezier(0.83, 0.0, 0.17, 1.0)"
 >
 	<section
@@ -78,8 +78,6 @@
 				</button>
 			{/each}
 		</section>
-
-		<BotControls />
 	</div>
 </div>
 
