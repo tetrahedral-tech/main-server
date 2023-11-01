@@ -2,8 +2,6 @@
 	import Avatar from '$lib/components/Avatar.svelte';
 
 	export let data;
-	let id = data.account.identity;
-	let open;
 </script>
 
 <main>
