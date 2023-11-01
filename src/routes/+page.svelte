@@ -3,7 +3,7 @@
 
 	export let data;
 	let id = data.account.identity;
-	let open = true;
+	let open;
 </script>
 
 <main>
