@@ -3,8 +3,8 @@
 	import { getContext } from 'svelte';
 
 	import Sidebar from './Sidebar.svelte';
-	import BotControls from './BotControls.svelte';
-	
+	import BotControls from './botControls/BotControls.svelte';
+
 	const selectedAccount = getContext('selectedAccount');
 	const user = getContext('user');
 </script>

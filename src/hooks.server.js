@@ -16,7 +16,6 @@ const redis = createClient();
 
 // Algorithm Check Job
 schedule.scheduleJob('*/5 * * * *', async () => {
-	// return;
 	console.log('Running algorithm check');
 
 	try {
