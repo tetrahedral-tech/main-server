@@ -15,7 +15,7 @@
 <dialog
 	class="{open ? 'pointer-events-auto opacity-100' : 'opacity-0'}
 	pointer-events-none bg-transparent text-white
-	transition-opacity duration-[500ms]"
+	transition-opacity duration-[500ms] max-w-3xl"
 	bind:this={dialog}
 	on:click={dialogClick}
 	role="presentation"
