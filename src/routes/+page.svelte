@@ -1,8 +1,12 @@
 <script>
 	import Modal from '$lib/components/Modal.svelte';
+	import Avatar from '$lib/components/Avatar.svelte';
 
 	export let data;
-	let id = data.account.identity;
+	const {
+		account,
+		account: { identity }
+	} = data;
 	let open;
 </script>
 
@@ -29,23 +33,29 @@
 		<div class="yippie"></div>
 		<section>
 			<pre>
-[NAME]: {id.name}
-[ADMIN?]: {data.account.admin}
-[IDs]: 
-	ACCOUNT ID: {id._id}
-	??????? ID: {data.account._id}
-[IAT]: {data.account.iat}</pre>
+				[NAME]: {identity.name}
+				[ADMIN?]: {account.admin}
+				[PROVIDER]: {identity.provider}
+				[PHOTO]: <img alt={identity.name} src={identity.photo} />
+				[CACHED PHOTO]: <Avatar />
+				[IDs]: 
+					ACCOUNT ID: {account._id}
+					IDENTITY ID: {identity._id}
+
+				[ISSUED AT]: {account.iat}
+				[EXPIRES AT]: {account.exp}
+			</pre>
 		</section>
 	{/if}
-	<br>
+	<br />
 	<button on:click={() => (open = !open)}>Toggle Modal</button>
-	<button on:click={() => (location.href = "/identity")}>/identity</button>
-	<button on:click={() => (location.href = "/dashboard")}>/dashboard</button>
+	<button on:click={() => (location.href = '/identity')}>/identity</button>
+	<button on:click={() => (location.href = '/dashboard')}>/dashboard</button>
 </main>
 
 <style lang="postcss">
 	p {
-		@apply p-10 border border-gray-500;
+		@apply border border-gray-500 p-10;
 		overflow: hidden;
 		text-wrap: balance;
 	}
@@ -53,12 +63,15 @@
 		@apply font-sans;
 	}
 	.yippie {
-		content:'';
+		content: '';
 		position: absolute;
-		height:177px;
-		width:177px;
-		background: url('https://cdn.discordapp.com/avatars/1096253197338808332/c6e2c05a0c80b68c09e55d821f3ec86b.webp?size=1024'); background-size:contain; background-repeat:no-repeat; position:absolute;
+		height: 177px;
+		width: 177px;
+		background: url('happy.png');
+		background-size: contain;
+		background-repeat: no-repeat;
+		position: absolute;
 		z-index: -1;
-		bottom:0;
+		bottom: 0;
 	}
 </style>
