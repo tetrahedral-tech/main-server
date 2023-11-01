@@ -1,36 +1,18 @@
 <script>
-	import Modal from '$lib/components/Modal.svelte';
 	import Avatar from '$lib/components/Avatar.svelte';
 
 	export let data;
+
 	const {
 		account,
 		account: { identity }
 	} = data;
-	let open;
 </script>
 
 <main>
 	{#if data}
-		<Modal bind:open>
-			{#if data.success}
-				<div class="success">
-					<span style="word-wrap: anywhere;">{data.token}</span>
-					<br />
-					<p>{JSON.stringify(data.account)}</p>
-				</div>
-			{:else}
-				<div class="error">
-					<span>{data.error}</span>
-					{#if data.detailed}
-						<br />
-						<code>{data.detailed}</code>
-					{/if}
-				</div>
-			{/if}
-		</Modal>
 		<h1 class="text-2xl">SIGNED IN AS:</h1>
-		<div class="yippie"></div>
+		<div class="yippie" />
 		<section>
 			<pre>
 				[NAME]: {identity.name}
@@ -44,6 +26,8 @@
 
 				[ISSUED AT]: {account.iat}
 				[EXPIRES AT]: {account.exp}
+
+				{data.token}
 			</pre>
 		</section>
 	{/if}
