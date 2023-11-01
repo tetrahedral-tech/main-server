@@ -15,6 +15,7 @@ const baseConfig = {
 		sourceType: 'module'
 	},
 	rules: {
+		'no-restricted-globals': 'off',
 		'no-underscore-dangle': 'off',
 		'no-empty': [
 			'error',

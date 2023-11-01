@@ -9,7 +9,6 @@ export const handleSignin = async (cookies, data) => {
 	if (!user)
 		if (data.force) throw error(400, 'Bad Request');
 		else {
-			console.log('bleh 2');
 			const identity = new Identity(data);
 
 			await identity.save();
@@ -22,7 +21,6 @@ export const handleSignin = async (cookies, data) => {
 			await user.save();
 		}
 
-	console.log('bleh 3');
 	user = await user.populate('identity');
 	const token = sign(user.toJSON(), JWT_SECRET, { algorithm: 'HS256' });
 	cookies.set('token', token, {
