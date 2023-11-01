@@ -2,24 +2,23 @@
 	import Avatar from '$lib/components/Avatar.svelte';
 
 	export let data;
-
-	const {
-		account,
-		account: { identity }
-	} = data;
 </script>
 
 <main>
-	{#if data}
+	{#if data && data.success}
+		{@const {
+			account,
+			account: { identity }
+		} = data}
 		<h1 class="text-2xl">SIGNED IN AS:</h1>
-		<div class="yippie" />
+		<div class="happy" />
 		<section>
 			<pre>
 				[NAME]: {identity.name}
 				[ADMIN?]: {account.admin}
 				[PROVIDER]: {identity.provider}
-				[PHOTO]: <img alt={identity.name} src={identity.photo} />
-				[CACHED PHOTO]: <Avatar />
+				[PHOTO]: <img class="inline align-top" alt={identity.name} src={identity.photo} />
+				[CACHED PHOTO]: <Avatar class="inline align-top" />
 				[IDs]: 
 					ACCOUNT ID: {account._id}
 					IDENTITY ID: {identity._id}
@@ -32,21 +31,15 @@
 		</section>
 	{/if}
 	<br />
-	<button on:click={() => (open = !open)}>Toggle Modal</button>
 	<button on:click={() => (location.href = '/identity')}>/identity</button>
 	<button on:click={() => (location.href = '/dashboard')}>/dashboard</button>
 </main>
 
 <style lang="postcss">
-	p {
-		@apply border border-gray-500 p-10;
-		overflow: hidden;
-		text-wrap: balance;
-	}
 	pre {
 		@apply font-sans;
 	}
-	.yippie {
+	.happy {
 		content: '';
 		position: absolute;
 		height: 177px;
