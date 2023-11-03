@@ -1,5 +1,4 @@
 <script>
-	import BotControls from './botControls/BotControls.svelte';
 	import { enhance } from '$app/forms';
 	import { getContext } from 'svelte';
 
@@ -18,7 +17,9 @@
 </script>
 
 <div
-	class="flex w-1/5 flex-col {showMenu === true ? 'gap-3' : 'gap-0'} transition-all duration-1000 w-96"
+	class="flex w-1/5 flex-col {showMenu === true
+		? 'gap-3'
+		: 'gap-0'} w-96 transition-all duration-1000"
 	style="transition-timing-function: cubic-bezier(0.83, 0.0, 0.17, 1.0)"
 >
 	<section
