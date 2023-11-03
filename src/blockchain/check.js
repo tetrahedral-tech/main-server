@@ -2,11 +2,12 @@ import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 
 import { ALGORITHM_SERVER_URI, JWT_SECRET } from '$env/static/private';
-import { toReadableAmount } from '$lib/blockchain.server';
+import { toReadableAmount, defaultBaseToken } from '$lib/blockchain.server';
 import { Bot } from '$lib/models.server';
 
+import executeApprovals from './approval';
 import executeTransactions from './trading';
-import addWorths, { defaultBaseToken } from './worth';
+import addWorths from './worth';
 
 export default async redis => {
 	try {
@@ -55,7 +56,9 @@ export default async redis => {
 		})
 		.filter(b => b);
 
+	const approvalResults = await executeApprovals(tradeData);
 	const transactionResults = await executeTransactions(tradeData);
+	console.log(approvalResults);
 	console.log(transactionResults);
 
 	// Update worths

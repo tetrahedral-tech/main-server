@@ -1,4 +1,4 @@
-import { tokens, addresses, providerUrl } from '$lib/blockchain.server.js';
+import { tokens, addresses, providerUrl, defaultBaseToken } from '$lib/blockchain.server.js';
 
 import { Contract, Wallet } from 'ethers';
 import { JsonRpcProvider } from '@ethersproject/providers';
@@ -16,9 +16,13 @@ const defaultContracts = mapObject(
 );
 const quoterContract = new Contract(addresses.quoter, quoterAbi, provider);
 
-export const defaultBaseToken = tokens.usdc;
-
-const getWorth = async (address, includedTokens = tokens, baseToken = defaultBaseToken) => {
+export const getWorth = async (
+	address,
+	includedTokens = tokens,
+	baseToken = defaultBaseToken,
+	fixedBalance = null,
+	full = false
+) => {
 	const contracts = Object.entries(includedTokens)
 		// eslint-disable-next-line no-unused-vars
 		.filter(([name, token]) => token.address !== baseToken.address)
@@ -28,27 +32,30 @@ const getWorth = async (address, includedTokens = tokens, baseToken = defaultBas
 				: new Contract(token.address, erc20Abi, provider)
 		);
 
-	const ethBalance = (await provider.getBalance(address)).toBigInt();
+	const ethBalance = fixedBalance ? 0 : (await provider.getBalance(address)).toBigInt();
 
 	const worths = await Promise.all(
 		contracts.map(async contract => {
 			const contractAddress = await contract.getAddress();
-			const balance = await contract.balanceOf(address);
-			const isWethContract = contractAddress === tokens.weth.address;
+			const balance = fixedBalance ? 0 : await contract.balanceOf(address);
+			const isWrappedContract = contractAddress === tokens.wrapped.address;
 
-			if (balance === 0n && !(isWethContract && ethBalance > 0n)) return 0n;
+			if (!fixedBalance && balance === 0n && !(isWrappedContract && ethBalance > 0n)) return 0n;
 
-			return quoterContract.quoteExactInputSingle.staticCall(
-				contractAddress,
-				baseToken.address,
-				500,
-				balance + (isWethContract ? ethBalance : 0n),
-				0
-			);
+			return {
+				value: quoterContract.quoteExactInputSingle.staticCall(
+					contractAddress,
+					baseToken.address,
+					500,
+					fixedBalance ?? balance + (isWrappedContract ? ethBalance : 0n),
+					0
+				),
+				contract
+			};
 		})
 	);
 
-	return worths.reduce((a, b) => a + b);
+	return full ? worths : worths.map(({ value }) => value).reduce((a, b) => a + b);
 };
 
 export default tradeData =>
