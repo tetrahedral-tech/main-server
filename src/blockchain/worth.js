@@ -1,4 +1,5 @@
-import { tokens, addresses, providerUrl, defaultBaseToken } from '$lib/blockchain.server.js';
+import { tokens, addresses, defaultBaseToken } from '$lib/blockchain';
+import { providerUrl } from '$lib/blockchain.server';
 
 import { Contract, Wallet } from 'ethers';
 import { JsonRpcProvider } from '@ethersproject/providers';

@@ -1,12 +1,8 @@
 import { Wallet } from 'ethers';
 import { JsonRpcProvider } from '@ethersproject/providers';
 
-import {
-	providerUrl,
-	addresses,
-	repopulateAndSend,
-	defaultBaseToken
-} from '$lib/blockchain.server';
+import { addresses, defaultBaseToken } from '$lib/blockchain';
+import { providerUrl, repopulateAndSend } from '$lib/blockchain.server';
 import { getWorth } from './worth';
 
 const provider = new JsonRpcProvider(providerUrl);

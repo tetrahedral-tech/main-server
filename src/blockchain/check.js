@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 
 import { ALGORITHM_SERVER_URI, JWT_SECRET } from '$env/static/private';
-import { toReadableAmount, defaultBaseToken } from '$lib/blockchain.server';
+import { toReadableAmount, defaultBaseToken } from '$lib/blockchain';
 import { Bot } from '$lib/models.server';
 
 import executeApprovals from './approval';
