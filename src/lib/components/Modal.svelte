@@ -14,13 +14,11 @@
 
 <dialog
 	class="{open ? 'pointer-events-auto opacity-100' : 'opacity-0'}
-	pointer-events-none bg-transparent text-white
-	transition-opacity duration-[500ms] max-w-3xl"
+	pointer-events-none max-w-3xl bg-transparent
+	text-white transition-opacity duration-[500ms]"
 	bind:this={dialog}
 	on:click={dialogClick}
 	role="presentation"
 >
-	<section class="overflow-scroll">
-		<slot />
-	</section>
+	<slot />
 </dialog>

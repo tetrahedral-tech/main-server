@@ -39,25 +39,29 @@
 	const accounts = writable([]);
 
 	const refreshAccounts = async () => ($accounts = await getAccounts());
-	onMount(() => {
-		refreshAccounts();
-	});
+	onMount(refreshAccounts);
 </script>
 
 <main>
-	{#if $selectedAccount}
-		<h2>Selected Account:</h2>
-		<p>{$selectedAccount.address}</p>
+	{#if chainId !== selectedChain}
+		<section class="border-red">
+			<h2>WARNING: You are not on a supported chain!</h2>
+			<button on:click={() => switchChain(selectedChain)}>Switch to Chain {selectedChain}</button>
+		</section>
 		<br />
-
-		<h2>Supported Tokens:</h2>
-		<Tokens {accounts} />
-		<br />
-	{:else}
+	{:else if !$selectedAccount}
 		<section class="border-red">
 			<h2>WARNING: You do not currently have a selected account!</h2>
 			<button on:click={() => (location.href = '/dashboard')}>/dashboard</button>
 		</section>
+		<br />
+	{:else}
+		<h2>Supported Tokens:</h2>
+		<Tokens {accounts} />
+		<br />
+
+		<h2>Selected Account:</h2>
+		<p>{$selectedAccount.address}</p>
 		<br />
 	{/if}
 
@@ -71,14 +75,4 @@
 			{/each}
 		</ul>
 	{/if}
-	<br />
-
-	{#key chainId}
-		{#if chainId !== selectedChain}
-			<section class="border-red">
-				<h2>WARNING: You are not on a supported chain!</h2>
-				<button on:click={() => switchChain(selectedChain)}>Switch to Chain {selectedChain}</button>
-			</section>
-		{/if}
-	{/key}
 </main>

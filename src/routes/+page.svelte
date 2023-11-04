@@ -33,7 +33,6 @@
 	<br />
 	<button on:click={() => (location.href = '/identity')}>/identity</button>
 	<button on:click={() => (location.href = '/dashboard')}>/dashboard</button>
-	<button on:click={() => (location.href = '/dashboard/deposit')}>/dashboard/deposit</button>
 </main>
 
 <style lang="postcss">

@@ -1,6 +1,7 @@
 <script>
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
+	import { page } from '$app/stores';
 
 	export let data;
 
@@ -10,6 +11,9 @@
 
 	$: accounts.set(data.accounts);
 	$: user.set(data.user);
+	$: selectedAccount.set(
+		$accounts.find(account => account.address === $page.url.hash.substring(1))
+	);
 
 	setContext('accounts', accounts);
 	setContext('selectedAccount', selectedAccount);

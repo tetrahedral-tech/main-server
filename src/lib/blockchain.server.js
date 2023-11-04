@@ -1,5 +1,5 @@
-import { INFURA_SECRET } from '$env/static/private';
 import Web3 from 'web3';
+import { INFURA_SECRET } from '$env/static/private';
 import { chainNames, selectedChain } from '$lib/blockchain';
 
 export const providerUrl = `https://${chainNames[selectedChain]}.infura.io/v3/${INFURA_SECRET}`;

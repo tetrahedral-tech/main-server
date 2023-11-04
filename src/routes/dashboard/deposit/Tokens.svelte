@@ -1,7 +1,7 @@
 <script>
 	import Web3 from 'web3';
 	import { getContext } from 'svelte';
-	import { tokens, defaultBaseToken } from '$lib/blockchain';
+	import { tokens, defaultBaseToken, fromReadableAmount } from '$lib/blockchain';
 	import { browser } from '$app/environment';
 
 	// eslint-disable-next-line max-len
@@ -30,7 +30,15 @@
 
 <section>
 	<ul>
-		<button class="border-yellow">Native Currency (Gas)</button><br />
+		<button
+			class="border-yellow"
+			on:click={() =>
+				sendTransaction({
+					to: $selectedAccount.address,
+					from: $accounts[0],
+					value: fromReadableAmount(0.01, tokens.wrapped.decimals).toString(16)
+				})}>Native Currency (Gas)</button
+		><br />
 		{#each Object.values(tokens).sort((a, b) => {
 			if (a.equals(defaultBaseToken)) return -1;
 			if (b.equals(defaultBaseToken)) return 1;
@@ -39,11 +47,13 @@
 			<button
 				class={token.equals(defaultBaseToken) ? 'border-yellow' : 'border-none'}
 				on:click={() => {
-					const to = $selectedAccount.address;
+					const contract = new web3.eth.Contract(erc20Abi, token.address);
 					sendTransaction({
-						to,
+						to: token.address,
 						from: $accounts[0],
-						data: web3.eth.abi.encodeFunctionCall(erc20Abi, [to, 15])
+						data: contract.methods
+							.transfer($selectedAccount.address, fromReadableAmount(20, token.decimals))
+							.encodeABI()
 					});
 				}}
 			>

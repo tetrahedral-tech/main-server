@@ -58,12 +58,12 @@
 		<section class="bg-section-200 relative flex h-full flex-col">
 			<div class="flex">
 				<input type="text" class="w-full" placeholder="search" bind:value={searchValue} />
-				<button on:click={() => (showMenu = !showMenu)} class="square"> + </button>
+				<button on:click={() => (showMenu = !showMenu)} class="square">+</button>
 			</div>
 			{#each $accounts.filter(({ address }) => address.includes(searchValue)) as account}
 				{@const { address, balance, privateKey, status } = account}
 				<button
-					on:click={() => ($selectedAccount = account)}
+					on:click={(location.hash = address)}
 					class="{address === $selectedAccount?.address ? 'border-selected' : ''}
 					{statusTypeMap[status.name]}
 					w-full whitespace-nowrap border-l-4 transition-colors [text-align:initial]"

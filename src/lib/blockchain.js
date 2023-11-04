@@ -1,7 +1,7 @@
 import { Token, ChainId } from '@uniswap/sdk-core';
 import { parseUnits, formatUnits } from 'ethers';
 
-export const supportedChains = [ChainId.ARBITRUM_ONE, ChainId.GOERLI];
+export const supportedChains = [ChainId.ARBITRUM_ONE, ChainId.GOERLI, ChainId.MAINNET];
 export let selectedChain = import.meta.env.PROD ? supportedChains[0] : supportedChains[1];
 export const changeChain = newChain => {
 	if (!supportedChains.includes(newChain)) throw new Error(`Unsupported Chain ${newChain}`);
@@ -32,7 +32,7 @@ export const addresses = {
 };
 
 export const tokens = {
-	weth: new Token(selectedChain, addresses[selectedChain].weth, 18, 'WETH', 'Wrapped Ether'),
+	wrapped: new Token(selectedChain, addresses[selectedChain].weth, 18, 'WETH', 'Wrapped Ether'),
 	usdc: new Token(selectedChain, addresses[selectedChain].usdc, 6, 'USDC', 'USD//C')
 };
 

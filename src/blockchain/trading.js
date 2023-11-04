@@ -64,7 +64,7 @@ export default tradeData =>
 			.map(({ signal: action, amount: baseAmount, privateKey }) =>
 				action !== 'no_action'
 					? executeTransaction(privateKey, {
-							modToken: tokens.weth,
+							modToken: tokens.wrapped,
 							baseAmount,
 							action
 					  })
