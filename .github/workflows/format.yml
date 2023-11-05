@@ -6,26 +6,22 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Check out the repo
+        uses: actions/checkout@v4
       - name: Install modules
         run: yarn --dev
       - name: Run Formatter
         run: yarn format
-      - name: config github
+      - name: Config Github
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
 
-      - name: add changes
-        run: |
-          git add .
+      - name: Add Changes
+        run: git add .
 
-      - name: commit changes
-        run: |
-          git commit -m "Formatting" --all | exit 0
+      - name: Commit Changes
+        run: git commit -m "Formatting" --all | exit 0
 
-      # NOTE : only push changes when the source branch is being pushed to master (target branch)
-      - name: push changes
-        if: github.ref == 'refs/heads/master'
-        run: |
-          git push
+      - name: Push Commits
+        run: git push
