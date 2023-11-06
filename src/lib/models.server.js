@@ -28,6 +28,13 @@ const schemas = {
 		identity: {
 			type: String,
 			ref: 'Identity'
+		},
+		pushSubscription: {
+			type: Object,
+			required: false,
+			p256dh: String,
+			auth: String,
+			endpoint: String
 		}
 	}),
 	Algorithm: Schema({

@@ -1,8 +1,8 @@
 <script>
 	import { getContext, onMount } from 'svelte';
 	import { writable } from 'svelte/store';
-	import { selectedChain } from '$lib/blockchain';
 	import { browser } from '$app/environment';
+	import { selectedChain } from '$lib/blockchain';
 	import Tokens from './Tokens.svelte';
 
 	const { ethereum } = browser ? window : {};

@@ -20,10 +20,12 @@
 	input:focus,
 	select:focus,
 	textarea:focus,
-	button:focus {
+	button:focus,
+	a:not(.link) {
 		@apply outline-none;
 	}
-	a {
+
+	.link {
 		@apply text-accent underline decoration-transparent transition-[text-decoration-color] hover:decoration-accent;
 	}
 
@@ -32,11 +34,13 @@
 		@apply rounded-md border border-heavy bg-gray-950/40;
 	}
 
-	button {
+	button,
+	a:not(.link) {
 		@apply p-4;
 
 		&.square {
 			@apply aspect-square border-accent/20 text-2xl leading-[0] transition-colors duration-300 hover:bg-accent hover:text-black;
+
 			&:hover {
 				@apply bg-accent text-black;
 			}

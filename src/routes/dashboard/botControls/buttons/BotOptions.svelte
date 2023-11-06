@@ -3,7 +3,7 @@
 	const selectedAccount = getContext('selectedAccount');
 </script>
 
-<section class="overflow-scroll">
+<section class="overflow-hidden">
 	<button on:click={() => (location.href = `/dashboard/deposit#${$selectedAccount.address}`)}>
 		/dashboard/deposit
 	</button>
