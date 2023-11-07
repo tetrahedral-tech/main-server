@@ -22,7 +22,7 @@
 </main>
 
 <style>
-	a:hover::before {
+	/* a:hover::before {
 		content: '> ';
-	}
+	} insanely stupid */ 
 </style>
