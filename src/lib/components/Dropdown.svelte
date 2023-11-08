@@ -1,10 +1,11 @@
 <script>
 	import { ChevronUp } from 'svelte-heros-v2';
 
+	export let placeholder;
 	export let contents;
-	export let defaultSelected;
+	export let defaults;
 	export let open;
-	export let selected = defaultSelected ?? contents[0];
+	export let selected = defaults ?? "";
 	export const toggleOpen = () => (open = !open);
 
 	let button;
@@ -14,8 +15,9 @@
 	};
 </script>
 
-<button bind:this={button} on:click={toggleOpen} class="inline-flex w-32 gap-3">
-	<span class="m-auto ml-0">{selected}</span>
+<button bind:this={button} on:click={toggleOpen} class="inline-flex w-fit gap-3">
+	<span class="m-auto ml-0 select-none {selected != "" ? "opacity-0" : "opacity-40"}">{placeholder}</span>
+	<span class="m-auto ml-0 absolute">{selected}</span>
 	<ChevronUp class="transition-transform duration-500 {open ? 'rotate-180' : 'rotate-0'}" />
 </button>
 
@@ -25,7 +27,7 @@
 		: 'max-h-96'}"
 	style="top: {boundingRect.y + boundingRect.height}px; left: {boundingRect.x}px;"
 >
-	{#if typeof contents === 'string'}
+	<!-- {#if typeof contents === 'string'} -->
 		{#each contents as content}
 			<button
 				on:click={() => (selected = content)}
@@ -34,5 +36,5 @@
 				{content}
 			</button>
 		{/each}
-	{/if}
+	<!-- {/if} -->
 </section>

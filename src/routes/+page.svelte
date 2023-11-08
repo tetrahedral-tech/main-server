@@ -14,7 +14,7 @@
 		<h1 class="text-2xl">SIGNED IN AS:</h1>
 		<div class="happy" />
 		<section>
-			<pre>
+			<code>
 				[NAME]: {identity.name}
 				[ADMIN?]: {account.admin}
 				[PROVIDER]: {identity.provider}
@@ -26,19 +26,19 @@
 
 				[ISSUED AT]: {account.iat}
 				[EXPIRES AT]: {account.exp}
-
+				<br>
 				<button on:click={() => alert(data.token)}>Show Token</button>
-			</pre>
+</code>
 		</section>
 	{/if}
 	<br />
 	<button on:click={() => (location.href = '/identity')}>/identity</button>
 	<button on:click={() => (location.href = '/dashboard')}>/dashboard</button>
-	<Dropdown placeholder="blah" contents={['blepe', 'blop', 'bloop', 'bleh']} defaults="bleh" />
+	<Dropdown placeholder="hewoooooo!!" contents={['blepe', 'blop', 'bloop', 'bleh']} />
 </main>
 
 <style lang="postcss">
-	pre {
+	code {
 		@apply font-sans;
 	}
 	.happy {
