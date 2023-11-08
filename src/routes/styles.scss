@@ -21,7 +21,7 @@
 	select:focus,
 	textarea:focus,
 	button:focus,
-	a:not(.link) {
+	.button {
 		@apply outline-none;
 	}
 
@@ -30,12 +30,13 @@
 	}
 
 	button,
-	input {
+	input,
+	.button {
 		@apply rounded-md border border-heavy bg-gray-950/40;
 	}
 
 	button,
-	a:not(.link) {
+	.button {
 		@apply p-4;
 
 		&.square {

@@ -1,6 +1,6 @@
 <script>
 	import Avatar from '$lib/components/Avatar.svelte';
-	import Dropdown from '../lib/components/Dropdown.svelte';
+	import Dropdown from '$lib/components/Dropdown.svelte';
 
 	export let data;
 </script>
@@ -27,13 +27,14 @@
 [ISSUED AT]: {account.iat}
 [EXPIRES AT]: {account.exp}
 
-<button on:click={() => (alert(data.token))}>Show Token</button></pre>
+<button on:click={() => alert(data.token)}>Show Token</button></pre>
 		</section>
 		<!-- <Dropdown placeholder="i hope u die in a fire..." contents={["FUCK", "FUCK 2", "FUCK 3"]} /> test -->
 	{/if}
 	<br />
 	<button on:click={() => (location.href = '/identity')}>/identity</button>
 	<button on:click={() => (location.href = '/dashboard')}>/dashboard</button>
+	<Dropdown placeholder="blah" contents={['blepe', 'blop', 'bloop', 'bleh']} defaults="bleh" />
 </main>
 
 <style lang="postcss">
