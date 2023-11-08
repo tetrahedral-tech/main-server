@@ -31,7 +31,7 @@
 		{#each contents as content}
 			<button
 				on:click={() => (selected = content)}
-				class="transition-all {content === selected ? 'bg-accent text-black' : ''}"
+				class="transition-all hover:scale-95 active:scale-90 {content === selected ? 'bg-accent text-black' : ''}"
 			>
 				{content}
 			</button>
