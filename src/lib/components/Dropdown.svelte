@@ -20,8 +20,7 @@
 </button>
 
 <section
-	class="absolute z-10 mt-3 flex w-40 flex-col overflow-hidden transition-all duration-500 {open !=
-	true
+	class="absolute z-10 mt-3 flex w-40 flex-col overflow-hidden transition-all duration-500 {!open
 		? 'max-h-0 border-none pb-0 pt-0'
 		: 'max-h-96'}"
 	style="top: {boundingRect.y + boundingRect.height}px; left: {boundingRect.x}px;"
@@ -29,7 +28,7 @@
 	{#each contents as content}
 		<button
 			on:click={() => (selected = content)}
-			class="transition-all {content == selected ? 'bg-accent text-black' : ''}"
+			class="transition-all {content === selected ? 'bg-accent text-black' : ''}"
 		>
 			{content}
 		</button>
