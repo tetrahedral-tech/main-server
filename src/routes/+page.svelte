@@ -15,21 +15,21 @@
 		<div class="happy" />
 		<section>
 			<pre>
-[NAME]: {identity.name}
-[ADMIN?]: {account.admin}
-[PROVIDER]: {identity.provider}
-[PHOTO]: <img class="inline align-top" alt={identity.name} src={identity.photo} />
-[CACHED PHOTO]: <Avatar class="inline align-top" />
-[IDs]: 
-	ACCOUNT ID: {account._id}
-	IDENTITY ID: {identity._id}
+				[NAME]: {identity.name}
+				[ADMIN?]: {account.admin}
+				[PROVIDER]: {identity.provider}
+				[PHOTO]: <img class="inline align-top" alt={identity.name} src={identity.photo} />
+				[CACHED PHOTO]: <Avatar class="inline align-top" />
+				[IDs]: 
+					ACCOUNT ID: {account._id}
+					IDENTITY ID: {identity._id}
 
-[ISSUED AT]: {account.iat}
-[EXPIRES AT]: {account.exp}
+				[ISSUED AT]: {account.iat}
+				[EXPIRES AT]: {account.exp}
 
-<button on:click={() => alert(data.token)}>Show Token</button></pre>
+				<button on:click={() => alert(data.token)}>Show Token</button>
+			</pre>
 		</section>
-		<!-- <Dropdown placeholder="i hope u die in a fire..." contents={["FUCK", "FUCK 2", "FUCK 3"]} /> test -->
 	{/if}
 	<br />
 	<button on:click={() => (location.href = '/identity')}>/identity</button>
