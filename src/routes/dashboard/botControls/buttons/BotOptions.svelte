@@ -1,5 +1,6 @@
 <script>
 	import { getContext } from 'svelte';
+
 	const selectedAccount = getContext('selectedAccount');
 </script>
 

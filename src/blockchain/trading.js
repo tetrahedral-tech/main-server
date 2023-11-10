@@ -1,21 +1,16 @@
-import {
-	selectedChain,
-	tokens,
-	fromReadableAmount,
-	addresses,
-	defaultBaseToken
-} from '$lib/blockchain';
-import { providerUrl, repopulateAndSend } from '$lib/blockchain.server';
-
 import { Wallet } from 'ethers';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { CurrencyAmount, Percent, TradeType } from '@uniswap/sdk-core';
 import { AlphaRouter, SwapType } from '@uniswap/smart-order-router';
 
+import { tokens, fromReadableAmount, addresses, defaultBaseToken } from '$lib/blockchain';
+import { providerUrl, repopulateAndSend } from '$lib/blockchain.server';
+import { PUBLIC_CHAINID } from '$env/static/public';
+
 const provider = new JsonRpcProvider(providerUrl);
 
 const router = new AlphaRouter({
-	chainId: selectedChain,
+	chainId: Number(PUBLIC_CHAINID),
 	provider
 });
 

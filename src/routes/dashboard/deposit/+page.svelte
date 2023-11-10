@@ -2,7 +2,7 @@
 	import { getContext, onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { browser } from '$app/environment';
-	import { selectedChain } from '$lib/blockchain';
+	import { PUBLIC_CHAINID } from '$env/static/public';
 	import Tokens from './Tokens.svelte';
 
 	const { ethereum } = browser ? window : {};
@@ -19,10 +19,10 @@
 			params: []
 		}) ?? [];
 
-	const switchChain = async chainId =>
+	const switchChain = async newChainId =>
 		ethereum?.request({
 			method: 'wallet_switchEthereumChain',
-			params: [{ chainId: `0x${chainId.toString(16)}` }]
+			params: [{ chainId: `0x${newChainId.toString(16)}` }]
 		});
 
 	const getChain = async () =>
@@ -31,9 +31,10 @@
 			params: []
 		}) || '0x1';
 
-	let chainId = 1;
+	const chainId = Number(PUBLIC_CHAINID);
+	let userChainId = 1;
 	getChain().then(newChainId => ethereum?.emit('chainChanged', newChainId));
-	ethereum?.on('chainChanged', newChainId => (chainId = Number(newChainId)));
+	ethereum?.on('chainChanged', newChainId => (userChainId = Number(newChainId)));
 
 	const selectedAccount = getContext('selectedAccount');
 	const accounts = writable([]);
@@ -43,10 +44,10 @@
 </script>
 
 <main>
-	{#if chainId !== selectedChain}
+	{#if userChainId !== chainId}
 		<section class="border-red">
 			<h2>WARNING: You are not on a supported chain!</h2>
-			<button on:click={() => switchChain(selectedChain)}>Switch to Chain {selectedChain}</button>
+			<button on:click={() => switchChain(chainId)}>Switch to Chain {chainId}</button>
 		</section>
 		<br />
 	{:else if !$selectedAccount}

@@ -1,10 +1,9 @@
+import jwt from 'jsonwebtoken';
+import { fail } from '@sveltejs/kit';
+import { Wallet } from 'ethers';
 import { Bot } from '$lib/models.server.js';
 import { JWT_SECRET, WALLET_SECRET } from '$env/static/private';
 import { getAllowedAlgorithms } from '$lib/data.server.js';
-
-import { fail } from '@sveltejs/kit';
-import jwt from 'jsonwebtoken';
-import { Wallet } from 'ethers';
 
 const computeChosenAlgorithm = (allowed, chosen) =>
 	allowed.map(a => a.name).includes(chosen)

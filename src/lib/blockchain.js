@@ -1,13 +1,8 @@
 import { Token, ChainId } from '@uniswap/sdk-core';
 import { parseUnits, formatUnits } from 'ethers';
-import { dev } from '$app/environment';
+import { PUBLIC_CHAINID } from '$env/static/public';
 
 export const supportedChains = [ChainId.GOERLI, ChainId.ARBITRUM_ONE, ChainId.MAINNET];
-export let selectedChain = dev ? supportedChains[0] : supportedChains[1];
-export const changeChain = newChain => {
-	if (!supportedChains.includes(newChain)) throw new Error(`Unsupported Chain ${newChain}`);
-	selectedChain = newChain;
-};
 
 export const chainNames = {
 	[ChainId.GOERLI]: 'goerli',
@@ -32,9 +27,10 @@ export const addresses = {
 	}
 };
 
+const chainId = Number(PUBLIC_CHAINID);
 export const tokens = {
-	wrapped: new Token(selectedChain, addresses[selectedChain].weth, 18, 'WETH', 'Wrapped Ether'),
-	usdc: new Token(selectedChain, addresses[selectedChain].usdc, 6, 'USDC', 'USD//C')
+	wrapped: new Token(chainId, addresses[chainId].weth, 18, 'WETH', 'Wrapped Ether'),
+	usdc: new Token(chainId, addresses[chainId].usdc, 6, 'USDC', 'USD//C')
 };
 
 export const fromReadableAmount = (amount, decimals) => parseUnits(amount.toString(), decimals);

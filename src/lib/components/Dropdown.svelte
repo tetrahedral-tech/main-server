@@ -1,11 +1,12 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
 	import { ChevronUp } from 'svelte-heros-v2';
 
 	export let placeholder;
 	export let contents;
-	export let defaults;
+
 	export let open;
-	export let selected = defaults ?? "";
+	export let selected;
 	export const toggleOpen = () => (open = !open);
 
 	let button;
@@ -13,11 +14,20 @@
 		top: 0,
 		left: 0
 	};
+
+	const dispatcher = createEventDispatcher();
+	const handleChange = content => {
+		selected = content;
+		dispatcher('change', {
+			option: content
+		});
+	};
 </script>
 
 <button bind:this={button} on:click={toggleOpen} class="inline-flex w-fit gap-3">
-	<span class="m-auto ml-0 select-none {selected != "" ? "opacity-0" : "opacity-40"}">{placeholder}</span>
-	<span class="m-auto ml-0 absolute">{selected}</span>
+	<span class="absolute m-auto ml-0">
+		{selected ?? placeholder}
+	</span>
 	<ChevronUp class="transition-transform duration-500 {open ? 'rotate-180' : 'rotate-0'}" />
 </button>
 
@@ -27,14 +37,14 @@
 		: 'max-h-96'}"
 	style="top: {boundingRect.y + boundingRect.height}px; left: {boundingRect.x}px;"
 >
-	<!-- {#if typeof contents === 'string'} -->
-		{#each contents as content}
-			<button
-				on:click={() => (selected = content)}
-				class="transition-all hover:scale-95 active:scale-90 {content === selected ? 'bg-accent text-black' : ''}"
-			>
-				{content}
-			</button>
-		{/each}
-	<!-- {/if} -->
+	{#each contents as content}
+		<button
+			on:click={() => handleChange(content)}
+			class="transition-all hover:scale-95 active:scale-90 {content === selected
+				? 'bg-accent text-black'
+				: ''}"
+		>
+			{content}
+		</button>
+	{/each}
 </section>

@@ -1,8 +1,11 @@
 import Web3 from 'web3';
 import { INFURA_SECRET } from '$env/static/private';
-import { chainNames, selectedChain } from '$lib/blockchain';
+import { PUBLIC_CHAINID } from '$env/static/public';
+import { chainNames } from '$lib/blockchain';
 
-export const providerUrl = `https://${chainNames[selectedChain]}.infura.io/v3/${INFURA_SECRET}`;
+export const providerUrl = `https://${
+	chainNames[Number(PUBLIC_CHAINID)]
+}.infura.io/v3/${INFURA_SECRET}`;
 const deBigNumberify = object => {
 	const newObject = Object.assign(object, {});
 
