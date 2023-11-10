@@ -56,7 +56,7 @@ export const actions = {
 					...(chosenAlgorithm && { algorithm: algorithm._id }),
 					...(status && {
 						status: {
-							type: status,
+							name: status,
 							time: time || 0
 						}
 					})

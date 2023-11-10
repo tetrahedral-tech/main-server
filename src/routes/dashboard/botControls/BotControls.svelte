@@ -1,56 +1,55 @@
 <script>
-	import {
-		Pause,
-		Play,
-		Clock,
-		Minus,
-		AdjustmentsHorizontal,
-		CommandLine,
-		ArrowPath
-	} from 'svelte-heros-v2';
+	import { Pause, Play, Clock, Minus, AdjustmentsHorizontal, CommandLine } from 'svelte-heros-v2';
 	import { getContext } from 'svelte';
 	import { enhance } from '$app/forms';
 	import Modal from '$lib/components/Modal.svelte';
 
-	import BotOptions from './buttons/BotOptions.svelte';
-	import AdminPanel from './buttons/AdminPanel.svelte';
+	import BotOptions from './menus/BotOptions.svelte';
+	import AdminPanel from './menus/AdminPanel.svelte';
+	import ResumeBot from './formData/ResumeBot.svelte';
+	import PauseBot from './formData/PauseBot.svelte';
+
+	const selectedAccount = getContext('selectedAccount');
+	const user = getContext('user');
 
 	const buttons = [
 		{
-			tooltip: 'Temporary Pause Bot',
+			title: 'Temporary Pause Bot',
 			classes: '!border-white/20 hover:!bg-white',
 			icon: Clock
 		},
 		{
-			tooltip: 'Resume Bot',
+			title: 'Resume Bot',
 			classes: '!border-green/20 hover:!bg-green',
-			icon: Play
+			icon: Play,
+			formaction: '/bots?/update',
+			formdata: ResumeBot
 		},
 		{
-			tooltip: 'Pause Bot',
+			title: 'Pause Bot',
 			classes: '!border-yellow/20 hover:!bg-yellow',
-			icon: Pause
+			icon: Pause,
+			formaction: '/bots?/update',
+			formdata: PauseBot
 		},
 		{
-			tooltip: 'Delete Bot',
+			title: 'Delete Bot',
 			classes: '!border-red/20 hover:!bg-red',
 			icon: Minus
 		},
 		{
-			tooltip: 'Bot Options',
+			title: 'Bot Options',
 			icon: AdjustmentsHorizontal,
 			menu: BotOptions
 		},
 		{
-			tooltip: 'Admin Panel',
+			title: 'Admin Panel',
 			icon: CommandLine,
 			menu: AdminPanel,
 			admin: true
 		}
 	];
 
-	const selectedAccount = getContext('selectedAccount');
-	const user = getContext('user');
 	const dialogs = [];
 </script>
 
@@ -62,6 +61,9 @@
 		{#if (data.admin && $user.admin) || !data.admin}
 			{#if data.formaction}
 				<form action={data.formaction} method="post" use:enhance>
+					{#if data.formdata}
+						<div class="hidden"><svelte:component this={data.formdata} /></div>
+					{/if}
 					<button
 						class="square {data.classes ?? ''}"
 						title={data.title}

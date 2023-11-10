@@ -21,6 +21,7 @@
 					</h1>
 
 					<span class="subtext">
+						{id}<br />
 						Net Worth: {balance} USD
 					</span>
 				</section>
