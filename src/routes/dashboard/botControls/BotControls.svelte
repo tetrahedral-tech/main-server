@@ -67,13 +67,22 @@
 	class="{$selectedAccount ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-40'}
 	bg-section-200 flex flex-wrap items-center justify-center transition-[opacity] duration-300"
 >
-	<form method="post" use:enhance>
-		{#each buttons as data, i}
-			{#if (data.admin && $user.admin) || !data.admin}
+	{#each buttons as data, i}
+		{#if (data.admin && $user.admin) || !data.admin}
+			{#if data.formaction}
+				<form action={data.formaction} method="post" use:enhance>
+					<button
+						class="square {data.classes ?? ''}"
+						title={data.title}
+						on:click={() => data.menu && (dialogs[i] = true)}
+					>
+						<svelte:component this={data.icon} class="icon" />
+					</button>
+				</form>
+			{:else}
 				<button
 					class="square {data.classes ?? ''}"
 					title={data.title}
-					formaction={data.formaction}
 					on:click={() => data.menu && (dialogs[i] = true)}
 				>
 					<svelte:component this={data.icon} class="icon" />
@@ -84,6 +93,6 @@
 					{/if}
 				</button>
 			{/if}
-		{/each}
-	</form>
+		{/if}
+	{/each}
 </section>
