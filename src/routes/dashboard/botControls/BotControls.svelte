@@ -11,49 +11,40 @@
 	import { getContext } from 'svelte';
 	import { enhance } from '$app/forms';
 	import Modal from '$lib/components/Modal.svelte';
+
 	import BotOptions from './buttons/BotOptions.svelte';
+	import AdminPanel from './buttons/AdminPanel.svelte';
 
 	const buttons = [
 		{
 			tooltip: 'Temporary Pause Bot',
 			classes: '!border-white/20 hover:!bg-white',
-			icon: Clock,
-			menu: null,
-			admin: false
+			icon: Clock
 		},
 		{
 			tooltip: 'Resume Bot',
 			classes: '!border-green/20 hover:!bg-green',
-			icon: Play,
-			admin: false
+			icon: Play
 		},
 		{
 			tooltip: 'Pause Bot',
 			classes: '!border-yellow/20 hover:!bg-yellow',
-			icon: Pause,
-			admin: false
+			icon: Pause
 		},
 		{
 			tooltip: 'Delete Bot',
 			classes: '!border-red/20 hover:!bg-red',
-			icon: Minus,
-			admin: false
+			icon: Minus
 		},
 		{
 			tooltip: 'Bot Options',
 			icon: AdjustmentsHorizontal,
-			menu: BotOptions,
-			admin: false
+			menu: BotOptions
 		},
 		{
-			tooltip: 'Admin Settings',
+			tooltip: 'Admin Panel',
 			icon: CommandLine,
-			admin: true
-		},
-		{
-			tooltip: 'Invoke Algorithm Check',
-			icon: ArrowPath,
-			formaction: '/dashboard/botControls?/invokeAlgorithmCheck',
+			menu: AdminPanel,
 			admin: true
 		}
 	];
