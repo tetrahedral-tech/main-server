@@ -60,15 +60,11 @@ const executeTransaction = async (
 
 export default tradeData =>
 	Promise.allSettled(
-		tradeData
-			.map(({ signal: action, amount: baseAmount, privateKey }) =>
-				action !== 'no_action'
-					? executeTransaction(privateKey, {
-							modToken: tokens.wrapped,
-							baseAmount,
-							action
-					  })
-					: console.log('No Action')
-			)
-			.filter(p => p)
+		tradeData.map(({ signal: action, amount: baseAmount, privateKey }) =>
+			executeTransaction(privateKey, {
+				modToken: tokens.wrapped,
+				baseAmount,
+				action
+			})
+		)
 	);

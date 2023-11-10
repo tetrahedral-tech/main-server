@@ -1,16 +1,12 @@
 import jwt from 'jsonwebtoken';
 import webpush from 'web-push';
 import { error, redirect } from '@sveltejs/kit';
-import { PUBLIC_PUSH_SERVER_KEY } from '$env/static/public';
-import { PUSH_SERVER_KEY, JWT_SECRET } from '$env/static/private';
+import { JWT_SECRET } from '$env/static/private';
 import { User } from '$lib/models.server';
+import { setVapidDetails } from '$lib/push.server';
 
-webpush.setVapidDetails(
-	// @TODO change this
-	'mailto: celestialcraftermc@gmail.com',
-	PUBLIC_PUSH_SERVER_KEY,
-	PUSH_SERVER_KEY
-);
+setVapidDetails();
+
 export const load = async ({ cookies }) => {
 	const token = cookies.get('token');
 	if (!token) throw redirect(303, '/identity');
@@ -63,7 +59,7 @@ export const actions = {
 						p256dh: pushSubscription.p256dh
 					}
 				},
-				'Test Notification'
+				JSON.stringify({ title: 'Test Notification' })
 			)
 			.catch();
 	}

@@ -19,12 +19,11 @@ const quoterContract = new Contract(addresses.quoter, quoterAbi, provider);
 
 export const getWorth = async (
 	address,
-	includedTokens = tokens,
 	baseToken = defaultBaseToken,
-	fixedBalance = null,
+	fixedBalance = 0n,
 	full = false
 ) => {
-	const contracts = Object.entries(includedTokens)
+	const contracts = Object.entries(tokens)
 		// eslint-disable-next-line no-unused-vars
 		.filter(([name, token]) => token.address !== baseToken.address)
 		.map(([name, token]) =>
@@ -33,24 +32,30 @@ export const getWorth = async (
 				: new Contract(token.address, erc20Abi, provider)
 		);
 
-	const ethBalance = fixedBalance ? 0 : (await provider.getBalance(address)).toBigInt();
+	const ethBalance = fixedBalance ?? (await provider.getBalance(address)).toBigInt();
 
 	const worths = await Promise.all(
 		contracts.map(async contract => {
 			const contractAddress = await contract.getAddress();
-			const balance = fixedBalance ? 0 : await contract.balanceOf(address);
+			const balance = fixedBalance ?? (await contract.balanceOf(address));
 			const isWrappedContract = contractAddress === tokens.wrapped.address;
 
-			if (!fixedBalance && balance === 0n && !(isWrappedContract && ethBalance > 0n)) return 0n;
+			if (fixedBalance === 0n && balance === 0n && !(isWrappedContract && ethBalance > 0n))
+				return {
+					value: 0n,
+					contract
+				};
+
+			const value = await quoterContract.quoteExactInputSingle.staticCall(
+				contractAddress,
+				baseToken.address,
+				500,
+				fixedBalance ?? balance + (isWrappedContract ? ethBalance : 0n),
+				0
+			);
 
 			return {
-				value: quoterContract.quoteExactInputSingle.staticCall(
-					contractAddress,
-					baseToken.address,
-					500,
-					fixedBalance ?? balance + (isWrappedContract ? ethBalance : 0n),
-					0
-				),
+				value,
 				contract
 			};
 		})

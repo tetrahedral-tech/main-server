@@ -45,29 +45,34 @@ export default async redis => {
 
 			const field = bot.algorithm.owner ? bot.algorithm._id : bot.algorithm.name;
 			const signal = signals[field];
-			const strength = Number(strengths[field]);
+			const strength = Math.round(Number(strengths[field]) * 10) / 10;
 
 			return {
 				id: bot._id,
 				privateKey: bot.privateKey(),
-				amount: (50000 || bot.strengthToUSD) * strength,
+				amount: (10 || bot.strengthToUSD) * strength,
+				strengthToUSD: bot.strengthToUSD,
 				signal
 			};
 		})
 		.filter(b => b);
 
+	const filteredTradeData = tradeData.filter(
+		data => data.strength > 0 && data.signal !== 'no_action'
+	);
 	const approvalResults = await executeApprovals(tradeData);
-	const transactionResults = await executeTransactions(tradeData);
-	console.log(approvalResults);
-	console.log(transactionResults);
+	const transactionResults = await executeTransactions(filteredTradeData);
+	console.log('approvals', approvalResults[0].value);
+	console.log('transactions', transactionResults);
 
 	// Update worths
-	const worths = await addWorths(tradeData);
+	const worthsResults = await addWorths(tradeData);
+	console.log('worths', worthsResults);
 	Bot.bulkWrite(
-		worths
+		worthsResults
 			.filter(r => r.status === 'fulfilled')
 			.map(r => r.value)
-			.map(({ value, id }) => ({
+			.map(({ id, value }) => ({
 				updateOne: {
 					filter: { _id: new mongoose.Types.ObjectId(id) },
 					update: {

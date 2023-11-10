@@ -2,8 +2,8 @@ import { Token, ChainId } from '@uniswap/sdk-core';
 import { parseUnits, formatUnits } from 'ethers';
 import { dev } from '$app/environment';
 
-export const supportedChains = [ChainId.ARBITRUM_ONE, ChainId.GOERLI, ChainId.MAINNET];
-export let selectedChain = dev ? supportedChains[1] : supportedChains[0];
+export const supportedChains = [ChainId.GOERLI, ChainId.ARBITRUM_ONE, ChainId.MAINNET];
+export let selectedChain = dev ? supportedChains[0] : supportedChains[1];
 export const changeChain = newChain => {
 	if (!supportedChains.includes(newChain)) throw new Error(`Unsupported Chain ${newChain}`);
 	selectedChain = newChain;
