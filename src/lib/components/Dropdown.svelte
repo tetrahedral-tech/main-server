@@ -10,7 +10,12 @@
 	export const toggleOpen = () => (open = !open);
 
 	let button;
-	$: boundingRect = button?.getBoundingClientRect() ?? {
+	let dropdown;
+	$: buttonBoundingRect = button?.getBoundingClientRect() ?? {
+		top: 0,
+		left: 0
+	};
+	$: dropdownBoundingRect = dropdown?.getBoundingClientRect() ?? {
 		top: 0,
 		left: 0
 	};
@@ -25,17 +30,19 @@
 </script>
 
 <button bind:this={button} on:click={toggleOpen} class="inline-flex w-fit gap-3">
-	<span class="absolute m-auto ml-0">
-		{selected ?? placeholder}
-	</span>
+	{selected ?? placeholder}
+	<!-- <span class="absolute m-auto ml-0">
+	</span> -->
 	<ChevronUp class="transition-transform duration-500 {open ? 'rotate-180' : 'rotate-0'}" />
 </button>
 
 <section
-	class="absolute z-10 mt-3 flex w-40 flex-col overflow-hidden transition-all duration-500 {!open
+	bind:this={dropdown}
+	class="absolute z-10 mt-3 flex w-44 flex-col overflow-hidden transition-all duration-500 {!open
 		? 'max-h-0 border-none pb-0 pt-0'
 		: 'max-h-96'}"
-	style="top: {boundingRect.y + boundingRect.height}px; left: {boundingRect.x}px;"
+	style="top: {buttonBoundingRect.y + buttonBoundingRect.height}px;
+	left: {buttonBoundingRect.x + (buttonBoundingRect.width - dropdownBoundingRect.width) / 2}px;"
 >
 	{#each contents as content}
 		<button
