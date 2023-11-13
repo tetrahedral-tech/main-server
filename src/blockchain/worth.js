@@ -20,7 +20,7 @@ const quoterContract = new Contract(addresses.quoter, quoterAbi, provider);
 export const getWorth = async (
 	address,
 	baseToken = defaultBaseToken,
-	fixedBalance = 0n,
+	fixedBalance = null,
 	full = false
 ) => {
 	const contracts = Object.entries(tokens)
@@ -40,7 +40,7 @@ export const getWorth = async (
 			const balance = fixedBalance ?? (await contract.balanceOf(address));
 			const isWrappedContract = contractAddress === tokens.wrapped.address;
 
-			if (fixedBalance === 0n && balance === 0n && !(isWrappedContract && ethBalance > 0n))
+			if (!fixedBalance && balance === 0n && !(isWrappedContract && ethBalance > 0n))
 				return {
 					value: 0n,
 					contract
