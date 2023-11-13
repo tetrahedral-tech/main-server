@@ -26,7 +26,7 @@
 				[ISSUED AT]: {account.iat}
 				[EXPIRES AT]: {account.exp}
 				<br />
-				// eslint-disable-next-line no-alert
+				<!-- eslint-disable-next-line no-alert -->
 				<button on:click={() => alert(data.token)}>Show Token</button>
 			</code>
 		</section>
