@@ -20,15 +20,15 @@
 				[PROVIDER]: {identity.provider}
 				[PHOTO]: <img class="inline align-top" alt={identity.name} src={identity.photo} />
 				[CACHED PHOTO]: <Avatar class="inline align-top" />
-				[IDs]: 
-					ACCOUNT ID: {account._id}
-					IDENTITY ID: {identity._id}
+				[IDs]: ACCOUNT ID: {account._id}
+				IDENTITY ID: {identity._id}
 
 				[ISSUED AT]: {account.iat}
 				[EXPIRES AT]: {account.exp}
-				<br>
+				<br />
+				// eslint-disable-next-line no-alert
 				<button on:click={() => alert(data.token)}>Show Token</button>
-</code>
+			</code>
 		</section>
 	{/if}
 	<br />
