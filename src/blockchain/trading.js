@@ -50,6 +50,8 @@ const executeTransaction = async (
 		}
 	);
 
+	if (!route) throw new Error('No Route');
+
 	return routeTransaction(wallet, route);
 };
 

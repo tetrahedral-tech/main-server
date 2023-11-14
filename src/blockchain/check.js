@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
+import { inspect } from 'util';
 
 import { ALGORITHM_SERVER_URI, JWT_SECRET } from '$env/static/private';
 import { toReadableAmount, defaultBaseToken } from '$lib/blockchain';
@@ -10,6 +11,7 @@ import executeTransactions from './trading';
 import addWorths from './worth';
 
 export default async redis => {
+	console.log('Running algorithm check');
 	try {
 		const token = jwt.sign({ event: 'auth' }, JWT_SECRET, { algorithm: 'HS256' });
 		await fetch(`${ALGORITHM_SERVER_URI}/internal_checker`, {
@@ -57,29 +59,30 @@ export default async redis => {
 		})
 		.filter(b => b);
 
-	const filteredTradeData = tradeData.filter(
-		data => data.strength > 0 && data.signal !== 'no_action'
-	);
 	const approvalResults = await executeApprovals(tradeData);
-	const transactionResults = await executeTransactions(filteredTradeData);
-	console.log('approvals', approvalResults[0].value);
-	console.log('transactions', transactionResults);
+	const transactionResults = await executeTransactions(
+		tradeData.filter(data => data.strength > 0 && data.signal !== 'no_action')
+	);
+	const worthsResults = await addWorths(tradeData);
+
+	const inspectOptions = { depth: 10, colors: true };
+	console.log('approvals', inspect(approvalResults, inspectOptions));
+	console.log('transactions', inspect(transactionResults, inspectOptions));
+	console.log('worths', inspect(worthsResults, inspectOptions));
 
 	// Update worths
-	const worthsResults = await addWorths(tradeData);
-	console.log('worths', worthsResults);
 	Bot.bulkWrite(
 		worthsResults
 			.filter(r => r.status === 'fulfilled')
 			.map(r => r.value)
-			.map(({ id, value }) => ({
+			.map(({ id, worth }) => ({
 				updateOne: {
 					filter: { _id: new mongoose.Types.ObjectId(id) },
 					update: {
 						$push: {
 							worth: {
 								timestamp: Date.now(),
-								value: toReadableAmount(value, defaultBaseToken.decimals)
+								value: toReadableAmount(worth, defaultBaseToken.decimals)
 							}
 						}
 					}

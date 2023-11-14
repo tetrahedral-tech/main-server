@@ -66,8 +66,11 @@ export const getWorth = async (
 
 export default tradeData =>
 	Promise.allSettled(
-		tradeData.map(async ({ id, privateKey }) => ({
-			value: (await getWorth(await new Wallet(privateKey, provider).getAddress())).toString(),
-			id
-		}))
+		tradeData.map(async ({ id, privateKey }) => {
+			const address = await new Wallet(privateKey, provider).getAddress();
+			return {
+				worth: (await getWorth(address)).toString(),
+				id
+			};
+		})
 	);

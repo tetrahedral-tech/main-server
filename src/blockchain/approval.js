@@ -42,11 +42,11 @@ const executeOOMNotification = async (id, address) => {
 };
 
 const executeApproval = async (privateKey, { id, strengthToUSD, baseToken = defaultBaseToken }) => {
+	const multiplier = 10;
 	const wallet = new Wallet(privateKey, provider);
 	const address = await wallet.getAddress();
-	console.log(`Running approvals for ${address}`);
 
-	const approvalAmount = fromReadableAmount(strengthToUSD * 10, tokens.usdc.decimals);
+	const approvalAmount = fromReadableAmount(strengthToUSD * multiplier, tokens.usdc.decimals);
 	const minimumEth = fromReadableAmount(0.005, tokens.wrapped.decimals);
 
 	const values = await getWorth(null, baseToken, approvalAmount, true);
@@ -60,14 +60,12 @@ const executeApproval = async (privateKey, { id, strengthToUSD, baseToken = defa
 	const renew = await Promise.all(
 		values.map(async data => ({
 			...data,
-			// 1.1 to leave a bit of extra room for error
 			renew:
-				(await data.contract.allowance(address, addresses.router)) <
-				BigInt(strengthToUSD) + minimumEth
+				(await data.contract.allowance(address, addresses.router)) < data.value / BigInt(multiplier)
 		}))
 	);
 
-	const transactions = await Promise.all(
+	const transactionDatas = await Promise.all(
 		renew
 			.map(data =>
 				data.renew ? data.contract.approve.populateTransaction(addresses.router, data.value) : null
@@ -87,13 +85,16 @@ const executeApproval = async (privateKey, { id, strengthToUSD, baseToken = defa
 	);
 
 	return Promise.allSettled(
-		transactions.map(transaction => repopulateAndSend(wallet, transaction))
+		transactionDatas.map(transaction => repopulateAndSend(wallet, transaction))
 	);
 };
 
-export default tradeData =>
-	Promise.allSettled(
+export default async tradeData => {
+	const promises = await Promise.allSettled(
 		tradeData.map(({ id, strengthToUSD, privateKey }) =>
 			executeApproval(privateKey, { strengthToUSD, id })
 		)
 	);
+
+	return promises.filter(p => !(p.status === 'fulfilled' && p.value.length < 1));
+};
