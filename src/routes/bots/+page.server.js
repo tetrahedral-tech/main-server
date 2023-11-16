@@ -32,6 +32,7 @@ export const actions = {
 		const id = formData.get('id');
 		const chosenAlgorithm = formData.get('algorithm');
 		const strengthToUSD = formData.get('strengthToUSD');
+		const clearWorth = formData.get('clearWorth');
 		const status = formData.get('status');
 		const time = formData.get('time');
 
@@ -40,7 +41,8 @@ export const actions = {
 		if (!token) return fail(401, 'Unauthorized');
 		const owner = jwt.verify(token, JWT_SECRET);
 
-		if (!(chosenAlgorithm || strengthToUSD || status) || !id) return fail(400, 'Bad Request');
+		if (!(chosenAlgorithm || strengthToUSD || status || clearWorth) || !id)
+			return fail(400, 'Bad Request');
 		if (status === 'tempPause' && !Number(time)) return fail(400, 'Bad Request');
 		if (status && !validStatuses.includes(status)) return fail(400, 'Bad Request');
 		if (!(await Bot.exists({ _id: id, owner: owner._id }))) return fail(401, 'Unauthorized');
@@ -59,6 +61,9 @@ export const actions = {
 							name: status,
 							time: time || 0
 						}
+					}),
+					...(clearWorth && {
+						worth: []
 					})
 				},
 				{

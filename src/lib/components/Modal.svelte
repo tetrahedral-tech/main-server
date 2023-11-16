@@ -13,7 +13,7 @@
 </script>
 
 <dialog
-	class="{open ? 'pointer-events-auto opacity-100' : 'opacity-0'}
+	class="{open ? 'pointer-events-auto cursor-auto opacity-100' : 'opacity-0'}
 	pointer-events-none z-50 max-w-3xl
 	bg-transparent text-white transition-opacity duration-[500ms]"
 	bind:this={dialog}
