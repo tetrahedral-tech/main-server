@@ -10,6 +10,13 @@ import { abi as quoterAbi } from '@uniswap/v3-periphery/artifacts/contracts/lens
 const mapObject = (object, fn) =>
 	Object.fromEntries(Object.entries(object).map(kv => [kv[0], fn(...kv)]));
 
+const findAsync = async (array, asyncCb) => {
+	const promises = array.map(asyncCb);
+	const results = await Promise.all(promises);
+	const index = results.findIndex(result => result);
+	return array[index];
+};
+
 const provider = new JsonRpcProvider(providerUrl);
 const defaultContracts = mapObject(
 	tokens,
@@ -32,33 +39,45 @@ export const getWorth = async (
 				: new Contract(token.address, erc20Abi, provider)
 		);
 
+	const baseContract = await findAsync(
+		await Object.values(defaultContracts),
+		async contract => await contract.getAddress() === baseToken.address
+	);
+
 	const ethBalance = fixedBalance ?? (await provider.getBalance(address)).toBigInt();
+	const baseBalance = fixedBalance ?? await baseContract.balanceOf(address);
 
 	const worths = await Promise.all(
-		contracts.map(async contract => {
-			const contractAddress = await contract.getAddress();
-			const balance = fixedBalance ?? (await contract.balanceOf(address));
-			const isWrappedContract = contractAddress === tokens.wrapped.address;
+		[
+			...contracts.map(async contract => {
+				const contractAddress = await contract.getAddress();
+				const balance = fixedBalance ?? (await contract.balanceOf(address));
+				const isWrappedContract = contractAddress === tokens.wrapped.address;
 
-			if (!fixedBalance && balance === 0n && !(isWrappedContract && ethBalance > 0n))
+				if (!fixedBalance && balance === 0n && !(isWrappedContract && ethBalance > 0n))
+					return {
+						value: 0n,
+						contract
+					};
+
+				const value = await quoterContract.quoteExactInputSingle.staticCall(
+					contractAddress,
+					baseToken.address,
+					500,
+					fixedBalance ?? balance + (isWrappedContract ? ethBalance : 0n),
+					0
+				);
+
 				return {
-					value: 0n,
+					value,
 					contract
 				};
-
-			const value = await quoterContract.quoteExactInputSingle.staticCall(
-				contractAddress,
-				baseToken.address,
-				500,
-				fixedBalance ?? balance + (isWrappedContract ? ethBalance : 0n),
-				0
-			);
-
-			return {
-				value,
-				contract
-			};
-		})
+			}),
+			{
+				value: baseBalance,
+				contract: baseContract
+			}
+		]
 	);
 
 	return full ? worths : worths.map(({ value }) => value).reduce((a, b) => a + b);
