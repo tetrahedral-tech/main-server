@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import schedule from 'node-schedule';
 import { createClient } from 'redis';
 
+import { dev } from '$app/environment';
 import { DB_URI, REDIS_URI } from '$env/static/private';
 import { evaluateModelsWhenConnectionReady } from '$lib/models.server';
 
@@ -11,7 +12,7 @@ mongoose.connect(DB_URI);
 const redis = createClient({ url: REDIS_URI });
 await evaluateModelsWhenConnectionReady();
 
-export const job = schedule.scheduleJob('*/5 * * * *', () =>
+export const job = schedule.scheduleJob(`${dev ? '*/5 *' : '0 */6'} * * *`, () =>
 	executeAlgorithmCheck(redis)
 		.catch()
 		.finally(() => redis.isOpen && redis.disconnect())
