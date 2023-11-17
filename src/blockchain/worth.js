@@ -41,44 +41,42 @@ export const getWorth = async (
 
 	const baseContract = await findAsync(
 		await Object.values(defaultContracts),
-		async contract => await contract.getAddress() === baseToken.address
+		async contract => (await contract.getAddress()) === baseToken.address
 	);
 
 	const ethBalance = fixedBalance ?? (await provider.getBalance(address)).toBigInt();
-	const baseBalance = fixedBalance ?? await baseContract.balanceOf(address);
+	const baseBalance = fixedBalance ?? (await baseContract.balanceOf(address));
 
-	const worths = await Promise.all(
-		[
-			...contracts.map(async contract => {
-				const contractAddress = await contract.getAddress();
-				const balance = fixedBalance ?? (await contract.balanceOf(address));
-				const isWrappedContract = contractAddress === tokens.wrapped.address;
+	const worths = await Promise.all([
+		...contracts.map(async contract => {
+			const contractAddress = await contract.getAddress();
+			const balance = fixedBalance ?? (await contract.balanceOf(address));
+			const isWrappedContract = contractAddress === tokens.wrapped.address;
 
-				if (!fixedBalance && balance === 0n && !(isWrappedContract && ethBalance > 0n))
-					return {
-						value: 0n,
-						contract
-					};
-
-				const value = await quoterContract.quoteExactInputSingle.staticCall(
-					contractAddress,
-					baseToken.address,
-					500,
-					fixedBalance ?? balance + (isWrappedContract ? ethBalance : 0n),
-					0
-				);
-
+			if (!fixedBalance && balance === 0n && !(isWrappedContract && ethBalance > 0n))
 				return {
-					value,
+					value: 0n,
 					contract
 				};
-			}),
-			{
-				value: baseBalance,
-				contract: baseContract
-			}
-		]
-	);
+
+			const value = await quoterContract.quoteExactInputSingle.staticCall(
+				contractAddress,
+				baseToken.address,
+				500,
+				fixedBalance ?? balance + (isWrappedContract ? ethBalance : 0n),
+				0
+			);
+
+			return {
+				value,
+				contract
+			};
+		}),
+		{
+			value: baseBalance,
+			contract: baseContract
+		}
+	]);
 
 	return full ? worths : worths.map(({ value }) => value).reduce((a, b) => a + b);
 };
