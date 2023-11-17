@@ -53,7 +53,7 @@ export const GET = async ({ url, cookies }) => {
 		provider: 'google',
 		name: names[0].displayName,
 		photo: photos[0].url,
-		gender: ['male', 'female'].includes(genders[0].value) ? genders[0].value : null,
+		gender: genders && ['male', 'female'].includes(genders[0].value) ? genders[0].value : null,
 		id: metadata.sources[0].id
 	});
 };
