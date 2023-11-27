@@ -1,6 +1,7 @@
 <script>
 	import { enhance } from '$app/forms';
 	import { getContext } from 'svelte';
+	import Dropdown from '$lib/components/Dropdown.svelte';
 
 	let showMenu = false;
 	let searchValue = '';
@@ -32,7 +33,7 @@
 		<form method="post" class="flex flex-col gap-2" use:enhance>
 			<input class="hidden" type="text" name="id" placeholder="ID" />
 			<input type="number" name="strengthToUSD" placeholder="1.0 Strength -> USD" />
-			<input type="text" name="algorithm" placeholder="Algorithm" />
+			<Dropdown placeholder="Algorithm" contents={["rsi"]}/>
 			{#if $user.admin}
 				<input type="text" name="privateKey" placeholder="Private Key Override" />
 			{/if}
