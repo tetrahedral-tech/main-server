@@ -40,5 +40,5 @@
 	bind:this={blob}
 	class="pointer-events-none absolute
 	left-1/2 top-1/2 -z-10 h-[800px] w-[800px]
-	transform-gpu rounded-full blur-[10rem]"
+	transform-gpu rounded-full blur-[100px] opacity-30"
 ></div>

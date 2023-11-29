@@ -5,12 +5,10 @@
 	export let placeholder;
 	export let contents;
 
-	export let type; // unused, why unused?? WHY BOTHER PUTTING THE VARIABLE,, IF ITS UNUSED!! /nk
-
 	export let open;
 	export let selected;
 	export const toggleOpen = () => (open = !open);
-b
+
 	let button;
 	let dropdown;
 	$: buttonBoundingRect = button?.getBoundingClientRect() ?? {
@@ -33,11 +31,11 @@ b
 
 <button bind:this={button} on:click|preventDefault={toggleOpen} class="relative inline-flex w-full gap-3">
 	<!-- very fucking stuuupid!! -->
-	<span class="absolute m-auto ml-0 {selected != undefined ? "opacity-0" : "opacity-50"}">
+	<span class="m-auto ml-0 {selected != undefined ? "opacity-0" : "opacity-25"}">
 		{placeholder}
 	</span>
 	{#if selected != undefined}
-		{selected}
+		<span class="absolute">{selected}</span>
 	{/if}
 	<ChevronUp class="transition-transform duration-500 ml-auto {open ? 'rotate-180' : 'rotate-0'}" />
 </button>

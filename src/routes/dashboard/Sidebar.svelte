@@ -33,7 +33,7 @@
 		<form method="post" class="flex flex-col gap-2" use:enhance>
 			<input class="hidden" type="text" name="id" placeholder="ID" />
 			<input type="number" name="strengthToUSD" placeholder="1.0 Strength -> USD" />
-			<Dropdown placeholder="Algorithm" contents={["rsi"]}/>
+			<Dropdown placeholder="Algorithm" class="w-full" contents={["rsi"]}/>
 			{#if $user.admin}
 				<input type="text" name="privateKey" placeholder="Private Key Override" />
 			{/if}

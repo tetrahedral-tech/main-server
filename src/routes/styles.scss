@@ -79,4 +79,8 @@
 	.subtext {
 		@apply opacity-50;
 	}
+
+	.disabled {
+		@apply pointer-events-none opacity-40;
+	}
 }
