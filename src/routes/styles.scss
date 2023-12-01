@@ -4,7 +4,7 @@
 
 @layer base {
 	body {
-		@apply overflow-hidden bg-gray-950 text-white font-monospace font-semibold;
+		@apply overflow-hidden bg-gray-950 font-monospace font-semibold text-white;
 	}
 
 	main {
@@ -75,7 +75,7 @@
 	}
 
 	.subtext {
-		@apply opacity-50 font-sans;
+		@apply font-sans opacity-50;
 	}
 
 	.disabled {
@@ -84,11 +84,11 @@
 }
 
 @font-face {
-	font-family: "Inter";
-	src: url("/Inter.ttf");
+	font-family: 'Inter';
+	src: url('/Inter.ttf');
 }
 
 @font-face {
-	font-family: "JetBrains Mono";
-	src: url("/JetBrainsMono.ttf");
+	font-family: 'JetBrains Mono';
+	src: url('/JetBrainsMono.ttf');
 }
