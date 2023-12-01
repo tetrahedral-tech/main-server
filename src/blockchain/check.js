@@ -14,11 +14,15 @@ export default async redis => {
 	console.log('Running algorithm check');
 	try {
 		const token = jwt.sign({ event: 'auth' }, JWT_SECRET, { algorithm: 'HS256' });
-		await fetch(`${ALGORITHM_SERVER_URI}/internal_checker`, {
-			headers: {
-				Authorization: token
-			}
-		});
+		const response = await (
+			await fetch(`${ALGORITHM_SERVER_URI}/internal_checker`, {
+				headers: {
+					Authorization: token
+				}
+			})
+		).json();
+
+		if (!response.new_datapoint) return console.log('No New Datapoints');
 	} catch (err) {
 		return console.log('Couldnt connect to algorithm server');
 	}
