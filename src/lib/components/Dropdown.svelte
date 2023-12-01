@@ -31,10 +31,10 @@
 
 <button bind:this={button} on:click|preventDefault={toggleOpen} class="relative inline-flex w-full gap-3">
 	<!-- very fucking stuuupid!! -->
-	<span class="m-auto ml-0 {selected != undefined ? "opacity-0" : "opacity-25"}">
+	<span class="m-auto ml-0 {selected !== undefined ? "opacity-0" : "opacity-25"}">
 		{placeholder}
 	</span>
-	{#if selected != undefined}
+	{#if selected !== undefined}
 		<span class="absolute">{selected}</span>
 	{/if}
 	<ChevronUp class="transition-transform duration-500 ml-auto {open ? 'rotate-180' : 'rotate-0'}" />

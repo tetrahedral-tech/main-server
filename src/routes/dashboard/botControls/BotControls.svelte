@@ -8,6 +8,7 @@
 	import AdminPanel from './menus/AdminPanel.svelte';
 	import ResumeBot from './formData/ResumeBot.svelte';
 	import PauseBot from './formData/PauseBot.svelte';
+	import DeleteBot from './menus/DeleteBot.svelte';
 
 	const selectedAccount = getContext('selectedAccount');
 	const user = getContext('user');
@@ -35,7 +36,8 @@
 		{
 			title: 'Delete Bot',
 			classes: '!border-red/20 hover:!bg-red',
-			icon: Minus
+			icon: Minus,
+			menu: DeleteBot
 		},
 		{
 			title: 'Bot Options',
@@ -67,7 +69,7 @@
 					<button
 						class="square {data.classes ?? ''}"
 						title={data.title}
-						on:click={() => data.menu && (dialogs[i] = true)}
+						on:click={() => data.menu && (dialogs[i] = true)}	
 					>
 						<svelte:component this={data.icon} class="icon" />
 					</button>

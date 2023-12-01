@@ -6,7 +6,10 @@ export default {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['"Jetbrains Mono"', 'monospace']
+				monospace: ['"JetBrains Mono"', 'monospace'],
+				mono: ['"JetBrains Mono"', 'monospace'],
+				sans: ['"Inter"', 'sans-serif'],
+				serif: ['"Inter"', 'sans-serif'],
 			},
 			colors: {
 				accent: colors.purple[500],

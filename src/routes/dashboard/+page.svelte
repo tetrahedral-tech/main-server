@@ -4,10 +4,8 @@
 	import Graph from '$lib/components/Graph.svelte';
 	import Sidebar from './Sidebar.svelte';
 	import BotControls from './botControls/BotControls.svelte';
-	import Avatar from '$lib/components/Avatar.svelte';
 	import UserMenu from '$lib/components/UserMenu.svelte';
 
-	let open = true;
 	const selectedAccount = getContext('selectedAccount');
 	const user = getContext('user');
 
@@ -25,9 +23,9 @@
 							{address}
 						</h1>
 
-						<span class="subtext">
-							{id}<br />
-							Net Worth: {balance} USD
+						<span class="subtext font-sans">
+							<!-- {id}<br /> -->
+							Net Worth: {balance} USD — <span class="font-mono">{id}</span>
 						</span>
 					</div>
 					<UserMenu />

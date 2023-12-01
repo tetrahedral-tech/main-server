@@ -1,12 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
 	body {
-		@apply overflow-hidden bg-gray-950 text-white;
+		@apply overflow-hidden bg-gray-950 text-white font-monospace font-semibold;
 	}
 
 	main {
@@ -77,10 +75,20 @@
 	}
 
 	.subtext {
-		@apply opacity-50;
+		@apply opacity-50 font-sans;
 	}
 
 	.disabled {
 		@apply pointer-events-none opacity-40;
 	}
+}
+
+@font-face {
+	font-family: "Inter";
+	src: url("/Inter.ttf");
+}
+
+@font-face {
+	font-family: "JetBrains Mono";
+	src: url("/JetBrainsMono.ttf");
 }

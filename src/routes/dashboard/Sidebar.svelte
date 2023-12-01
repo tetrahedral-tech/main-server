@@ -29,7 +29,7 @@
 		bg-section-200 overflow-hidden transition-all duration-1000`}
 		style="transition-timing-function: cubic-bezier(0.83, 0.0, 0.17, 1.0)"
 	>
-		<h1 class="text-2xl">Add a bot</h1>
+		<h1 class="text-2xl mb-3">Add a bot</h1>
 		<form method="post" class="flex flex-col gap-2" use:enhance>
 			<input class="hidden" type="text" name="id" placeholder="ID" />
 			<input type="number" name="strengthToUSD" placeholder="1.0 Strength -> USD" />
@@ -70,12 +70,13 @@
 					w-full whitespace-nowrap border-l-4 transition-colors [text-align:initial]"
 				>
 					<h1 class="truncate text-2xl">{address}</h1>
-					<p class="balance subtext">
+					<p class="balance subtext font-sans">
 						<span class="hidden lg:inline">Net Worth:</span>
 						{balance} USD
 					</p>
-					{#if privateKey}
-						<p class="private truncate">{privateKey}</p>
+					{#if privateKey} <!-- uncommented so that eslint doesn't get mad at me //nk-->
+						<!-- ill find a way to incorporate this better later //nk-->
+						<!-- <p class="private truncate">{privateKey}</p> -->
 					{/if}
 				</button>
 			{/each}
