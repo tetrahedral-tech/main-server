@@ -13,7 +13,7 @@ import addWorths from './worth';
 export default async redis => {
 	console.log('Running algorithm check');
 	try {
-		const token = jwt.sign({ event: 'auth' }, JWT_SECRET, { algorithm: 'HS256' });
+		const token = jwt.sign({ server: true }, JWT_SECRET, { algorithm: 'HS256' });
 		const response = await (
 			await fetch(`${ALGORITHM_SERVER_URI}/internal_checker`, {
 				headers: {

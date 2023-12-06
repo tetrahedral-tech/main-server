@@ -43,7 +43,13 @@ const schemas = {
 			type: Schema.Types.ObjectId,
 			ref: 'User',
 			required: false
-		}
+		},
+		params: [
+			{
+				name: String,
+				value: mongoose.Types.Decimal128
+			}
+		]
 	}),
 	Bot: Schema(
 		{
