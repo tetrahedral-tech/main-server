@@ -6,6 +6,7 @@ import { AlphaRouter, SwapType } from '@uniswap/smart-order-router';
 import { tokens, fromReadableAmount, addresses, defaultBaseToken } from '$lib/blockchain';
 import { providerUrl, repopulateAndSend } from '$lib/blockchain.server';
 import { PUBLIC_CHAINID } from '$env/static/public';
+import { executeApproval } from './approval';
 
 const provider = new JsonRpcProvider(providerUrl);
 
@@ -57,11 +58,19 @@ const executeTransaction = async (
 
 export default tradeData =>
 	Promise.allSettled(
-		tradeData.map(({ signal: action, amount: baseAmount, privateKey }) =>
-			executeTransaction(privateKey, {
-				modToken: tokens.wrapped,
-				baseAmount,
-				action
+		tradeData.map(
+			async ({ id, signal: action, amount: baseAmount, strengthToUSD, privateKey }) => ({
+				transactions: [
+					await Promise.allSettled([
+						executeTransaction(privateKey, {
+							modToken: tokens.wrapped,
+							baseAmount,
+							action
+						})
+					]),
+					...(await executeApproval(privateKey, { strengthToUSD, id }))
+				],
+				id
 			})
 		)
 	);

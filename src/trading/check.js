@@ -6,9 +6,7 @@ import { ALGORITHM_SERVER_URI, JWT_SECRET } from '$env/static/private';
 import { toReadableAmount, defaultBaseToken } from '$lib/blockchain';
 import { Bot } from '$lib/models.server';
 
-import executeApprovals from './approval';
-import executeTransactions from './trading';
-import addWorths from './worth';
+import uniswap from './uniswap';
 
 export default async redis => {
 	console.log('Running algorithm check');
@@ -63,14 +61,12 @@ export default async redis => {
 		})
 		.filter(b => b);
 
-	const approvalResults = await executeApprovals(tradeData);
-	const transactionResults = await executeTransactions(
+	const transactionResults = await uniswap.trade(
 		tradeData.filter(data => data.strength > 0 && data.signal !== 'no_action')
 	);
-	const worthsResults = await addWorths(tradeData);
+	const worthsResults = await uniswap.worth(tradeData);
 
 	const inspectOptions = { depth: 10, colors: true };
-	console.log('approvals', inspect(approvalResults, inspectOptions));
 	console.log('transactions', inspect(transactionResults, inspectOptions));
 	console.log('worths', inspect(worthsResults, inspectOptions));
 

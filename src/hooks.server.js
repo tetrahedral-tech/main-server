@@ -5,7 +5,7 @@ import { createClient } from 'redis';
 import { DB_URI, REDIS_URI } from '$env/static/private';
 import { evaluateModelsWhenConnectionReady } from '$lib/models.server';
 
-import executeAlgorithmCheck from './blockchain/check';
+import executeAlgorithmCheck from './trading/check';
 
 mongoose.connect(DB_URI);
 const redis = createClient({ url: REDIS_URI });

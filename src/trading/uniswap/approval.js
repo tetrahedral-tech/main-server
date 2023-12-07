@@ -41,7 +41,10 @@ const executeOOMNotification = async (id, address) => {
 	);
 };
 
-const executeApproval = async (privateKey, { id, strengthToUSD, baseToken = defaultBaseToken }) => {
+export const executeApproval = async (
+	privateKey,
+	{ id, strengthToUSD, baseToken = defaultBaseToken }
+) => {
 	const multiplier = 10;
 	const wallet = new Wallet(privateKey, provider);
 	const address = await wallet.getAddress();
@@ -65,7 +68,7 @@ const executeApproval = async (privateKey, { id, strengthToUSD, baseToken = defa
 		}))
 	);
 
-	const transactionDatas = await Promise.all(
+	const transactions = await Promise.all(
 		renew
 			.map(data =>
 				data.renew ? data.contract.approve.populateTransaction(addresses.router, data.value) : null
@@ -73,28 +76,16 @@ const executeApproval = async (privateKey, { id, strengthToUSD, baseToken = defa
 			.filter(p => p)
 	);
 
-	renew.forEach(async data =>
-		data.renew
-			? console.log(
-					`Renewing ${await data.contract.getAddress()} for ${toReadableAmount(
-						data.value,
-						await data.contract.decimals()
-					)}`
-			  )
-			: null
+	renew.forEach(
+		async data =>
+			data.renew &&
+			console.log(
+				`Renewing ${await data.contract.getAddress()} for ${toReadableAmount(
+					data.value,
+					await data.contract.decimals()
+				)}`
+			)
 	);
 
-	return Promise.allSettled(
-		transactionDatas.map(transaction => repopulateAndSend(wallet, transaction))
-	);
-};
-
-export default async tradeData => {
-	const promises = await Promise.allSettled(
-		tradeData.map(({ id, strengthToUSD, privateKey }) =>
-			executeApproval(privateKey, { strengthToUSD, id })
-		)
-	);
-
-	return promises.filter(p => !(p.status === 'fulfilled' && p.value.length < 1));
+	return transactions.map(transaction => repopulateAndSend(wallet, transaction));
 };
