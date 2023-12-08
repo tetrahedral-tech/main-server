@@ -53,7 +53,7 @@ export default async redis => {
 
 			return {
 				id: bot._id,
-				privateKey: bot.privateKey(),
+				auth: { privateKey: bot.privateKey() },
 				amount: (10 || bot.strengthToUSD) * strength,
 				strengthToUSD: bot.strengthToUSD,
 				signal

@@ -58,19 +58,17 @@ const executeTransaction = async (
 
 export default tradeData =>
 	Promise.allSettled(
-		tradeData.map(
-			async ({ id, signal: action, amount: baseAmount, strengthToUSD, privateKey }) => ({
-				transactions: [
-					await Promise.allSettled([
-						executeTransaction(privateKey, {
-							modToken: tokens.wrapped,
-							baseAmount,
-							action
-						})
-					]),
-					...(await executeApproval(privateKey, { strengthToUSD, id }))
-				],
-				id
-			})
-		)
+		tradeData.map(async ({ id, signal: action, amount: baseAmount, strengthToUSD, auth }) => ({
+			transactions: [
+				await Promise.allSettled([
+					executeTransaction(auth.privateKey, {
+						modToken: tokens.wrapped,
+						baseAmount,
+						action
+					})
+				]),
+				...(await executeApproval(auth.privateKey, { strengthToUSD, id }))
+			],
+			id
+		}))
 	);
