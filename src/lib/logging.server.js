@@ -33,10 +33,7 @@ export const log = createLogger({
 	name: 'main-server',
 	streams: [
 		{
-			type: 'rotating-file',
-			path: '/var/log/auto-trading/main-server.log',
-			period: '1d',
-			count: 7
+			path: 'server.log'
 		},
 		{
 			stream: process.stdout
