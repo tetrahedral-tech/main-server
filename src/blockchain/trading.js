@@ -8,8 +8,6 @@ import { providerUrl, repopulateAndSend } from '$lib/blockchain.server';
 import { log } from '$lib/logging.server';
 import { PUBLIC_CHAINID } from '$env/static/public';
 
-import { executeApproval } from './approval';
-
 const provider = new JsonRpcProvider(providerUrl);
 
 const router = new AlphaRouter({

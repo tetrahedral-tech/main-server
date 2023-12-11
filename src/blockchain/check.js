@@ -71,6 +71,7 @@ export default async redis => {
 
 	log.info(transactionResults, 'transactions');
 	log.info(worthsResults, 'worths');
+	log.info(approvalResults, 'approvals');
 
 	// Update worths
 	Bot.bulkWrite(
