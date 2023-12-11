@@ -1,4 +1,5 @@
-import { WARN, createLogger, stdSerializers } from 'bunyan';
+import bunyan from 'bunyan';
+const { WARN, createLogger, stdSerializers } = bunyan;
 
 const transactionSerializer = transaction => {
 	if (!transaction?.status) return transaction;
