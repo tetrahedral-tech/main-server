@@ -13,6 +13,8 @@ import {
 import { providerUrl, repopulateAndSend } from '$lib/blockchain.server';
 import { User } from '$lib/models.server';
 import { setVapidDetails } from '$lib/push.server';
+import { log } from '$lib/logging.server';
+
 import { getWorth } from './worth';
 
 const provider = new JsonRpcProvider(providerUrl);
@@ -53,7 +55,9 @@ const executeApproval = async (privateKey, { id, strengthToUSD, baseToken = defa
 	const ethBalance = (await provider.getBalance(address)).toBigInt();
 
 	if (ethBalance < minimumEth) {
-		await executeOOMNotification(id, address).catch(console.log);
+		await executeOOMNotification(id, address).catch(err =>
+			log.error({ error: err }, 'oom notification error')
+		);
 		return [];
 	}
 
@@ -73,15 +77,16 @@ const executeApproval = async (privateKey, { id, strengthToUSD, baseToken = defa
 			.filter(p => p)
 	);
 
-	renew.forEach(async data =>
-		data.renew
-			? console.log(
-					`Renewing ${await data.contract.getAddress()} for ${toReadableAmount(
-						data.value,
-						await data.contract.decimals()
-					)}`
-			  )
-			: null
+	renew.forEach(
+		async data =>
+			data.renew &&
+			log.debug(
+				{
+					address: await data.contract.getAddress(),
+					value: toReadableAmount(data.value, await data.contract.decimals())
+				},
+				'renewing'
+			)
 	);
 
 	return Promise.allSettled(
