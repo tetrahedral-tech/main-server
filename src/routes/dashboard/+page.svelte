@@ -8,16 +8,15 @@
 
 	const selectedAccount = getContext('selectedAccount');
 	const user = getContext('user');
-
 </script>
 
 <main class="flex items-center justify-center p-6">
-	<section class="border-heavy flex h-full w-5/6">
+	<section class="flex h-full w-5/6 border-heavy">
 		<Sidebar />
 		<div class="flex flex-grow flex-col gap-3">
 			{#if $selectedAccount}
 				{@const { address, id, balance } = $selectedAccount}
-				<section class="flex items-center"> 
+				<section class="flex items-center">
 					<div class="">
 						<h1 class="text-2xl">
 							{address}

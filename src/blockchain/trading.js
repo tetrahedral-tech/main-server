@@ -5,7 +5,10 @@ import { AlphaRouter, SwapType } from '@uniswap/smart-order-router';
 
 import { tokens, fromReadableAmount, addresses, defaultBaseToken } from '$lib/blockchain';
 import { providerUrl, repopulateAndSend } from '$lib/blockchain.server';
+import { log } from '$lib/logging.server';
 import { PUBLIC_CHAINID } from '$env/static/public';
+
+import { executeApproval } from './approval';
 
 const provider = new JsonRpcProvider(providerUrl);
 
@@ -31,7 +34,7 @@ const executeTransaction = async (
 	{ baseAmount, baseToken = defaultBaseToken, modToken, action }
 ) => {
 	const wallet = new Wallet(privateKey, provider);
-	console.log(`Running trades for ${await wallet.getAddress()}`);
+	log.debug({ address: await wallet.getAddress() }, 'running trades');
 
 	const amount = CurrencyAmount.fromRawAmount(
 		baseToken,

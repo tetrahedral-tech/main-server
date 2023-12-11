@@ -33,6 +33,7 @@
 		"@uniswap/smart-order-router": "^3.16.29",
 		"@uniswap/v3-periphery": "^1.4.3",
 		"autoprefixer": "^10.4.16",
+		"bunyan": "^1.8.15",
 		"ethers": "6.8.1",
 		"jsonwebtoken": "^9.0.1",
 		"mongoose": "^8.0.0",

@@ -6,6 +6,7 @@ import { chainNames } from '$lib/blockchain';
 export const providerUrl = `https://${
 	chainNames[Number(PUBLIC_CHAINID)]
 }.infura.io/v3/${INFURA_SECRET}`;
+
 const deBigNumberify = object => {
 	const newObject = Object.assign(object, {});
 

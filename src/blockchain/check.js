@@ -1,17 +1,17 @@
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
-import { inspect } from 'util';
 
 import { ALGORITHM_SERVER_URI, JWT_SECRET } from '$env/static/private';
 import { toReadableAmount, defaultBaseToken } from '$lib/blockchain';
 import { Bot } from '$lib/models.server';
+import { log } from '$lib/logging.server';
 
 import executeApprovals from './approval';
 import executeTransactions from './trading';
 import addWorths from './worth';
 
 export default async redis => {
-	console.log('Running algorithm check');
+	log.info('algorithm check');
 	try {
 		const token = jwt.sign({ server: true }, JWT_SECRET, { algorithm: 'HS256' });
 		const response = await (
@@ -22,9 +22,9 @@ export default async redis => {
 			})
 		).json();
 
-		if (!response.new_datapoint) return console.log('No New Datapoints');
+		if (!response.new_datapoint) return log.debug('no new datapoints');
 	} catch (err) {
-		return console.log('Couldnt connect to algorithm server');
+		return log.error({ error: err }, 'algorithm check error');
 	}
 
 	await redis.connect();
@@ -69,10 +69,8 @@ export default async redis => {
 	);
 	const worthsResults = await addWorths(tradeData);
 
-	const inspectOptions = { depth: 10, colors: true };
-	console.log('approvals', inspect(approvalResults, inspectOptions));
-	console.log('transactions', inspect(transactionResults, inspectOptions));
-	console.log('worths', inspect(worthsResults, inspectOptions));
+	log.info(transactionResults, 'transactions');
+	log.info(worthsResults, 'worths');
 
 	// Update worths
 	Bot.bulkWrite(
