@@ -19,7 +19,6 @@ const svelteRequestEventSerializer = event => {
 
 	const headers = Object.fromEntries(event.request.headers);
 	delete headers.cookie;
-	delete eventCopy.request.platform;
 
 	let address = 'unknown';
 
@@ -32,7 +31,6 @@ const svelteRequestEventSerializer = event => {
 		url: eventCopy.url,
 		headers,
 		remoteAddress: address,
-		platform: eventCopy.platform,
 		id: crypto.randomUUID()
 	};
 };
