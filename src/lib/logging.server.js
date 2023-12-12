@@ -15,16 +15,24 @@ const transactionSerializer = transaction => {
 
 const svelteRequestEventSerializer = event => {
 	if (!event?.request) return event;
+	const eventCopy = { ...event };
 
 	const headers = Object.fromEntries(event.request.headers);
 	delete headers.cookie;
+	delete eventCopy.request.platform;
+
+	let address = 'unknown';
+
+	try {
+		address = eventCopy.getClientAddress();
+	} catch (err) {}
 
 	return {
-		method: event.request.method,
-		url: event.url,
+		method: eventCopy.request.method,
+		url: eventCopy.url,
 		headers,
-		remoteAddress: event.getClientAddress(),
-		platform: event.platform,
+		remoteAddress: address,
+		platform: eventCopy.platform,
 		id: crypto.randomUUID()
 	};
 };
