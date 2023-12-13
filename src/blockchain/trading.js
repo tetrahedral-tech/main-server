@@ -29,7 +29,7 @@ const routeTransaction = async (wallet, route) => {
 
 const executeTransaction = async (
 	privateKey,
-	{ baseAmount, baseToken = defaultBaseToken, modToken, action }
+	{ baseAmount, baseToken = defaultBaseToken, modToken, action, id }
 ) => {
 	const wallet = new Wallet(privateKey, provider);
 	log.debug({ address: await wallet.getAddress() }, 'running trades');
@@ -53,17 +53,19 @@ const executeTransaction = async (
 
 	if (!route) throw new Error('No Route');
 
-	return routeTransaction(wallet, route);
+	return routeTransaction(wallet, route)
+		.then(transaction => log.debug({ transaction, id }, 'trading'))
+		.catch(error => log.warn({ error, id }, 'trading error'));
 };
 
 export default tradeData =>
 	Promise.allSettled(
-		tradeData.map(({ id, signal: action, amount: baseAmount, privateKey }) => ({
-			transaction: executeTransaction(privateKey, {
+		tradeData.map(({ id, signal: action, amount: baseAmount, privateKey }) =>
+			executeTransaction(privateKey, {
 				modToken: tokens.wrapped,
 				baseAmount,
-				action
-			}),
-			id
-		}))
+				action,
+				id
+			})
+		)
 	);

@@ -61,46 +61,41 @@ const executeApproval = async (privateKey, { id, strengthToUSD, baseToken = defa
 		return [];
 	}
 
-	const renew = await Promise.all(
-		values.map(async data => ({
-			...data,
-			renew:
-				(await data.contract.allowance(address, addresses.router)) < data.value / BigInt(multiplier)
-		}))
-	);
+	return (
+		await Promise.allSettled(
+			values.map(async data => {
+				if (
+					!(await data.contract.allowance(address, addresses.router)) <
+					data.value / BigInt(multiplier)
+				)
+					return;
 
-	const transactionDatas = await Promise.all(
-		renew
-			.map(data =>
-				data.renew ? data.contract.approve.populateTransaction(addresses.router, data.value) : null
-			)
-			.filter(p => p)
-	);
+				const tx = data.contract.approve.populateTransaction(addresses.router, data.value);
+				const transaction = await repopulateAndSend(wallet, tx);
 
-	renew.forEach(
-		async data =>
-			data.renew &&
-			log.debug(
-				{
-					address: await data.contract.getAddress(),
-					value: toReadableAmount(data.value, await data.contract.decimals())
-				},
-				'renewing'
-			)
-	);
+				log.debug(
+					{
+						address: await data.contract.getAddress(),
+						value: toReadableAmount(data.value, await data.contract.decimals()),
+						transaction,
+						id
+					},
+					'approving'
+				);
 
-	return Promise.allSettled(
-		transactionDatas.map(transaction => repopulateAndSend(wallet, transaction))
-	);
+				return transaction;
+			})
+		)
+	)
+		.map(p =>
+			p.status === 'fulfilled' ? p.value : log.warn({ error: p.reason, id }, 'approval error')
+		)
+		.filter(p => p);
 };
 
-export default async tradeData => {
-	const promises = await Promise.allSettled(
-		tradeData.map(({ id, strengthToUSD, privateKey }) => ({
-			approvals: executeApproval(privateKey, { strengthToUSD, id }),
-			id
-		}))
+export default async tradeData =>
+	Promise.allSettled(
+		tradeData.map(({ id, strengthToUSD, privateKey }) =>
+			executeApproval(privateKey, { strengthToUSD, id })
+		)
 	);
-
-	return promises.filter(p => !(p.status === 'fulfilled' && p.value.length < 1));
-};

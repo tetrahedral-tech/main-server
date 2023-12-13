@@ -12,6 +12,7 @@ import addWorths from './worth';
 
 export default async redis => {
 	log.info('algorithm check');
+
 	try {
 		const token = jwt.sign({ server: true }, JWT_SECRET, { algorithm: 'HS256' });
 		const response = await (
@@ -63,67 +64,24 @@ export default async redis => {
 		})
 		.filter(b => b);
 
-	const approvalResults = await executeApprovals(tradeData);
-	const transactionResults = await executeTransactions(
-		tradeData.filter(data => data.strength > 0 && data.signal !== 'no_action')
+	const tradeDataWithSignal = tradeData.filter(
+		data => data.strength > 0 && data.signal !== 'no_action'
 	);
+	await executeApprovals(tradeDataWithSignal);
+	await executeTransactions(tradeDataWithSignal);
 	const worthsResults = await addWorths(tradeData);
 
-	transactionResults.forEach(result =>
-		result.status === 'fulfilled'
-			? log.debug(
-					{
-						transaction: result.value.transaction,
-						id: result.value.id
-					},
-					'transaction'
-			  )
-			: log.warn(
-					{
-						error: result.reason
-					},
-					'transaction error'
-			  )
-	);
-
-	worthsResults.forEach(result =>
-		result.status === 'fulfilled'
-			? log.debug(
-					{
-						...result.value
-					},
-					'worth'
-			  )
-			: log.warn(
-					{
-						error: result.reason
-					},
-					'worth error'
-			  )
-	);
-
-	approvalResults.forEach(result =>
-		result.status === 'fulfilled'
-			? log.debug(
-					{
-						...result.value
-					},
-					'approval'
-			  )
-			: log.warn(
-					{
-						error: result.reason
-					},
-					'approval error'
-			  )
+	worthsResults.forEach(p =>
+		p.status === 'fulfilled'
+			? log.debug({ value: p.value.worth, id: p.value.id }, 'worth')
+			: log.warn({ error: p.reason }, 'worth error')
 	);
 
 	// Update worths
 	Bot.bulkWrite(
 		worthsResults
-			.filter(r => r.status === 'fulfilled')
-			.map(r => r.value)
-			.map(({ id, worth }) => ({
+			.filter(p => p.status === 'fulfilled')
+			.map(({ value: { id, worth } }) => ({
 				updateOne: {
 					filter: { _id: new mongoose.Types.ObjectId(id) },
 					update: {
