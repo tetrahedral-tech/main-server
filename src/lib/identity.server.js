@@ -10,7 +10,6 @@ export const handleSignin = async (cookies, data) => {
 	if (!user)
 		if (data.force) throw error(400, 'Bad Request');
 		else {
-			return; // @TODO disable account creation temporarily, remove this later
 			const identity = new Identity(data);
 
 			await identity.save();
