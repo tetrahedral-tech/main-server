@@ -1,5 +1,5 @@
 import bunyan, { INFO, TRACE } from 'bunyan';
-const { WARN, createLogger, stdSerializers } = bunyan;
+const { createLogger, stdSerializers } = bunyan;
 
 const transactionSerializer = transaction => {
 	if (!transaction?.status) return transaction;
