@@ -96,9 +96,10 @@ const executeApproval = async (privateKey, { id, strengthToUSD, baseToken = defa
 
 export default async tradeData => {
 	const promises = await Promise.allSettled(
-		tradeData.map(({ id, strengthToUSD, privateKey }) =>
-			executeApproval(privateKey, { strengthToUSD, id })
-		)
+		tradeData.map(({ id, strengthToUSD, privateKey }) => ({
+			approvals: executeApproval(privateKey, { strengthToUSD, id }),
+			id
+		}))
 	);
 
 	return promises.filter(p => !(p.status === 'fulfilled' && p.value.length < 1));

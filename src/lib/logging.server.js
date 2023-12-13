@@ -1,4 +1,4 @@
-import bunyan from 'bunyan';
+import bunyan, { TRACE } from 'bunyan';
 const { WARN, createLogger, stdSerializers } = bunyan;
 
 const transactionSerializer = transaction => {
@@ -39,10 +39,12 @@ export const log = createLogger({
 	name: 'main-server',
 	streams: [
 		{
-			path: 'server.log'
+			path: 'server.log',
+			level: TRACE
 		},
 		{
-			stream: process.stdout
+			stream: process.stdout,
+			level: TRACE
 		},
 		{
 			stream: process.stderr,

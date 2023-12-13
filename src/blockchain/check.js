@@ -69,9 +69,54 @@ export default async redis => {
 	);
 	const worthsResults = await addWorths(tradeData);
 
-	log.info(transactionResults, 'transactions');
-	log.info(worthsResults, 'worths');
-	log.info(approvalResults, 'approvals');
+	transactionResults.forEach(result =>
+		result.status === 'fulfilled'
+			? log.debug(
+					{
+						transaction: result.value.transaction,
+						id: result.value.id
+					},
+					'transaction'
+			  )
+			: log.warn(
+					{
+						error: result.reason
+					},
+					'transaction error'
+			  )
+	);
+
+	worthsResults.forEach(result =>
+		result.status === 'fulfilled'
+			? log.debug(
+					{
+						...result.value
+					},
+					'worth'
+			  )
+			: log.warn(
+					{
+						error: result.reason
+					},
+					'worth error'
+			  )
+	);
+
+	approvalResults.forEach(result =>
+		result.status === 'fulfilled'
+			? log.debug(
+					{
+						...result.value
+					},
+					'approval'
+			  )
+			: log.warn(
+					{
+						error: result.reason
+					},
+					'approval error'
+			  )
+	);
 
 	// Update worths
 	Bot.bulkWrite(
