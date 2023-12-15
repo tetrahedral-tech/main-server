@@ -10,6 +10,12 @@ export const chainNames = {
 	[ChainId.ARBITRUM_ONE]: 'arbitrum-mainnet'
 };
 
+export const etherscanNames = {
+	[ChainId.GOERLI]: 'goerli.etherscan.io',
+	[ChainId.MAINNET]: 'etherscan.io',
+	[ChainId.ARBITRUM_ONE]: 'arbiscan.io'
+};
+
 export const addresses = {
 	router: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
 	quoter: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
