@@ -3,10 +3,17 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { CurrencyAmount, Percent, TradeType } from '@uniswap/sdk-core';
 import { AlphaRouter, SwapType } from '@uniswap/smart-order-router';
 
-import { tokens, fromReadableAmount, addresses, defaultBaseToken } from '$lib/blockchain';
+import {
+	tokens,
+	fromReadableAmount,
+	addresses,
+	defaultBaseToken,
+	etherscanNames
+} from '$lib/blockchain';
 import { providerUrl, repopulateAndSend } from '$lib/blockchain.server';
 import { log } from '$lib/logging.server';
 import { PUBLIC_CHAINID } from '$env/static/public';
+import { sendNotification } from '$lib/push.server';
 
 const provider = new JsonRpcProvider(providerUrl);
 
@@ -51,10 +58,17 @@ const executeTransaction = async (
 		}
 	);
 
-	if (!route) throw new Error('No Route');
+	if (!route) return log.warn({ id }, 'no route');
 
 	return routeTransaction(wallet, route)
-		.then(transaction => log.debug({ transaction, id }, 'trading'))
+		.then(transaction => {
+			log.debug({ transaction, id }, 'trading');
+			sendNotification({
+				title: 'Traded Successfully',
+				body: `${action === 'buy' ? 'Bought' : 'Sold'} ${baseAmount} ${baseToken.symbol}`,
+				link: `https://${etherscanNames[PUBLIC_CHAINID]}/tx/${transaction.hash}`
+			});
+		})
 		.catch(error => log.warn({ error, id }, 'trading error'));
 };
 
