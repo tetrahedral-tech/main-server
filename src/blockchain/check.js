@@ -59,7 +59,8 @@ export default async redis => {
 				privateKey: bot.privateKey(),
 				amount: (10 || bot.strengthToUSD) * strength,
 				strengthToUSD: bot.strengthToUSD,
-				signal
+				signal,
+				strength
 			};
 		})
 		.filter(b => b);
@@ -67,6 +68,7 @@ export default async redis => {
 	const tradeDataWithSignal = tradeData.filter(
 		data => data.strength > 0 && data.signal !== 'no_action'
 	);
+
 	await executeApprovals(tradeDataWithSignal);
 	await executeTransactions(tradeDataWithSignal);
 	const worthsResults = await addWorths(tradeData);
