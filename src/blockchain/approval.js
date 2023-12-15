@@ -1,4 +1,3 @@
-import webpush from 'web-push';
 import { Wallet } from 'ethers';
 import { JsonRpcProvider } from '@ethersproject/providers';
 
@@ -11,35 +10,24 @@ import {
 	toReadableAmount
 } from '$lib/blockchain';
 import { providerUrl, repopulateAndSend } from '$lib/blockchain.server';
-import { User } from '$lib/models.server';
-import { setVapidDetails } from '$lib/push.server';
+import { sendNotification } from '$lib/push.server';
 import { log } from '$lib/logging.server';
 
 import { getWorth } from './worth';
+import { Bot } from '$lib/models.server';
 
 const provider = new JsonRpcProvider(providerUrl);
 
-setVapidDetails();
-
-const executeOOMNotification = async (id, address) => {
-	const user = await User.findOne({});
-	if (!user.pushSubscription) return;
-
-	const { pushSubscription } = user;
-	return webpush.sendNotification(
+const executeOOMNotification = async (address, botId) => {
+	const user = Bot.findById(botId).populate({ path: 'owner' }).owner;
+	sendNotification(
 		{
-			endpoint: pushSubscription.endpoint,
-			keys: {
-				auth: pushSubscription.auth,
-				p256dh: pushSubscription.p256dh
-			}
-		},
-		JSON.stringify({
-			title: `Account 0x${address.slice(0, 6)} is out of money!`,
+			title: `Account ${address.slice(0, 8)} is out of money!`,
 			// eslint-disable-next-line max-len
-			body: `Account 0x${address} has went below 0.005 of the Native Currency, Please deposit more to continue trading.`,
+			body: `Account ${address} has went below 0.005 of the Native Currency, Please deposit more to continue trading.`,
 			link: `${base}/dashboard/deposit#${address}`
-		})
+		},
+		user
 	);
 };
 
@@ -55,7 +43,7 @@ const executeApproval = async (privateKey, { id, strengthToUSD, baseToken = defa
 	const ethBalance = (await provider.getBalance(address)).toBigInt();
 
 	if (ethBalance < minimumEth) {
-		await executeOOMNotification(id, address).catch(err =>
+		await executeOOMNotification(address, id).catch(err =>
 			log.error({ error: err }, 'oom notification error')
 		);
 		return [];
