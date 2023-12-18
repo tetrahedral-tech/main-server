@@ -7,6 +7,7 @@ import {
 } from '$env/static/private';
 import { Issuer } from 'openid-client';
 import { createDecipheriv } from 'crypto';
+import { log } from '$lib/logging.server.js';
 
 const callback = 'http://localhost:5173/identity/google/';
 
@@ -30,6 +31,10 @@ export const GET = async ({ url, cookies }) => {
 		codeVerifier = decipher.update(encrypted);
 		codeVerifier = Buffer.concat([codeVerifier, decipher.final()]).toString();
 	} catch (err) {
+		log.trace(
+			{ error: err, code_verifier: cookies.get('code_verifier') },
+			'code verifier decryption error'
+		);
 		throw error(400, 'Bad Request');
 	}
 
@@ -44,6 +49,7 @@ export const GET = async ({ url, cookies }) => {
 			accessToken
 		);
 	} catch (err) {
+		log.trace({ error: err }, 'google login error');
 		throw error(401, 'Error logging in with Google');
 	}
 

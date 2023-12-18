@@ -2,6 +2,7 @@ import { error } from '@sveltejs/kit';
 import { handleSignin } from '$lib/identity.server.js';
 import { DISCORD_OAUTH_CLIENT_ID, DISCORD_OAUTH_CLIENT_SECRET } from '$env/static/private';
 import { Issuer } from 'openid-client';
+import { log } from '$lib/logging.server.js';
 
 const callback = 'http://localhost:5173/identity/discord/';
 
@@ -40,6 +41,7 @@ export const GET = async ({ url, cookies }) => {
 
 		response = await client.userinfo(accessToken);
 	} catch (err) {
+		log.trace({ error: err }, 'discord login error');
 		throw error(401, 'Error logging in with Discord');
 	}
 
