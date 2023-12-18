@@ -24,9 +24,18 @@ export const handleSignin = async (cookies, data) => {
 
 	user = await user.populate('identity');
 
-	const token = jwt.sign(user.toJSON(), JWT_SECRET, { algorithm: 'HS256' });
+	const expiryDate = 60 * 60 * 24 * 15; // 15 days
+
+	const token = jwt.sign(user.toJSON(), JWT_SECRET, {
+		algorithm: 'HS256',
+		expiresIn: expiryDate
+	});
+
 	cookies.set('token', token, {
-		path: '/'
+		path: '/',
+		maxAge: expiryDate,
+		httpOnly: true,
+		secure: false // @TODO set this to true
 	});
 
 	throw redirect(303, '/dashboard');

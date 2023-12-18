@@ -12,7 +12,13 @@ import { Issuer, generators } from 'openid-client';
 import { randomBytes, createCipheriv } from 'crypto';
 import { handleSignin } from '$lib/identity.server.js';
 
-const maxCookieAge = 5 * 60;
+const cookieOptions = {
+	path: '/identity/',
+	maxAge: 2.5 * 60,
+	httpOnly: true,
+	session: true,
+	secure: false // @TODO change this to true later
+};
 
 const handleOAuth = ({ cookies, client, scope, resource, verifierType = 'state' }) => {
 	let verifier;
@@ -23,19 +29,16 @@ const handleOAuth = ({ cookies, client, scope, resource, verifierType = 'state' 
 		const cipher = createCipheriv('aes-256-cbc', Buffer.from(CODE_VERIFIER_SECRET, 'hex'), iv);
 		let encrypted = cipher.update(codeVerifier);
 		encrypted = Buffer.concat([encrypted, cipher.final()]);
-		cookies.set('code_verifier', `${iv.toString('hex')}:${encrypted.toString('hex')}`, {
-			path: '/',
-			maxAge: maxCookieAge
-		});
+		cookies.set(
+			'code_verifier',
+			`${iv.toString('hex')}:${encrypted.toString('hex')}`,
+			cookieOptions
+		);
 
 		verifier = generators.codeChallenge(codeVerifier);
 	} else {
 		verifier = randomBytes(8).toString('hex');
-		// @TODO make cookies expire
-		cookies.set('state', verifier, {
-			path: '/',
-			maxAge: maxCookieAge
-		});
+		cookies.set('state', verifier, cookieOptions);
 	}
 
 	const authorizationUrl = client.authorizationUrl({
