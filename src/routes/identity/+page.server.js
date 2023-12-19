@@ -1,56 +1,15 @@
-import { error, redirect } from '@sveltejs/kit';
+import jwt from 'jsonwebtoken';
+import { error } from '@sveltejs/kit';
+import { Issuer } from 'openid-client';
+
 import {
 	GOOGLE_OAUTH_CLIENT_ID,
 	GOOGLE_OAUTH_CLIENT_SECRET,
 	DISCORD_OAUTH_CLIENT_ID,
 	DISCORD_OAUTH_CLIENT_SECRET,
-	CODE_VERIFIER_SECRET,
 	JWT_SECRET
 } from '$env/static/private';
-import jwt from 'jsonwebtoken';
-import { Issuer, generators } from 'openid-client';
-import { randomBytes, createCipheriv } from 'crypto';
-import { handleSignin } from '$lib/identity.server.js';
-
-const cookieOptions = {
-	path: '/identity/',
-	maxAge: 2.5 * 60,
-	httpOnly: true,
-	session: true,
-	secure: false // @TODO change this to true later
-};
-
-const handleOAuth = ({ cookies, client, scope, resource, verifierType = 'state' }) => {
-	let verifier;
-	if (verifierType === 'code_challenge') {
-		// Encrypt code verifier and store it
-		const codeVerifier = generators.codeVerifier();
-		const iv = randomBytes(16);
-		const cipher = createCipheriv('aes-256-cbc', Buffer.from(CODE_VERIFIER_SECRET, 'hex'), iv);
-		let encrypted = cipher.update(codeVerifier);
-		encrypted = Buffer.concat([encrypted, cipher.final()]);
-		cookies.set(
-			'code_verifier',
-			`${iv.toString('hex')}:${encrypted.toString('hex')}`,
-			cookieOptions
-		);
-
-		verifier = generators.codeChallenge(codeVerifier);
-	} else {
-		verifier = randomBytes(8).toString('hex');
-		cookies.set('state', verifier, cookieOptions);
-	}
-
-	const authorizationUrl = client.authorizationUrl({
-		scope,
-		resource,
-		...(verifierType === 'code_challenge'
-			? { code_challenge: verifier, code_challenge_method: 'S256' }
-			: { state: verifier })
-	});
-
-	throw redirect(302, authorizationUrl);
-};
+import { handleSignin, handleOAuth } from './signin.js';
 
 export const actions = {
 	force: async ({ cookies, request }) => {

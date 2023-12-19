@@ -1,13 +1,13 @@
 import { error } from '@sveltejs/kit';
-import { handleSignin } from '$lib/identity.server.js';
+import { Issuer } from 'openid-client';
+import { createDecipheriv } from 'crypto';
 import {
 	GOOGLE_OAUTH_CLIENT_ID,
 	GOOGLE_OAUTH_CLIENT_SECRET,
 	CODE_VERIFIER_SECRET
 } from '$env/static/private';
-import { Issuer } from 'openid-client';
-import { createDecipheriv } from 'crypto';
 import { log } from '$lib/logging.server.js';
+import { handleSignin } from '../signin';
 
 const callback = 'http://localhost:5173/identity/google/';
 

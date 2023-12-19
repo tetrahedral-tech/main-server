@@ -29,11 +29,11 @@
 		bg-section-200 overflow-hidden transition-all duration-1000`}
 		style="transition-timing-function: cubic-bezier(0.83, 0.0, 0.17, 1.0)"
 	>
-		<h1 class="text-2xl mb-3">Add a bot</h1>
+		<h1 class="mb-3 text-2xl">Add a bot</h1>
 		<form method="post" class="flex flex-col gap-2" use:enhance>
 			<input class="hidden" type="text" name="id" placeholder="ID" />
 			<input type="number" name="strengthToUSD" placeholder="1.0 Strength -> USD" />
-			<Dropdown placeholder="Algorithm" class="w-full" contents={["rsi"]}/>
+			<Dropdown placeholder="Algorithm" class="w-full" contents={['rsi']} />
 			{#if $user.admin}
 				<input type="text" name="privateKey" placeholder="Private Key Override" />
 			{/if}
@@ -74,7 +74,8 @@
 						<span class="hidden lg:inline">Net Worth:</span>
 						{balance} USD
 					</p>
-					{#if privateKey} <!-- uncommented so that eslint doesn't get mad at me //nk-->
+					{#if privateKey}
+						<!-- uncommented so that eslint doesn't get mad at me //nk-->
 						<!-- ill find a way to incorporate this better later //nk-->
 						<!-- <p class="private truncate">{privateKey}</p> -->
 					{/if}

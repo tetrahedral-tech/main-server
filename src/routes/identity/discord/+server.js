@@ -1,8 +1,8 @@
 import { error } from '@sveltejs/kit';
-import { handleSignin } from '$lib/identity.server.js';
-import { DISCORD_OAUTH_CLIENT_ID, DISCORD_OAUTH_CLIENT_SECRET } from '$env/static/private';
 import { Issuer } from 'openid-client';
+import { DISCORD_OAUTH_CLIENT_ID, DISCORD_OAUTH_CLIENT_SECRET } from '$env/static/private';
 import { log } from '$lib/logging.server.js';
+import { handleSignin } from '../signin';
 
 const callback = 'http://localhost:5173/identity/discord/';
 
