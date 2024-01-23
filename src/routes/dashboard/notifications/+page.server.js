@@ -47,7 +47,7 @@ export const actions = {
 		const data = jwt.verify(token, JWT_SECRET);
 		const user = await User.findOne({ _id: data._id });
 
-		if (!user.pushSubscription) throw error(400, 'Unregistered');
+		if (!user?.pushSubscription) throw error(400, 'Unregistered');
 		const { pushSubscription } = user;
 
 		await webpush

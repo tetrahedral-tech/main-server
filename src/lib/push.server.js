@@ -15,7 +15,7 @@ export const sendNotification = async (data, user) => {
 	setVapidDetails();
 	// eslint-disable-next-line no-param-reassign
 	if (typeof user === 'string') user = await User.findById(user);
-	if (!user.pushSubscription) return;
+	if (!user?.pushSubscription) return;
 
 	const { pushSubscription } = user;
 	return webpush.sendNotification(
