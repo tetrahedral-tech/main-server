@@ -14,7 +14,7 @@ export const load = async ({ cookies }) => {
 	const data = jwt.verify(token, JWT_SECRET);
 	const user = await User.findOne({ _id: data._id });
 
-	return { registered: Boolean(user.pushSubscription) };
+	return { registered: Boolean(user?.pushSubscription) };
 };
 
 export const actions = {
