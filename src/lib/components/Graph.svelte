@@ -6,6 +6,7 @@
 	let graphElement;
 
 	const loadGraph = () => {
+		console.log('Loading graph');
 		fetch(`${PUBLIC_ALGORITHM_SERVER_URI}/${path}`, { headers: { Authorization: token } })
 			.then(response => response.blob())
 			.then(data => (graphElement.src = window.URL.createObjectURL(data)))
