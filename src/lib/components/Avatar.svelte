@@ -6,6 +6,8 @@
 
 	onMount(() => {
 		const updateAvatar = async () => {
+			if (!caches) return;
+
 			const cache = await caches.open('avatar-cache');
 			let avatar = await cache.match('/avatar');
 
