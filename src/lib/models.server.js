@@ -63,6 +63,8 @@ const schemas = {
 					value: Number
 				}
 			],
+			pair: String,
+			provider: String,
 			status: {
 				name: {
 					type: String,
