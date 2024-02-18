@@ -1,11 +1,10 @@
 <script>
-	import { Pause, Play, Clock, Minus, AdjustmentsHorizontal, CommandLine } from 'svelte-heros-v2';
+	import { Pause, Play, Clock, Minus, AdjustmentsHorizontal } from 'svelte-heros-v2';
 	import { getContext } from 'svelte';
 	import { enhance } from '$app/forms';
 	import Modal from '$lib/components/Modal.svelte';
 
 	import BotOptions from './menus/BotOptions.svelte';
-	import AdminPanel from './menus/AdminPanel.svelte';
 	import ResumeBot from './formData/ResumeBot.svelte';
 	import PauseBot from './formData/PauseBot.svelte';
 	import DeleteBot from './menus/DeleteBot.svelte';
@@ -43,12 +42,6 @@
 			title: 'Bot Options',
 			icon: AdjustmentsHorizontal,
 			menu: BotOptions
-		},
-		{
-			title: 'Admin Panel',
-			icon: CommandLine,
-			menu: AdminPanel,
-			admin: true
 		}
 	];
 
@@ -69,7 +62,7 @@
 					<button
 						class="square {data.classes ?? ''}"
 						title={data.title}
-						on:click={() => data.menu && (dialogs[i] = true)}	
+						on:click={() => data.menu && (dialogs[i] = true)}
 					>
 						<svelte:component this={data.icon} class="icon" />
 					</button>
