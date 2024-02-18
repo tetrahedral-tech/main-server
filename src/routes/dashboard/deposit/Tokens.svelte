@@ -1,7 +1,7 @@
 <script>
 	import { Interface } from 'ethers';
 	import { getContext } from 'svelte';
-	import { tokens, defaultBaseToken, fromReadableAmount } from '$lib/blockchain';
+	import { tokens, fromReadableAmount } from '$lib/blockchain';
 	import { browser } from '$app/environment';
 
 	// eslint-disable-next-line max-len
@@ -36,18 +36,17 @@
 				sendTransaction({
 					to: $selectedAccount.address,
 					from: $accounts[0],
-					value: fromReadableAmount(0.01, tokens.wrapped.decimals).toString(16)
+					value: fromReadableAmount(0.01, tokens.weth.decimals).toString(16)
 				})}
 		>
 			Native Currency (Gas)
 		</button><br />
-		{#each Object.values(tokens).sort((a, b) => {
-			if (a.equals(defaultBaseToken)) return -1;
-			if (b.equals(defaultBaseToken)) return 1;
-			return 0;
-		}) as token}
+		<!-- @TODO sort tokens based on if bot is using coin in its pair -->
+		{#each Object.values(tokens) as token}
+			<!-- eslint-disable no-constant-condition -->
+			<!-- @TODO highlight border if bot is using coin in its pair -->
 			<button
-				class={token.equals(defaultBaseToken) ? 'border-yellow' : 'border-none'}
+				class={false ? 'border-yellow' : 'border-none'}
 				on:click={() =>
 					sendTransaction({
 						to: token.address,
@@ -60,6 +59,7 @@
 			>
 				{token.name}
 			</button>
+			<!-- eslint-enable no-constant-condition -->
 			<br />
 		{/each}
 	</ul>

@@ -2,20 +2,6 @@ import { Token, ChainId } from '@uniswap/sdk-core';
 import { parseUnits, formatUnits } from 'ethers';
 import { PUBLIC_CHAINID } from '$env/static/public';
 
-export const supportedChains = [ChainId.GOERLI, ChainId.ARBITRUM_ONE, ChainId.MAINNET];
-
-export const chainNames = {
-	[ChainId.GOERLI]: 'goerli',
-	[ChainId.MAINNET]: 'mainnet',
-	[ChainId.ARBITRUM_ONE]: 'arbitrum-mainnet'
-};
-
-export const etherscanNames = {
-	[ChainId.GOERLI]: 'goerli.etherscan.io',
-	[ChainId.MAINNET]: 'etherscan.io',
-	[ChainId.ARBITRUM_ONE]: 'arbiscan.io'
-};
-
 export const addresses = {
 	router: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
 	quoter: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
@@ -35,11 +21,9 @@ export const addresses = {
 
 const chainId = Number(PUBLIC_CHAINID);
 export const tokens = {
-	wrapped: new Token(chainId, addresses[chainId].weth, 18, 'WETH', 'Wrapped Ether'),
+	weth: new Token(chainId, addresses[chainId].weth, 18, 'WETH', 'Wrapped Ether'),
 	usdc: new Token(chainId, addresses[chainId].usdc, 6, 'USDC', 'USD//C')
 };
 
 export const fromReadableAmount = (amount, decimals) => parseUnits(amount.toString(), decimals);
 export const toReadableAmount = (rawAmount, decimals) => formatUnits(rawAmount, decimals);
-
-export const defaultBaseToken = tokens.usdc;

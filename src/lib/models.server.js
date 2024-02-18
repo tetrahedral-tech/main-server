@@ -51,12 +51,10 @@ const schemas = {
 				type: Schema.Types.ObjectId,
 				ref: 'User'
 			},
-			algorithm: {
-				type: Schema.Types.ObjectId,
-				ref: 'Algorithm'
-			},
+			algorithm: String,
 			strengthToUSD: Number,
 			encryptedPrivateKey: String,
+			address: String,
 			worth: [
 				{
 					timestamp: Number,

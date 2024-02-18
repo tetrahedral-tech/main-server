@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken';
 import { redirect } from '@sveltejs/kit';
 import { JWT_SECRET } from '$env/static/private';
 import { Bot } from '$lib/models.server.js';
-import { Wallet } from 'ethers';
 
 const formatter = Intl.NumberFormat('en-US', {
 	notation: 'compact',
@@ -18,10 +17,8 @@ export const load = async ({ cookies }) => {
 
 	const accounts = await Promise.all(
 		bots.map(async bot => {
-			const { worth, _id: id, status } = bot;
+			const { worth, _id: id, status, address } = bot;
 			const privateKey = bot.privateKey();
-
-			const address = await new Wallet(privateKey).getAddress();
 
 			return {
 				id: id.toString(),
