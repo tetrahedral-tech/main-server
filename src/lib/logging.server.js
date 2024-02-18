@@ -39,7 +39,7 @@ export const log = createLogger({
 	name: 'main-server',
 	streams: [
 		{
-			path: 'server.log',
+			path: 'main-server.log',
 			level: TRACE
 		},
 		{
