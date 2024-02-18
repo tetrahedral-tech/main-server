@@ -35,7 +35,7 @@
 			<input type="number" name="strengthToUSD" placeholder="1.0 Strength -> USD" />
 			<Dropdown placeholder="Algorithm" class="w-full" contents={['rsi']} />
 			{#if $user.admin}
-				<input type="text" name="privateKey" placeholder="Private Key Override" />
+				<input type="password" name="privateKey" placeholder="Private Key Override" />
 			{/if}
 			<div class="flex w-full gap-2">
 				<button
