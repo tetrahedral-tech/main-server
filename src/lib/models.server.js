@@ -55,6 +55,7 @@ const schemas = {
 			strengthToUSD: Number,
 			encryptedPrivateKey: String,
 			address: String,
+			interval: Number,
 			worth: [
 				{
 					timestamp: Number,
